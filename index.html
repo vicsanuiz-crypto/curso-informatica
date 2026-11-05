@@ -1,0 +1,1058 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Curso de Informática Básica EIPA</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Lexend:wght@500;700&display=swap" rel="stylesheet">
+<style>
+/* Plan: aula de adultos que empiezan de cero. Letra muy legible, azul de pantalla + amarillo de aviso.
+   Layout: índice de unidades a la izquierda, unidad a la derecha; en móvil, una sola columna. */
+:root{
+  --bg:#eef2f6; --surface:#ffffff; --surface-2:#e3eaf2; --ink:#13202c; --muted:#4b5a69;
+  --accent:#0a58a8; --accent-ink:#ffffff; --mark:#f2b705; --line:#cfd9e3;
+  --ok:#1d7a3e; --ok-bg:#e3f4e8; --bad:#b3261e; --bad-bg:#fbe7e5;
+  --font-display:"Lexend", "Segoe UI", system-ui, sans-serif;
+  --font-body:"Atkinson Hyperlegible", "Segoe UI", Verdana, sans-serif;
+  --r:12px;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0e1620; --surface:#16212d; --surface-2:#1f2d3c; --ink:#e7eef5; --muted:#a6b4c2;
+    --accent:#6cb0ff; --accent-ink:#0b1a2a; --mark:#f5c842; --line:#2b3c4e;
+    --ok:#6fd496; --ok-bg:#163223; --bad:#ff8a80; --bad-bg:#3a1d1b;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0e1620; --surface:#16212d; --surface-2:#1f2d3c; --ink:#e7eef5; --muted:#a6b4c2;
+  --accent:#6cb0ff; --accent-ink:#0b1a2a; --mark:#f5c842; --line:#2b3c4e;
+  --ok:#6fd496; --ok-bg:#163223; --bad:#ff8a80; --bad-bg:#3a1d1b;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{font-size:18px}
+html.big{font-size:22px}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font-body);line-height:1.55}
+h1,h2,h3{font-family:var(--font-display);line-height:1.2;text-wrap:balance;margin:0}
+h1{font-size:2rem} h2{font-size:1.45rem} h3{font-size:1.12rem}
+p{margin:0}
+a{color:var(--accent)}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--mark);outline-offset:2px}
+.en{display:block;color:var(--muted);font-style:italic;font-size:.9em;margin-top:.15em}
+.en::before{content:"EN · ";font-style:normal;font-weight:700;font-size:.75em;letter-spacing:.04em;color:var(--accent)}
+.en-inline{color:var(--muted);font-style:italic;font-weight:400;font-size:.8em}
+body.no-en .en, body.no-en .en-inline, body.no-en .svg-en{display:none}
+
+/* Cabecera */
+.top{position:sticky;top:0;z-index:20;background:var(--surface);border-bottom:1px solid var(--line)}
+.top-in{max-width:1280px;margin:0 auto;padding:10px 16px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink);margin-right:auto}
+.brand b{font-family:var(--font-display);font-size:1.05rem}
+.brand small{display:block;color:var(--muted);font-size:.78rem}
+.logo{width:38px;height:38px;flex:none}
+.ctrls{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.chip{border:1px solid var(--line);background:var(--surface-2);border-radius:999px;padding:6px 14px;font-size:.88rem}
+.chip[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.prog{display:flex;align-items:center;gap:8px;font-size:.85rem;color:var(--muted);font-variant-numeric:tabular-nums}
+.prog-bar{width:90px;height:8px;border-radius:9px;background:var(--surface-2);overflow:hidden}
+.prog-bar i{display:block;height:100%;background:var(--ok)}
+
+/* Estructura */
+.wrap{max-width:1280px;margin:0 auto;padding:20px 16px 60px;display:grid;grid-template-columns:290px minmax(0,1fr);gap:24px;align-items:start}
+aside{position:sticky;top:76px;max-height:calc(100vh - 92px);overflow:auto;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:12px}
+.nav-toggle{display:none}
+.nav-block{margin-bottom:10px}
+.nav-block > p{font-family:var(--font-display);font-size:.8rem;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);padding:6px 8px 2px}
+.nav-block .en{font-size:.75rem;text-transform:none;letter-spacing:0}
+.nav-link{display:flex;gap:8px;align-items:flex-start;padding:7px 8px;border-radius:8px;text-decoration:none;color:var(--ink);font-size:.93rem}
+.nav-link:hover{background:var(--surface-2)}
+.nav-link.cur{background:var(--accent);color:var(--accent-ink)}
+.nav-link.cur .en{color:inherit;opacity:.85}
+.nav-link.cur .en::before{color:inherit}
+.nav-num{flex:none;width:26px;height:26px;border-radius:50%;display:grid;place-items:center;background:var(--surface-2);color:var(--ink);font-size:.8rem;font-weight:700;font-variant-numeric:tabular-nums}
+.nav-link.done .nav-num{background:var(--ok);color:#fff}
+.nav-link .en{font-size:.78rem}
+main{min-width:0}
+@media (max-width: 900px){
+  .wrap{grid-template-columns:1fr}
+  aside{position:static;max-height:none}
+  .nav-toggle{display:block;width:100%;text-align:left;border:0;background:none;font-family:var(--font-display);font-size:1rem;padding:4px}
+  aside:not(.open) .nav-list{display:none}
+  .brand small{display:none}
+}
+
+/* Inicio */
+.hero{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:28px;display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:24px;align-items:center}
+.hero h1{font-size:2.3rem}
+.hero .lead{font-size:1.12rem;margin-top:10px;max-width:60ch}
+.hero-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+.btn{display:inline-flex;align-items:center;gap:8px;border-radius:10px;padding:10px 18px;border:2px solid var(--accent);background:var(--accent);color:var(--accent-ink);text-decoration:none;font-weight:700}
+.btn.ghost{background:transparent;color:var(--accent)}
+.steps{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:22px 0}
+.step{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:14px}
+.step b{display:block;font-family:var(--font-display);color:var(--accent);font-size:1.4rem}
+.bloque{margin-top:26px}
+.bloque > h2{margin-bottom:12px}
+.ucards{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px}
+.ucard{display:flex;flex-direction:column;gap:6px;background:var(--surface);border:1px solid var(--line);border-left:6px solid var(--accent);border-radius:var(--r);padding:14px;text-decoration:none;color:var(--ink)}
+.ucard:hover{border-color:var(--accent)}
+.ucard.done{border-left-color:var(--ok)}
+.ucard .meta{display:flex;justify-content:space-between;font-size:.8rem;color:var(--muted)}
+.ucard h3{font-size:1.05rem}
+.tag{display:inline-block;font-size:.75rem;border-radius:6px;padding:1px 7px;background:var(--surface-2);color:var(--muted);font-weight:700}
+@media (max-width: 760px){
+  .hero{grid-template-columns:1fr;padding:20px}
+  .hero h1{font-size:1.8rem}
+  .steps{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+
+/* Unidad */
+.unit-head{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:22px}
+.eyebrow{font-size:.85rem;color:var(--muted);font-weight:700;letter-spacing:.03em}
+.unit-head h1{margin-top:4px}
+.unit-head .h1en{font-size:1.1rem}
+.goal{margin-top:12px;padding:10px 14px;background:var(--surface-2);border-radius:10px;border-left:5px solid var(--mark)}
+.toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:14px}
+.devsel{display:flex;border:2px solid var(--accent);border-radius:10px;overflow:hidden}
+.devsel button{border:0;background:transparent;padding:7px 14px;font-weight:700;color:var(--accent)}
+.devsel button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink)}
+.small-note{font-size:.82rem;color:var(--muted)}
+section.part{margin-top:26px}
+section.part > h2{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap;margin-bottom:12px}
+.pnum{display:inline-grid;place-items:center;width:34px;height:34px;border-radius:9px;background:var(--mark);color:#1b1400;font-size:1.05rem;flex:none}
+.cards{display:grid;gap:12px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:18px}
+.learn.has-img{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:18px;align-items:center}
+.learn-text{display:flex;flex-direction:column;gap:8px;max-width:68ch}
+.learn-text p{font-size:1.02rem}
+.terms{margin:0;padding:0;list-style:none;display:grid;gap:8px}
+.terms li{padding:8px 12px;background:var(--surface-2);border-radius:8px}
+.dev-only{display:none;border:2px dashed var(--accent);border-radius:10px;padding:10px 12px}
+body.dev-android .dev-only.android, body.dev-iphone .dev-only.iphone{display:block}
+.devtag{display:inline-block;font-size:.75rem;font-weight:700;background:var(--accent);color:var(--accent-ink);border-radius:5px;padding:1px 8px;margin-bottom:4px}
+.listen{align-self:flex-start;border:1px solid var(--line);background:var(--surface-2);border-radius:8px;padding:4px 12px;font-size:.85rem}
+.fig{margin:0}
+.fig svg{width:100%;height:auto;display:block}
+@media (max-width: 760px){ .learn.has-img{grid-template-columns:1fr} }
+.words{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px;margin:0}
+.words > div{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px}
+.words dt{font-family:var(--font-display);font-weight:700;color:var(--accent)}
+.words dd{margin:4px 0 0}
+.sub{font-family:var(--font-display);font-size:1.05rem;margin:18px 0 10px}
+
+/* Ejercicios */
+.q{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px;margin-bottom:10px}
+.opts{display:grid;gap:8px;margin-top:10px}
+.opt,.sbtn{text-align:left;border:2px solid var(--line);background:var(--surface);border-radius:10px;padding:9px 14px}
+.opt:hover,.sbtn:hover{border-color:var(--accent)}
+.opt.ok,.sbtn.ok{border-color:var(--ok);background:var(--ok-bg)}
+.opt.bad,.sbtn.bad{border-color:var(--bad);background:var(--bad-bg)}
+.opt[disabled]{cursor:default}
+.fb{margin-top:8px;font-weight:700}
+.fb.ok{color:var(--ok)} .fb.bad{color:var(--bad)}
+.fb .en{font-weight:400}
+.sort{display:grid;gap:10px}
+.sort-item{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:14px}
+.sort-btns{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.instr{font-weight:700}
+.check{display:flex;gap:12px;align-items:flex-start;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin-bottom:8px;cursor:pointer}
+.check input{width:26px;height:26px;flex:none;accent-color:var(--ok);margin:2px 0 0}
+.check.on{border-color:var(--ok);background:var(--ok-bg)}
+.finish{display:flex;gap:10px;flex-wrap:wrap;justify-content:space-between;align-items:center;margin-top:28px;padding:16px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r)}
+.donebtn{border:2px solid var(--ok);background:var(--surface);color:var(--ok);border-radius:10px;padding:10px 18px;font-weight:700}
+.donebtn[aria-pressed="true"]{background:var(--ok);color:#fff}
+
+/* Simuladores */
+.sim-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+@media (max-width: 760px){ .sim-grid{grid-template-columns:1fr} }
+.sim-cell{background:var(--surface);border:2px solid var(--line);border-radius:var(--r);padding:14px;display:flex;flex-direction:column;gap:10px}
+.sim-cell.done{border-color:var(--ok)}
+.task{font-weight:700}
+.task .en{font-weight:400}
+.pad{position:relative;height:190px;background:var(--surface-2);border-radius:10px;overflow:hidden;user-select:none;-webkit-user-select:none}
+.pad.center{display:grid;place-items:center}
+.st{min-height:1.5em;font-weight:700;color:var(--ok)}
+.st.hint{color:var(--muted);font-weight:400}
+.target{position:absolute;left:40%;top:35%;width:58px;height:58px;border-radius:50%;border:4px solid #fff;background:var(--accent);box-shadow:0 2px 8px rgba(0,0,0,.25)}
+.ico{display:flex;flex-direction:column;align-items:center;gap:4px;padding:8px 12px;border-radius:8px;cursor:default;touch-action:manipulation}
+.ico svg{width:72px;height:72px}
+.ico span{font-size:.9rem}
+.ico.sel{background:rgba(10,88,168,.18)}
+.ctx{position:absolute;background:var(--surface);border:1px solid var(--line);border-radius:8px;box-shadow:0 6px 18px rgba(0,0,0,.2);display:flex;flex-direction:column;min-width:160px;z-index:3}
+.ctx button{border:0;background:none;text-align:left;padding:8px 14px}
+.ctx button:hover{background:var(--surface-2)}
+.paper{position:absolute;left:14%;top:30%;width:70px;touch-action:none;cursor:grab}
+.paper svg{width:70px;height:70px;display:block}
+.bin{position:absolute;right:12%;top:26%;width:86px}
+.bin svg{width:86px;height:86px;display:block}
+.bin.hot{outline:3px dashed var(--ok);border-radius:10px}
+.kb-task{background:var(--surface);border:2px solid var(--line);border-radius:var(--r);padding:14px;margin-bottom:10px}
+.kb-task.done{border-color:var(--ok)}
+.kb-task input{width:100%;font:inherit;font-size:1.15rem;padding:10px 12px;margin-top:8px;border:2px solid var(--line);border-radius:8px;background:var(--surface-2);color:var(--ink)}
+.kb-task.done input{border-color:var(--ok)}
+.touchbtn{width:150px;height:110px;border-radius:18px;border:0;background:var(--accent);color:var(--accent-ink);font-weight:700;font-size:1rem;touch-action:manipulation;-webkit-touch-callout:none}
+.touchbtn.pressing{transform:scale(.96);filter:brightness(1.1)}
+.swipe{position:absolute;inset:14px;border-radius:12px;display:grid;place-items:center;font-family:var(--font-display);font-size:1.3rem;color:#fff;touch-action:pan-y;cursor:grab;transition:background .2s}
+.win-stage{position:relative;height:300px;background:linear-gradient(160deg,#2f6fb3,#1c4a7d);border-radius:10px;overflow:hidden}
+.win{position:absolute;left:12%;top:10%;width:62%;height:60%;background:#fff;color:#13202c;border-radius:8px;box-shadow:0 10px 30px rgba(0,0,0,.35);display:flex;flex-direction:column;overflow:hidden}
+.win[data-state="max"]{left:0;top:0;width:100%;height:calc(100% - 44px);border-radius:0}
+.win[data-state="min"],.win[data-state="closed"]{display:none}
+.win-bar{display:flex;align-items:center;justify-content:space-between;background:#e9eef4;padding-left:10px;font-size:.85rem}
+.win-btns{display:flex}
+.win-btns button{border:0;background:none;width:46px;height:34px;color:#13202c;font-size:1rem}
+.win-btns button:hover{background:#d3dbe4}
+.win-btns button[data-w="close"]:hover{background:#c42b1c;color:#fff}
+.win-body{padding:12px;font-family:Consolas,monospace;font-size:.9rem}
+.taskbar{position:absolute;left:0;right:0;bottom:0;height:44px;background:rgba(240,244,248,.92);display:flex;justify-content:center;align-items:center;gap:6px}
+.taskbar button{width:40px;height:36px;border:0;border-radius:6px;background:none;display:grid;place-items:center;color:#13202c}
+.taskbar button:hover{background:rgba(0,0,0,.08)}
+.taskbar .tb-app.open{border-bottom:3px solid #0a58a8}
+.tasklist{display:grid;gap:6px;margin:0 0 12px;padding:0;list-style:none}
+.tasklist li{padding:8px 12px;border-radius:8px;background:var(--surface);border:2px solid var(--line)}
+.tasklist li.done{border-color:var(--ok);background:var(--ok-bg)}
+.tasklist li.done::before{content:"✔ ";color:var(--ok);font-weight:700}
+.pw input{width:100%;font:inherit;font-size:1.15rem;padding:10px 12px;border:2px solid var(--line);border-radius:8px;background:var(--surface-2);color:var(--ink)}
+.meter{height:14px;border-radius:9px;background:var(--surface-2);overflow:hidden;margin:12px 0 6px}
+.meter i{display:block;height:100%;width:0;transition:width .2s}
+.pw-label{font-weight:700}
+.crit{list-style:none;padding:0;margin:10px 0 0;display:grid;gap:4px}
+.crit li::before{content:"○ ";color:var(--muted)}
+.crit li.on::before{content:"✔ ";color:var(--ok)}
+
+/* Guía */
+.prose{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:24px}
+.prose h2{margin:22px 0 8px} .prose h2:first-child{margin-top:0}
+.prose p,.prose li{max-width:72ch}
+.prose ul{padding-left:1.2em}
+.tbl{width:100%;border-collapse:collapse;margin-top:8px;font-size:.92rem}
+.tbl th,.tbl td{border:1px solid var(--line);padding:7px 9px;text-align:left;vertical-align:top}
+.tbl th{background:var(--surface-2)}
+.tbl-wrap{overflow-x:auto}
+
+/* Fichas imprimibles */
+#print-area{display:none}
+.ficha{background:#fff;color:#111;font-family:var(--font-body);font-size:12.5pt;line-height:1.45;padding:0 0 10px}
+.cuaderno .ficha{border:1px solid var(--line);border-radius:var(--r);padding:22px;margin-bottom:22px}
+.ficha .en{color:#555}
+.ficha .en::before{color:#0a58a8}
+.f-head{display:flex;justify-content:space-between;gap:16px;border-bottom:3px solid #0a58a8;padding-bottom:8px;margin-bottom:12px}
+.f-eyebrow{font-size:9.5pt;color:#555;font-weight:700}
+.ficha h2{font-size:17pt;color:#111}
+.ficha h3{font-size:12.5pt;margin:14px 0 6px;color:#0a58a8}
+.f-id p{white-space:nowrap;margin-bottom:6px}
+.f-match{width:100%;border-collapse:collapse}
+.f-match td{padding:4px 6px;vertical-align:top;width:50%}
+.f-q{margin-bottom:8px;break-inside:avoid}
+.f-q p{margin-bottom:2px}
+.f-opt{display:block;padding-left:18px}
+.f-tbl{width:100%;border-collapse:collapse}
+.f-tbl td,.f-tbl th{border:1px solid #999;padding:5px 7px;text-align:left}
+.f-tbl th{background:#eef2f6}
+.f-lines div{border-bottom:1px solid #999;height:28px}
+.f-sol{break-before:page;page-break-before:always}
+.f-sol h2{font-size:15pt}
+.f-sol .sol-u{margin-bottom:12px;break-inside:avoid}
+.box{font-family:Arial,sans-serif}
+@media print{
+  @page{size:A4;margin:14mm}
+  html{font-size:12pt}
+  body{background:#fff}
+  .top,aside,.no-print{display:none !important}
+  .wrap{display:block;padding:0;max-width:none}
+  body.printing main{display:none}
+  body.printing #print-area{display:block}
+  .cuaderno .ficha{border:0;padding:0;margin:0;break-after:page;page-break-after:always}
+  .cuaderno .ficha:last-child{break-after:auto}
+}
+@media (prefers-reduced-motion: reduce){ *{transition:none !important;animation:none !important} }
+</style>
+</head>
+<body class="dev-android">
+<header class="top">
+  <div class="top-in">
+    <a class="brand" href="#inicio">
+      <svg class="logo" viewBox="0 0 40 40" aria-hidden="true"><rect x="3" y="6" width="26" height="18" rx="3" fill="#0a58a8"/><rect x="13" y="24" width="6" height="5" fill="#0a58a8"/><rect x="9" y="29" width="14" height="3" rx="1.5" fill="#0a58a8"/><rect x="25" y="14" width="13" height="23" rx="3" fill="#f2b705" stroke="#13202c" stroke-width="1.5"/><circle cx="31.5" cy="33" r="1.4" fill="#13202c"/></svg>
+      <span><b>Informática básica</b><small>EIPA · Ordenador y móvil</small></span>
+    </a>
+    <div class="ctrls">
+      <button class="chip" id="t-en" aria-pressed="true" title="Mostrar u ocultar los subtítulos en inglés">English subtitles</button>
+      <button class="chip" id="t-big" aria-pressed="false">Letra grande</button>
+      <a class="chip" href="#guia" style="text-decoration:none;color:inherit">Guía docente</a>
+      <span class="prog" title="Unidades terminadas"><span class="prog-bar"><i id="prog-i"></i></span><span id="prog-t">0/16</span></span>
+    </div>
+  </div>
+</header>
+<div class="wrap">
+  <aside id="aside">
+    <button class="nav-toggle" id="nav-toggle" aria-expanded="false">☰ Unidades del curso <span class="en-inline">Course units</span></button>
+    <nav class="nav-list" id="nav"></nav>
+  </aside>
+  <main id="main"></main>
+</div>
+<div id="print-area"></div>
+
+<script>
+/* ---------- Ilustraciones ---------- */
+const SVG = {
+pc:`<svg viewBox="0 0 560 330" role="img" aria-label="Ordenador de sobremesa con sus partes">
+<style>.l{fill:none;stroke:var(--ink);stroke-width:3}.f{fill:var(--surface-2);stroke:var(--ink);stroke-width:3}.s{fill:var(--accent);opacity:.25}.t{fill:var(--ink);font:700 15px var(--font-body)}.svg-en{fill:var(--muted);font:italic 13px var(--font-body)}.k{fill:var(--surface);stroke:var(--ink);stroke-width:1.5}.ld{stroke:var(--mark);stroke-width:3}</style>
+<rect class="f" x="40" y="30" width="250" height="160" rx="10"/><rect class="s" x="54" y="44" width="222" height="132" rx="4"/>
+<rect class="f" x="150" y="190" width="30" height="22"/><rect class="f" x="115" y="212" width="100" height="10" rx="5"/>
+<rect class="f" x="330" y="40" width="90" height="182" rx="8"/><circle class="l" cx="375" cy="70" r="10"/><rect class="l" x="350" y="100" width="50" height="8" rx="3"/><rect class="l" x="350" y="116" width="50" height="8" rx="3"/>
+<rect class="f" x="60" y="240" width="240" height="56" rx="8"/>
+<g>${Array.from({length:3},(_,r)=>Array.from({length:10},(_,c)=>`<rect class="k" x="${72+c*22}" y="${248+r*15}" width="18" height="11" rx="2"/>`).join('')).join('')}</g>
+<rect class="f" x="330" y="250" width="40" height="58" rx="20"/><line class="l" x1="350" y1="250" x2="350" y2="272"/>
+<line class="ld" x1="290" y1="60" x2="450" y2="20"/><text class="t" x="455" y="18">Pantalla</text><text class="svg-en" x="455" y="34">Screen</text>
+<line class="ld" x1="420" y1="130" x2="450" y2="110"/><text class="t" x="455" y="98">Torre (CPU)</text><text class="svg-en" x="455" y="114">Tower</text><text class="t" x="455" y="134" style="font-weight:400;font-size:13px">procesador, memoria,</text><text class="t" x="455" y="150" style="font-weight:400;font-size:13px">disco</text>
+<line class="ld" x1="300" y1="268" x2="450" y2="215"/><text class="t" x="455" y="210">Teclado</text><text class="svg-en" x="455" y="226">Keyboard</text>
+<line class="ld" x1="370" y1="285" x2="450" y2="285"/><text class="t" x="455" y="282">Ratón</text><text class="svg-en" x="455" y="298">Mouse</text>
+</svg>`,
+phone:`<svg viewBox="0 0 560 340" role="img" aria-label="Teléfono móvil con sus botones">
+<style>.l{fill:none;stroke:var(--ink);stroke-width:3}.f{fill:var(--surface-2);stroke:var(--ink);stroke-width:3}.s{fill:var(--accent);opacity:.25}.t{fill:var(--ink);font:700 15px var(--font-body)}.svg-en{fill:var(--muted);font:italic 13px var(--font-body)}.ld{stroke:var(--mark);stroke-width:3}.b{fill:var(--ink)}</style>
+<rect class="f" x="205" y="15" width="150" height="305" rx="26"/><rect class="s" x="217" y="40" width="126" height="255" rx="10"/>
+<circle class="b" cx="280" cy="28" r="4"/><rect class="b" x="355" y="95" width="6" height="40" rx="3"/><rect class="b" x="199" y="80" width="6" height="34" rx="3"/><rect class="b" x="199" y="122" width="6" height="34" rx="3"/>
+<rect class="b" x="262" y="312" width="36" height="6" rx="3"/>
+<g fill="var(--surface)" stroke="var(--ink)" stroke-width="1.5">${[0,1,2,3].map(r=>[0,1,2].map(c=>`<rect x="${232+c*36}" y="${60+r*44}" width="26" height="26" rx="7"/>`).join('')).join('')}</g>
+<line class="ld" x1="284" y1="28" x2="420" y2="22"/><text class="t" x="425" y="20">Cámara</text><text class="svg-en" x="425" y="36">Camera</text>
+<line class="ld" x1="361" y1="115" x2="420" y2="100"/><text class="t" x="425" y="96">Botón de encendido</text><text class="svg-en" x="425" y="112">Power button</text>
+<line class="ld" x1="343" y1="230" x2="420" y2="200"/><text class="t" x="425" y="196">Pantalla táctil</text><text class="svg-en" x="425" y="212">Touch screen</text>
+<line class="ld" x1="298" y1="315" x2="420" y2="300"/><text class="t" x="425" y="296">Puerto de carga</text><text class="svg-en" x="425" y="312">Charging port</text>
+<line class="ld" x1="199" y1="118" x2="140" y2="100"/><text class="t" x="20" y="96">Volumen + y –</text><text class="svg-en" x="20" y="112">Volume buttons</text>
+<line class="ld" x1="230" y1="72" x2="140" y2="190"/><text class="t" x="20" y="196">Aplicaciones</text><text class="svg-en" x="20" y="212">Apps</text>
+</svg>`,
+desktop:`<svg viewBox="0 0 560 360" role="img" aria-label="Escritorio de Windows con la barra de tareas">
+<style>.t{fill:var(--ink);font:700 15px var(--font-body)}.svg-en{fill:var(--muted);font:italic 13px var(--font-body)}.ld{stroke:var(--mark);stroke-width:3}.w{fill:#fff;font:12px var(--font-body)}</style>
+<rect x="20" y="10" width="520" height="270" rx="8" fill="#2f6fb3"/><path d="M20 210 Q200 120 540 200 L540 240 L20 240Z" fill="#3f85cc" opacity=".6"/>
+<rect x="40" y="28" width="38" height="38" rx="4" fill="#dfe8f1"/><text class="w" x="34" y="82">Papelera</text>
+<path d="M40 104 h16 l6 6 h20 v28 h-42z" fill="#f2c94c"/><text class="w" x="36" y="154">Documentos</text>
+<rect x="20" y="246" width="520" height="34" fill="#eef2f6"/>
+<g transform="translate(232 253)"><rect width="9" height="9" fill="#0a78d4"/><rect x="11" width="9" height="9" fill="#0a78d4"/><rect y="11" width="9" height="9" fill="#0a78d4"/><rect x="11" y="11" width="9" height="9" fill="#0a78d4"/></g>
+<rect x="262" y="253" width="20" height="20" rx="4" fill="#f2c94c"/><circle cx="302" cy="263" r="10" fill="#4285f4"/><rect x="320" y="253" width="20" height="20" rx="4" fill="#0a58a8"/>
+<text x="478" y="268" fill="#13202c" font-size="13" font-family="var(--font-body)">10:30</text><path d="M446 268 q8 -10 16 0 M450 268 q4 -5 8 0" stroke="#13202c" fill="none" stroke-width="2"/>
+<line class="ld" x1="242" y1="280" x2="150" y2="315"/><text class="t" x="40" y="322">Botón Inicio</text><text class="svg-en" x="40" y="338">Start button</text>
+<line class="ld" x1="300" y1="280" x2="300" y2="305"/><text class="t" x="240" y="322">Barra de tareas</text><text class="svg-en" x="240" y="338">Taskbar</text>
+<line class="ld" x1="490" y1="280" x2="470" y2="305"/><text class="t" x="410" y="322">Hora y wifi</text><text class="svg-en" x="410" y="338">Clock and wifi</text>
+<line class="ld" x1="80" y1="48" x2="160" y2="48"/><text class="t" x="166" y="44" style="fill:#fff">Iconos</text><text class="svg-en" x="166" y="60" style="fill:#dce8f5">Icons</text>
+</svg>`,
+window:`<svg viewBox="0 0 560 260" role="img" aria-label="Ventana con los botones minimizar, maximizar y cerrar">
+<style>.t{fill:var(--ink);font:700 15px var(--font-body)}.svg-en{fill:var(--muted);font:italic 13px var(--font-body)}.ld{stroke:var(--mark);stroke-width:3}</style>
+<rect x="40" y="70" width="480" height="170" rx="8" fill="#fff" stroke="#9aa9b8" stroke-width="2"/>
+<rect x="40" y="70" width="480" height="36" rx="8" fill="#e9eef4"/><rect x="40" y="96" width="480" height="10" fill="#e9eef4"/>
+<text x="56" y="94" font-size="14" fill="#13202c" font-family="var(--font-body)">Bloc de notas</text>
+<text x="392" y="95" font-size="18" fill="#13202c">—</text><rect x="436" y="80" width="14" height="14" fill="none" stroke="#13202c" stroke-width="2"/><text x="482" y="96" font-size="18" fill="#13202c">✕</text>
+<text x="60" y="140" font-size="14" fill="#13202c" font-family="Consolas,monospace">Lista de la compra: papas, gofio, plátanos</text>
+<line class="ld" x1="400" y1="78" x2="330" y2="40"/><text class="t" x="230" y="22">Minimizar</text><text class="svg-en" x="230" y="38">Minimize</text>
+<line class="ld" x1="443" y1="78" x2="430" y2="40"/><text class="t" x="390" y="22">Maximizar</text><text class="svg-en" x="390" y="38">Maximize</text>
+<line class="ld" x1="490" y1="78" x2="520" y2="44"/><text class="t" x="490" y="22" text-anchor="start">Cerrar</text><text class="svg-en" x="490" y="38">Close</text>
+<line class="ld" x1="120" y1="78" x2="110" y2="44"/><text class="t" x="40" y="22">Barra de título</text><text class="svg-en" x="40" y="38">Title bar</text>
+</svg>`,
+folder:`<svg viewBox="0 0 64 64" aria-hidden="true"><path d="M6 14h20l6 6h26v32H6z" fill="#f2c94c" stroke="#b58a12" stroke-width="2"/><path d="M6 24h52v28H6z" fill="#f7d774"/></svg>`,
+doc:`<svg viewBox="0 0 64 64" aria-hidden="true"><path d="M14 6h26l12 12v40H14z" fill="#fff" stroke="#5b6b7b" stroke-width="2"/><path d="M40 6v12h12" fill="none" stroke="#5b6b7b" stroke-width="2"/><g stroke="#0a58a8" stroke-width="3"><line x1="20" y1="28" x2="46" y2="28"/><line x1="20" y1="36" x2="46" y2="36"/><line x1="20" y1="44" x2="38" y2="44"/></g></svg>`,
+bin:`<svg viewBox="0 0 64 64" aria-hidden="true"><path d="M16 18h32l-3 40H19z" fill="#dfe8f1" stroke="#5b6b7b" stroke-width="2"/><rect x="12" y="12" width="40" height="6" rx="2" fill="#9aa9b8"/><g stroke="#5b6b7b" stroke-width="2"><line x1="26" y1="26" x2="27" y2="50"/><line x1="32" y1="26" x2="32" y2="50"/><line x1="38" y1="26" x2="37" y2="50"/></g></svg>`,
+start:`<svg viewBox="0 0 20 20" width="20" height="20" aria-hidden="true"><rect width="9" height="9" fill="#0a78d4"/><rect x="11" width="9" height="9" fill="#0a78d4"/><rect y="11" width="9" height="9" fill="#0a78d4"/><rect x="11" y="11" width="9" height="9" fill="#0a78d4"/></svg>`,
+note:`<svg viewBox="0 0 20 20" width="22" height="22" aria-hidden="true"><rect x="3" y="2" width="14" height="16" rx="2" fill="#4aa3df"/><g stroke="#fff" stroke-width="1.6"><line x1="6" y1="7" x2="14" y2="7"/><line x1="6" y1="10" x2="14" y2="10"/><line x1="6" y1="13" x2="11" y2="13"/></g></svg>`
+};
+
+/* ---------- Bloques ---------- */
+const B = {
+ A:["Lo primero","First steps"],
+ B:["El ordenador con Windows","The Windows computer"],
+ C:["El móvil: Android e iPhone","The mobile phone: Android and iPhone"],
+ D:["Seguridad y trámites","Safety and online services"]
+};
+const DEV = {pc:["Ordenador","Computer"], movil:["Móvil","Phone"], ambos:["Ordenador y móvil","Computer and phone"]};
+
+/* ---------- Unidades ----------
+   Formato: textos en pares [español, inglés]. En las preguntas, la primera opción es la correcta (se barajan al mostrarlas). */
+const U = [
+{ id:"u1", b:"A", dev:"ambos", t:["Hardware y software","Hardware and software"],
+  goal:["Saber qué partes tiene un ordenador o un móvil y qué son los programas.","Know the parts of a computer or phone, and what programs are."],
+  learn:[
+   {h:["¿Qué es la informática?","What is computing?"], p:["La informática es todo lo que tiene que ver con los ordenadores, los móviles y las tabletas. Sirven para escribir, hablar con la familia, buscar información, hacer trámites y mucho más.","Computing is everything to do with computers, phones and tablets. We use them to write, talk to our family, look for information, do official paperwork and much more."]},
+   {h:["Hardware: lo que se puede tocar","Hardware: what you can touch"], img:"pc", p:["El hardware son las partes físicas: la pantalla, el teclado, el ratón, la torre o el portátil, la impresora y los cables. En el móvil, el hardware es el aparato, su pantalla, la batería y la cámara.","Hardware is the physical parts: the screen, keyboard, mouse, tower or laptop, printer and cables. On a phone, the hardware is the device itself, its screen, battery and camera."]},
+   {h:["Dentro del ordenador","Inside the computer"], list:[
+     ["Procesador:","es el «cerebro». Hace los cálculos.","Processor:","the «brain». It does the calculations."],
+     ["Memoria RAM:","es la mesa de trabajo. Guarda lo que usa en este momento.","RAM memory:","the work table. It holds what you are using right now."],
+     ["Disco o almacenamiento:","es el armario. Aquí se guardan las fotos y los documentos.","Storage (disk):","the wardrobe. Your photos and documents are kept here."],
+     ["Batería:","da energía a los portátiles y a los móviles.","Battery:","gives power to laptops and phones."]]},
+   {h:["Software: lo que no se puede tocar","Software: what you cannot touch"], p:["El software son los programas: las instrucciones que le dicen al aparato qué hacer. El más importante es el <b>sistema operativo</b>: Windows en muchos ordenadores; Android o iOS en los móviles. Encima funcionan las <b>aplicaciones</b> (apps): WhatsApp, el navegador, Word, la cámara…","Software is the programs: the instructions that tell the device what to do. The most important one is the <b>operating system</b>: Windows on many computers; Android or iOS on phones. <b>Applications</b> (apps) run on top of it: WhatsApp, the web browser, Word, the camera…"]},
+   {h:["Entrada y salida","Input and output"], p:["Con el teclado, el ratón, el micrófono y la cámara damos información al aparato: es la <b>entrada</b>. Con la pantalla, los altavoces y la impresora el aparato nos devuelve información: es la <b>salida</b>.","With the keyboard, mouse, microphone and camera we give information to the device: this is <b>input</b>. With the screen, speakers and printer the device gives information back to us: this is <b>output</b>."]}
+  ],
+  words:[["Hardware","Las partes físicas del aparato.","Hardware","The physical parts of the device."],["Software","Los programas.","Software","The programs."],["Sistema operativo","El programa principal: Windows, Android, iOS.","Operating system","The main program: Windows, Android, iOS."],["Aplicación (app)","Un programa para una tarea: WhatsApp, la cámara…","App","A program for one task: WhatsApp, the camera…"],["Procesador","El «cerebro» que hace los cálculos.","Processor","The «brain» that does the calculations."],["Almacenamiento","Donde se guardan fotos y documentos.","Storage","Where photos and documents are kept."]],
+  sort:{ask:["¿Es hardware o software? Elija una respuesta.","Is it hardware or software? Choose one."], cats:[["Hardware","Hardware"],["Software","Software"]], items:[
+   ["Teclado","Keyboard",0],["WhatsApp","WhatsApp",1],["Pantalla","Screen",0],["Windows","Windows",1],["Ratón","Mouse",0],["Navegador Chrome","Chrome web browser",1],["Impresora","Printer",0],["Android","Android",1]]},
+  quiz:[
+   {q:["¿Cuál es el sistema operativo de muchos ordenadores?","What is the operating system of many computers?"], o:[["Windows","Windows"],["WhatsApp","WhatsApp"],["Google","Google"]], w:["Windows es el sistema operativo. WhatsApp es una aplicación y Google, un buscador.","Windows is the operating system. WhatsApp is an app and Google is a search engine."]},
+   {q:["¿Dónde se guardan las fotos y los documentos?","Where are photos and documents kept?"], o:[["En el almacenamiento (disco)","In the storage (disk)"],["En el ratón","In the mouse"],["En la pantalla","On the screen"]], w:["El almacenamiento es como un armario.","Storage is like a wardrobe."]},
+   {q:["La impresora es un aparato de…","The printer is a device for…"], o:[["Salida: nos da información en papel","Output: it gives us information on paper"],["Entrada","Input"],["Software","Software"]], w:["La impresora saca información del ordenador.","The printer takes information out of the computer."]},
+   {q:["Una «app» es…","An «app» is…"], o:[["Un programa","A program"],["Un cable","A cable"],["Una parte de la pantalla","A part of the screen"]], w:["App es la forma corta de «aplicación».","App is short for «application»."]}],
+  practice:[["Mire el ordenador del aula y señale la pantalla, el teclado, el ratón y la torre o el portátil.","Look at the classroom computer and point to the screen, keyboard, mouse and tower or laptop."],["Busque dónde se conectan los cables USB.","Find where the USB cables are plugged in."],["Mire su móvil: busque la cámara, el botón de encendido y el lugar donde se carga.","Look at your phone: find the camera, the power button and where it charges."],["Diga en voz alta tres aplicaciones que usa en el móvil.","Say out loud three apps you use on your phone."]]
+},
+{ id:"u2", b:"A", dev:"pc", t:["El ratón","The mouse"], sim:"mouse",
+  goal:["Mover el puntero y hacer clic, doble clic, clic derecho y arrastrar.","Move the pointer and click, double-click, right-click and drag."],
+  learn:[
+   {h:["Cómo se coge","How to hold it"], p:["Ponga la mano encima del ratón, sin apretar. El dedo índice va sobre el botón izquierdo y el dedo corazón sobre el botón derecho. Mueva el ratón por la mesa: la flecha de la pantalla, el <b>puntero</b>, se mueve igual.","Rest your hand on the mouse, without pressing. Your index finger goes on the left button and your middle finger on the right button. Move the mouse on the table: the arrow on the screen, the <b>pointer</b>, moves the same way."]},
+   {h:["Los movimientos del ratón","Mouse actions"], list:[
+     ["Clic:","pulsar una vez el botón izquierdo. Sirve para elegir algo o abrir un enlace.","Click:","press the left button once. To choose something or open a link."],
+     ["Doble clic:","pulsar dos veces rápido el botón izquierdo. Abre carpetas y programas del escritorio.","Double-click:","press the left button twice, quickly. It opens folders and programs on the desktop."],
+     ["Clic derecho:","pulsar una vez el botón derecho. Aparece un menú con más opciones.","Right-click:","press the right button once. A menu with more options appears."],
+     ["Arrastrar:","pulsar el botón izquierdo, mantenerlo apretado y mover el ratón. Se suelta al llegar.","Drag:","press the left button, hold it down and move the mouse. Let go when you arrive."],
+     ["Rueda:","sirve para subir y bajar por la página.","Wheel:","to scroll up and down the page."]]},
+   {h:["En el portátil","On a laptop"], p:["Muchos portátiles tienen un <b>panel táctil</b> (touchpad) en lugar de ratón. Mueva un dedo encima para mover el puntero y toque una vez para hacer clic.","Many laptops have a <b>touchpad</b> instead of a mouse. Move one finger on it to move the pointer and tap once to click."]}
+  ],
+  words:[["Puntero","La flecha que se mueve en la pantalla.","Pointer","The arrow that moves on the screen."],["Clic","Pulsar una vez el botón izquierdo.","Click","Press the left button once."],["Doble clic","Pulsar dos veces rápido.","Double-click","Press twice, quickly."],["Clic derecho","Pulsar el botón derecho para ver más opciones.","Right-click","Press the right button to see more options."],["Arrastrar","Mover algo con el botón apretado.","Drag","Move something while holding the button."],["Panel táctil","El «ratón» del portátil.","Touchpad","The laptop's «mouse»."]],
+  quiz:[
+   {q:["Para abrir una carpeta del escritorio hago…","To open a folder on the desktop I…"], o:[["Doble clic","Double-click"],["Clic derecho","Right-click"],["Nada","Nothing"]], w:["En el escritorio, las carpetas se abren con doble clic.","On the desktop, folders open with a double-click."]},
+   {q:["Para ver más opciones uso…","To see more options I use…"], o:[["El clic derecho","Right-click"],["La rueda","The wheel"],["La barra espaciadora","The space bar"]], w:["El clic derecho abre un menú de opciones.","Right-click opens a menu of options."]},
+   {q:["Para subir y bajar en una página uso…","To go up and down a page I use…"], o:[["La rueda del ratón","The mouse wheel"],["El doble clic","Double-click"],["El clic derecho","Right-click"]], w:["La rueda desplaza la página.","The wheel scrolls the page."]}],
+  practice:[["Encienda el ordenador y lleve el puntero a las cuatro esquinas de la pantalla.","Turn on the computer and move the pointer to the four corners of the screen."],["Haga doble clic en la Papelera del escritorio y ciérrela con la X.","Double-click the Recycle Bin on the desktop and close it with the X."],["Haga clic derecho en un espacio vacío del escritorio. Mire el menú y pulse Esc para cerrarlo.","Right-click on an empty space on the desktop. Look at the menu and press Esc to close it."],["Abra una página web y suba y baje con la rueda.","Open a web page and scroll up and down with the wheel."]]
+},
+{ id:"u3", b:"A", dev:"pc", t:["El teclado","The keyboard"], sim:"keyboard",
+  goal:["Escribir palabras con mayúsculas, tildes, la ñ, la @ y signos.","Type words with capital letters, accents, ñ, @ and punctuation."],
+  learn:[
+   {h:["Letras y números","Letters and numbers"], p:["El teclado tiene letras, números y teclas especiales. La <b>ñ</b> tiene su propia tecla, a la derecha de la L. La rayita que parpadea en la pantalla es el <b>cursor</b>: indica dónde se va a escribir.","The keyboard has letters, numbers and special keys. The <b>ñ</b> has its own key, to the right of L. The small blinking line on the screen is the <b>cursor</b>: it shows where you will type."]},
+   {h:["Teclas importantes","Important keys"], list:[
+     ["Barra espaciadora:","pone un espacio entre palabras.","Space bar:","puts a space between words."],
+     ["Enter (↵):","pasa a la línea siguiente o acepta.","Enter (↵):","goes to the next line or accepts."],
+     ["Retroceso (←):","borra la letra de la izquierda.","Backspace (←):","deletes the letter on the left."],
+     ["Supr:","borra la letra de la derecha.","Delete (Supr):","deletes the letter on the right."],
+     ["Mayús (⇧):","manténgala pulsada y pulse una letra para escribirla en mayúscula.","Shift (⇧):","hold it down and press a letter to type a capital."],
+     ["Bloq Mayús:","escribe todo en mayúsculas. Se pulsa otra vez para quitarlo.","Caps Lock:","types everything in capitals. Press it again to turn it off."],
+     ["Esc:","cancela o cierra un menú.","Esc:","cancels or closes a menu."]]},
+   {h:["Las tildes","Accents"], p:["Primero pulse la tecla de la tilde (´), a la derecha de la P. En la pantalla no pasa nada. Después pulse la vocal: á, é, í, ó, ú.","First press the accent key (´), to the right of P. Nothing appears on the screen. Then press the vowel: á, é, í, ó, ú."]},
+   {h:["La arroba y los signos","The @ sign and punctuation"], p:["La <b>@</b>: mantenga pulsada <b>AltGr</b> (a la derecha de la barra espaciadora) y pulse el <b>2</b>. Los signos <b>¿</b> y <b>¡</b> están en la segunda tecla a la derecha del 0 (¿ con Mayús). El <b>?</b> se escribe con Mayús y la tecla de al lado del 0.","<b>@</b>: hold down <b>AltGr</b> (to the right of the space bar) and press <b>2</b>. The signs <b>¿</b> and <b>¡</b> are on the second key to the right of 0 (¿ with Shift). <b>?</b> is Shift plus the key next to 0."]}
+  ],
+  words:[["Cursor","La rayita que parpadea donde se escribe.","Cursor","The blinking line where you type."],["Mayús","Tecla para escribir una mayúscula.","Shift","Key to type a capital letter."],["Retroceso","Tecla que borra hacia la izquierda.","Backspace","Key that deletes to the left."],["Enter","Tecla para pasar de línea o aceptar.","Enter","Key to go to a new line or accept."],["AltGr","Tecla para la @ (AltGr + 2).","AltGr","Key for @ (AltGr + 2)."],["Barra espaciadora","La tecla larga que pone espacios.","Space bar","The long key that adds spaces."]],
+  quiz:[
+   {q:["Para borrar la letra de la izquierda pulso…","To delete the letter on the left I press…"], o:[["Retroceso","Backspace"],["Enter","Enter"],["Esc","Esc"]], w:["Retroceso borra hacia atrás.","Backspace deletes backwards."]},
+   {q:["La @ se escribe con…","The @ sign is typed with…"], o:[["AltGr + 2","AltGr + 2"],["Mayús + 2","Shift + 2"],["Ctrl + A","Ctrl + A"]], w:["En el teclado español, la @ está en el 2 con AltGr.","On a Spanish keyboard, @ is on the 2 key with AltGr."]},
+   {q:["Para escribir una sola mayúscula…","To type one capital letter…"], o:[["Mantengo Mayús y pulso la letra","I hold Shift and press the letter"],["Pulso Enter dos veces","I press Enter twice"],["Pulso la barra espaciadora","I press the space bar"]], w:["Bloq Mayús es para escribir todo en mayúsculas.","Caps Lock is for typing everything in capitals."]}],
+  practice:[["Abra el Bloc de notas: pulse Inicio, escriba «bloc» y pulse Enter.","Open Notepad: press Start, type «bloc» and press Enter."],["Escriba su nombre y su municipio, con mayúscula al principio.","Type your name and your town, with a capital letter at the beginning."],["Escriba tres palabras con tilde, por ejemplo: café, autobús, teléfono.","Type three words with accents, for example: café, autobús, teléfono."],["Escriba una dirección de correo inventada con @.","Type a made-up email address with @."],["Borre una palabra con Retroceso y vuelva a escribirla.","Delete a word with Backspace and type it again."]]
+},
+{ id:"u4", b:"B", dev:"pc", t:["Encender, apagar y el escritorio","Turning on, shutting down and the desktop"],
+  goal:["Encender el ordenador, conocer el escritorio y apagarlo bien.","Turn on the computer, get to know the desktop and shut it down properly."],
+  learn:[
+   {h:["Encender e iniciar sesión","Turning on and signing in"], p:["Pulse el botón de encendido (⏻) de la torre o del portátil y espere: Windows tarda un poco. Aparece la pantalla de bloqueo. Haga clic o pulse una tecla y escriba su contraseña o PIN. En el aula, su docente le dirá cuál usar.","Press the power button (⏻) on the tower or laptop and wait: Windows takes a little while. The lock screen appears. Click or press a key and type your password or PIN. In class, your teacher will tell you which one to use."]},
+   {h:["El escritorio","The desktop"], img:"desktop", p:["Es la pantalla principal. Tiene <b>iconos</b>, dibujos pequeños que abren programas o carpetas. Abajo está la <b>barra de tareas</b>: en el centro, el botón <b>Inicio</b> (el logo de Windows) y los programas; a la derecha, la hora, el wifi y el volumen.","It is the main screen. It has <b>icons</b>, small pictures that open programs or folders. At the bottom is the <b>taskbar</b>: in the middle, the <b>Start</b> button (the Windows logo) and programs; on the right, the clock, wifi and volume."]},
+   {h:["El menú Inicio","The Start menu"], p:["Haga clic en Inicio y se abre un menú con los programas. Arriba hay un buscador: escriba el nombre del programa, por ejemplo «calculadora», y pulse Enter.","Click Start and a menu with the programs opens. At the top there is a search box: type the program's name, for example «calculadora», and press Enter."]},
+   {h:["Apagar bien","Shutting down properly"], list:[
+     ["Apagar:","Inicio → botón ⏻ → Apagar. No lo apague quitando el cable: se pueden perder cosas.","Shut down:","Start → ⏻ button → Shut down. Do not pull out the cable: you can lose things."],
+     ["Reiniciar:","se apaga y se enciende solo. Ayuda cuando algo va mal.","Restart:","it turns off and on by itself. It helps when something goes wrong."],
+     ["Suspender:","el ordenador descansa sin apagarse del todo.","Sleep:","the computer rests without turning off completely."]]}
+  ],
+  words:[["Iniciar sesión","Entrar con su usuario y contraseña.","Sign in","Enter with your user and password."],["Escritorio","La pantalla principal de Windows.","Desktop","The main Windows screen."],["Icono","Dibujo pequeño que abre algo.","Icon","A small picture that opens something."],["Barra de tareas","La franja de abajo con Inicio y la hora.","Taskbar","The strip at the bottom with Start and the clock."],["Menú Inicio","El menú con todos los programas.","Start menu","The menu with all the programs."],["Reiniciar","Apagar y encender de nuevo.","Restart","Turn off and on again."]],
+  quiz:[
+   {q:["¿Cómo se apaga bien el ordenador?","How do you shut down the computer properly?"], o:[["Inicio → ⏻ → Apagar","Start → ⏻ → Shut down"],["Quitando el cable","Pulling out the cable"],["Apagando la pantalla","Turning off the screen"]], w:["Así Windows cierra todo con cuidado.","This way Windows closes everything carefully."]},
+   {q:["¿Dónde se ve la hora?","Where can you see the time?"], o:[["A la derecha de la barra de tareas","On the right of the taskbar"],["En el menú del ratón","In the mouse menu"],["En el teclado","On the keyboard"]], w:["Abajo a la derecha están la hora, el wifi y el volumen.","Bottom right: clock, wifi and volume."]},
+   {q:["Un icono es…","An icon is…"], o:[["Un dibujo pequeño que abre algo","A small picture that opens something"],["Un cable","A cable"],["Una contraseña","A password"]], w:["Los iconos abren programas, carpetas o archivos.","Icons open programs, folders or files."]}],
+  practice:[["Encienda el ordenador e inicie sesión.","Turn on the computer and sign in."],["Abra el menú Inicio.","Open the Start menu."],["Escriba «calculadora» en el buscador y ábrala.","Type «calculadora» in the search box and open it."],["Mire la hora y el volumen en la barra de tareas.","Look at the clock and volume on the taskbar."],["Apague el ordenador correctamente.","Shut down the computer properly."]]
+},
+{ id:"u5", b:"B", dev:"pc", t:["Las ventanas","Windows (on screen)"], sim:"window",
+  goal:["Abrir, minimizar, maximizar, cambiar y cerrar ventanas.","Open, minimize, maximize, switch and close windows."],
+  learn:[
+   {h:["Cada programa, una ventana","Each program, one window"], p:["Cada programa se abre en un recuadro llamado <b>ventana</b>. Se pueden tener varias ventanas abiertas a la vez.","Each program opens in a box called a <b>window</b>. You can have several windows open at the same time."]},
+   {h:["Los tres botones","The three buttons"], img:"window", list:[
+     ["— Minimizar:","esconde la ventana en la barra de tareas. No la cierra.","— Minimize:","hides the window in the taskbar. It does not close it."],
+     ["□ Maximizar:","la ventana ocupa toda la pantalla. Si se pulsa otra vez, vuelve a su tamaño.","□ Maximize:","the window fills the screen. Press again to go back to its size."],
+     ["✕ Cerrar:","cierra el programa.","✕ Close:","closes the program."]]},
+   {h:["Mover y cambiar de ventana","Moving and switching windows"], list:[
+     ["Volver a una ventana:","haga clic en su icono de la barra de tareas.","Go back to a window:","click its icon on the taskbar."],
+     ["Mover:","arrastre la barra de título, la franja de arriba.","Move:","drag the title bar, the strip at the top."],
+     ["Cambiar el tamaño:","ponga el puntero en el borde; cuando sea una flecha doble, arrastre.","Resize:","put the pointer on the edge; when it becomes a double arrow, drag."],
+     ["Truco:","Alt + Tab pasa de una ventana a otra.","Tip:","Alt + Tab switches from one window to another."]]}
+  ],
+  words:[["Ventana","Recuadro donde funciona un programa.","Window","The box where a program runs."],["Minimizar","Esconder la ventana sin cerrarla.","Minimize","Hide the window without closing it."],["Maximizar","Poner la ventana en toda la pantalla.","Maximize","Make the window fill the screen."],["Cerrar","Terminar el programa.","Close","End the program."],["Barra de título","La franja de arriba de la ventana.","Title bar","The strip at the top of the window."],["Alt + Tab","Teclas para cambiar de ventana.","Alt + Tab","Keys to switch windows."]],
+  quiz:[
+   {q:["El botón — sirve para…","The — button is for…"], o:[["Esconder la ventana sin cerrarla","Hiding the window without closing it"],["Cerrar el programa","Closing the program"],["Borrar el archivo","Deleting the file"]], w:["La ventana sigue en la barra de tareas.","The window is still in the taskbar."]},
+   {q:["El botón ✕ sirve para…","The ✕ button is for…"], o:[["Cerrar","Closing"],["Agrandar","Making it bigger"],["Guardar","Saving"]], w:["✕ cierra el programa. Guarde antes su trabajo.","✕ closes the program. Save your work first."]},
+   {q:["Para mover una ventana arrastro…","To move a window I drag…"], o:[["La barra de título","The title bar"],["La hora","The clock"],["El botón Inicio","The Start button"]], w:["La barra de título es la franja de arriba.","The title bar is the strip at the top."]}],
+  practice:[["Abra la Calculadora y el Bloc de notas.","Open the Calculator and Notepad."],["Pase de una a otra con la barra de tareas y después con Alt + Tab.","Switch between them with the taskbar and then with Alt + Tab."],["Maximice el Bloc de notas y vuelva a dejarlo como estaba.","Maximize Notepad and put it back as it was."],["Minimice la Calculadora y recupérela.","Minimize the Calculator and bring it back."],["Cierre las dos ventanas.","Close both windows."]]
+},
+{ id:"u6", b:"B", dev:"pc", t:["Archivos y carpetas","Files and folders"],
+  goal:["Guardar, ordenar, copiar y recuperar archivos.","Save, organise, copy and recover files."],
+  learn:[
+   {h:["Archivo y carpeta","File and folder"], p:["Un <b>archivo</b> es cualquier cosa guardada: un documento, una foto, una canción. Una <b>carpeta</b> es como una caja para ordenar archivos. El final del nombre (.jpg, .pdf, .docx) se llama <b>extensión</b> y dice qué tipo de archivo es.","A <b>file</b> is anything saved: a document, a photo, a song. A <b>folder</b> is like a box to organise files. The end of the name (.jpg, .pdf, .docx) is called the <b>extension</b> and tells you the type of file."]},
+   {h:["El Explorador de archivos","File Explorer"], p:["Es el programa para ver sus carpetas: la carpeta amarilla de la barra de tareas, o las teclas <b>Windows + E</b>. Carpetas habituales: <b>Documentos</b>, <b>Imágenes</b>, <b>Descargas</b> (lo que se baja de internet) y <b>Escritorio</b>.","It is the program to see your folders: the yellow folder on the taskbar, or the keys <b>Windows + E</b>. Usual folders: <b>Documents</b>, <b>Pictures</b>, <b>Downloads</b> (what you get from the internet) and <b>Desktop</b>."]},
+   {h:["Crear, copiar y cambiar el nombre","Create, copy and rename"], list:[
+     ["Crear una carpeta:","clic derecho en un espacio vacío → Nuevo → Carpeta. Escriba el nombre y pulse Enter.","Create a folder:","right-click on an empty space → New → Folder. Type the name and press Enter."],
+     ["Copiar y pegar:","clic derecho en el archivo → Copiar. Vaya a otra carpeta → clic derecho → Pegar. Con teclas: Ctrl + C y Ctrl + V.","Copy and paste:","right-click the file → Copy. Go to another folder → right-click → Paste. With keys: Ctrl + C and Ctrl + V."],
+     ["Cambiar el nombre:","clic derecho → Cambiar nombre.","Rename:","right-click → Rename."]]},
+   {h:["El pendrive y la Papelera","USB stick and Recycle Bin"], p:["El <b>pendrive</b> (memoria USB) se conecta en un puerto USB y aparece en el Explorador. Cierre los archivos antes de quitarlo. Lo que borra va a la <b>Papelera</b>: desde ahí se puede recuperar (clic derecho → Restaurar) mientras no se vacíe.","A <b>USB stick</b> plugs into a USB port and appears in File Explorer. Close the files before removing it. What you delete goes to the <b>Recycle Bin</b>: you can recover it from there (right-click → Restore) while it is not emptied."]}
+  ],
+  words:[["Archivo","Cualquier cosa guardada: foto, documento…","File","Anything saved: photo, document…"],["Carpeta","Caja para ordenar archivos.","Folder","A box to organise files."],["Explorador de archivos","Programa para ver las carpetas.","File Explorer","Program to see folders."],["Descargas","Carpeta con lo que baja de internet.","Downloads","Folder with what you get from the internet."],["Pendrive","Memoria USB que se lleva en el bolsillo.","USB stick","A memory you carry in your pocket."],["Papelera","Lugar donde va lo que se borra.","Recycle Bin","Where deleted things go."]],
+  sort:{ask:["¿En qué carpeta lo guardaría?","Which folder would you save it in?"], cats:[["Documentos","Documents"],["Imágenes","Pictures"]], items:[
+   ["Carta para el ayuntamiento.docx","Letter to the town hall.docx",0],["Foto_cumpleaños.jpg","Birthday_photo.jpg",1],["Currículum.pdf","CV.pdf",0],["Playa_Las_Canteras.png","Las_Canteras_beach.png",1],["Lista de la compra.txt","Shopping list.txt",0],["Selfie_con_mi_nieta.jpg","Selfie_with_my_granddaughter.jpg",1]]},
+  quiz:[
+   {q:["Lo que bajo de internet suele ir a…","What I download from the internet usually goes to…"], o:[["Descargas","Downloads"],["La Papelera","The Recycle Bin"],["La impresora","The printer"]], w:["Busque en Descargas cuando no encuentre un archivo bajado.","Look in Downloads when you cannot find a downloaded file."]},
+   {q:["Para pegar uso…","To paste I use…"], o:[["Ctrl + V","Ctrl + V"],["Ctrl + Z","Ctrl + Z"],["Alt + Tab","Alt + Tab"]], w:["Ctrl + C copia y Ctrl + V pega.","Ctrl + C copies and Ctrl + V pastes."]},
+   {q:["Si borro un archivo sin querer…","If I delete a file by mistake…"], o:[["Lo busco en la Papelera y lo restauro","I find it in the Recycle Bin and restore it"],["Está perdido para siempre","It is lost forever"],["Apago el ordenador","I turn off the computer"]], w:["Se puede recuperar mientras no se vacíe la Papelera.","You can recover it while the bin is not emptied."]}],
+  practice:[["Abra el Explorador con Windows + E.","Open File Explorer with Windows + E."],["Entre en Documentos y cree una carpeta con su nombre.","Go into Documents and create a folder with your name."],["Copie una foto de Imágenes en su carpeta.","Copy a photo from Pictures into your folder."],["Cambie el nombre de la foto.","Rename the photo."],["Bórrela y recupérela desde la Papelera.","Delete it and recover it from the Recycle Bin."]]
+},
+{ id:"u7", b:"B", dev:"pc", t:["Escribir un documento","Writing a document"],
+  goal:["Escribir, corregir, dar formato, guardar e imprimir un texto.","Write, correct, format, save and print a text."],
+  learn:[
+   {h:["Programas para escribir","Programs for writing"], p:["Se puede usar <b>Word</b> (de Microsoft), <b>Google Docs</b> (en internet, gratis con una cuenta de Google) o <b>LibreOffice Writer</b> (gratis). Todos funcionan casi igual.","You can use <b>Word</b> (by Microsoft), <b>Google Docs</b> (online, free with a Google account) or <b>LibreOffice Writer</b> (free). They all work almost the same way."]},
+   {h:["Escribir y corregir","Writing and correcting"], p:["Escriba normalmente. Para pasar a otra línea pulse Enter. Si una palabra sale subrayada en rojo, puede estar mal escrita: haga clic derecho sobre ella para ver sugerencias. Si se equivoca, <b>Ctrl + Z</b> deshace lo último.","Type normally. To go to a new line press Enter. If a word is underlined in red, it may be misspelled: right-click it to see suggestions. If you make a mistake, <b>Ctrl + Z</b> undoes the last thing."]},
+   {h:["Seleccionar y dar formato","Selecting and formatting"], p:["Para <b>seleccionar</b>, haga clic delante de la primera letra y arrastre hasta el final: el texto cambia de color. Un doble clic selecciona una palabra. Con el texto seleccionado: <b>N</b> = negrita, <i>K</i> = cursiva, <u>S</u> = subrayado. También puede cambiar el tamaño (el número) y el color.","To <b>select</b>, click before the first letter and drag to the end: the text changes colour. A double-click selects one word. With the text selected: <b>N</b> = bold, <i>K</i> = italics, <u>S</u> = underline (in English versions: B, I, U). You can also change the size (the number) and the colour."]},
+   {h:["Guardar e imprimir","Saving and printing"], list:[
+     ["Guardar:","Archivo → Guardar como → elija la carpeta → escriba el nombre → Guardar. En Word en español: Ctrl + G. Google Docs guarda solo.","Save:","File → Save as → choose the folder → type the name → Save. In Spanish Word: Ctrl + G (English: Ctrl + S). Google Docs saves by itself."],
+     ["Imprimir:","Archivo → Imprimir (Ctrl + P). Elija la impresora y el número de copias.","Print:","File → Print (Ctrl + P). Choose the printer and the number of copies."]]}
+  ],
+  words:[["Seleccionar","Marcar un texto para cambiarlo.","Select","Mark a text to change it."],["Negrita","Letra más gruesa.","Bold","Thicker letters."],["Formato","El aspecto del texto: tamaño, color…","Format","How the text looks: size, colour…"],["Guardar como","Guardar con un nombre y una carpeta.","Save as","Save with a name and a folder."],["Deshacer","Volver atrás (Ctrl + Z).","Undo","Go back (Ctrl + Z)."],["Imprimir","Pasar el documento a papel.","Print","Put the document on paper."]],
+  quiz:[
+   {q:["Para deshacer el último cambio pulso…","To undo the last change I press…"], o:[["Ctrl + Z","Ctrl + Z"],["Ctrl + P","Ctrl + P"],["Enter","Enter"]], w:["Ctrl + P es imprimir.","Ctrl + P is print."]},
+   {q:["Una palabra subrayada en rojo…","A word underlined in red…"], o:[["Puede estar mal escrita","May be misspelled"],["Ya está guardada","Is already saved"],["Es un enlace","Is a link"]], w:["Haga clic derecho para ver sugerencias.","Right-click to see suggestions."]},
+   {q:["Para poner un título en negrita, primero…","To make a title bold, first…"], o:[["Lo selecciono","I select it"],["Lo borro","I delete it"],["Apago el ordenador","I turn off the computer"]], w:["El formato se aplica a lo seleccionado.","Formatting applies to what is selected."]}],
+  practice:[["Abra Word o Google Docs.","Open Word or Google Docs."],["Escriba una nota: «Hoy no puedo ir a clase porque tengo cita médica.» y su nombre.","Type a note: «Hoy no puedo ir a clase porque tengo cita médica.» and your name."],["Escriba un título y póngalo en negrita y más grande.","Write a title and make it bold and bigger."],["Corrija las palabras subrayadas en rojo.","Correct the words underlined in red."],["Guarde el documento en su carpeta con el nombre «Nota».","Save the document in your folder with the name «Nota»."]]
+},
+{ id:"u8", b:"B", dev:"ambos", t:["Internet y el navegador","The internet and the web browser"],
+  goal:["Buscar información, entrar en páginas web y usar pestañas y favoritos.","Search for information, visit web pages and use tabs and bookmarks."],
+  learn:[
+   {h:["¿Qué es internet?","What is the internet?"], p:["Es una red que une ordenadores y móviles de todo el mundo. Se conecta por wifi o por cable; el móvil también puede usar los datos de su tarifa.","It is a network that connects computers and phones all over the world. You connect by wifi or cable; a phone can also use the mobile data in its plan."]},
+   {h:["El navegador","The web browser"], p:["Es el programa para ver páginas web: <b>Google Chrome</b>, <b>Microsoft Edge</b>, <b>Firefox</b> o <b>Safari</b> (en Apple). Arriba tiene la <b>barra de direcciones</b>.","It is the program to see web pages: <b>Google Chrome</b>, <b>Microsoft Edge</b>, <b>Firefox</b> or <b>Safari</b> (on Apple). At the top there is the <b>address bar</b>."]},
+   {h:["Dirección o búsqueda","Address or search"], p:["En la barra de direcciones puede escribir una <b>dirección</b> exacta, como www.aemet.es, o unas <b>palabras para buscar</b>, como «farmacia de guardia Telde». Después pulse Enter.","In the address bar you can type an exact <b>address</b>, like www.aemet.es, or some <b>search words</b>, like «farmacia de guardia Telde». Then press Enter."]},
+   {h:["Los resultados de Google","Google results"], p:["Google muestra una lista. Los primeros resultados a veces son anuncios: llevan la palabra «Patrocinado». Haga clic en el título azul para entrar. Para volver, pulse la flecha ← de arriba a la izquierda.","Google shows a list. The first results are sometimes adverts: they say «Patrocinado» (Sponsored). Click the blue title to go in. To go back, press the ← arrow at the top left."]},
+   {h:["Pestañas, favoritos y webs oficiales","Tabs, bookmarks and official websites"], list:[
+     ["Pestañas:","el + abre una pestaña nueva; la X de la pestaña la cierra.","Tabs:","+ opens a new tab; the tab's X closes it."],
+     ["Favoritos:","la estrella ☆ guarda la página para encontrarla después.","Bookmarks:","the star ☆ saves the page so you can find it later."],
+     ["Webs oficiales:","las del Estado suelen terminar en .gob.es y las del Gobierno de Canarias están en gobiernodecanarias.org.","Official websites:","Spanish government sites usually end in .gob.es and the Canary Islands Government is at gobiernodecanarias.org."]]}
+  ],
+  words:[["Internet","Red que une aparatos de todo el mundo.","Internet","A network that connects devices worldwide."],["Wifi","Conexión a internet sin cables.","Wifi","Wireless internet connection."],["Navegador","Programa para ver páginas web.","Web browser","Program to see web pages."],["Dirección web","El nombre exacto de una página: www…","Web address","The exact name of a page: www…"],["Buscador","Web para buscar, como Google.","Search engine","Website to search, like Google."],["Pestaña","Cada página abierta en el navegador.","Tab","Each page open in the browser."]],
+  sort:{ask:["¿Es una dirección web o una búsqueda?","Is it a web address or a search?"], cats:[["Dirección web","Web address"],["Búsqueda","Search"]], items:[
+   ["www.aemet.es","www.aemet.es",0],["tiempo mañana en Agüimes","weather tomorrow in Agüimes",1],["www.gobiernodecanarias.org","www.gobiernodecanarias.org",0],["receta de potaje de berros","watercress stew recipe",1],["www.dgt.es","www.dgt.es",0],["horario del centro de salud","health centre opening hours",1]]},
+  quiz:[
+   {q:["Chrome y Edge son…","Chrome and Edge are…"], o:[["Navegadores","Web browsers"],["Sistemas operativos","Operating systems"],["Correos","Email services"]], w:["Los navegadores sirven para ver páginas web.","Browsers are for viewing web pages."]},
+   {q:["Un resultado con la palabra «Patrocinado» es…","A result with the word «Patrocinado» is…"], o:[["Un anuncio","An advert"],["La página oficial","The official page"],["Gratis","Free"]], w:["Puede no ser la página oficial.","It may not be the official page."]},
+   {q:["Para volver a la página anterior…","To go back to the previous page…"], o:[["Pulso la flecha ← de arriba","I press the ← arrow at the top"],["Cierro el navegador","I close the browser"],["Apago el ordenador","I turn off the computer"]], w:["En el móvil también sirve el gesto o botón «atrás».","On a phone the «back» gesture or button also works."]}],
+  practice:[["Abra el navegador.","Open the web browser."],["Busque «el tiempo en» y el nombre de su municipio.","Search «el tiempo en» and the name of your town."],["Escriba la dirección www.aemet.es y entre.","Type the address www.aemet.es and go in."],["Abra una pestaña nueva y busque una receta.","Open a new tab and search for a recipe."],["Guarde una página en favoritos con la estrella.","Save a page to bookmarks with the star."]]
+},
+{ id:"u9", b:"B", dev:"ambos", t:["El correo electrónico","Email"],
+  goal:["Leer, escribir y responder correos, y enviar un archivo adjunto.","Read, write and reply to emails, and send an attachment."],
+  learn:[
+   {h:["¿Qué es?","What is it?"], p:["Es como una carta, pero llega al momento. Una dirección de correo tiene esta forma: <b>nombre@proveedor.com</b>, por ejemplo carmen.santana@gmail.com. Siempre lleva <b>@</b> y no tiene espacios.","It is like a letter, but it arrives instantly. An email address looks like this: <b>name@provider.com</b>, for example carmen.santana@gmail.com. It always has <b>@</b> and no spaces."]},
+   {h:["Dónde se usa","Where you use it"], p:["Los más conocidos son <b>Gmail</b> (de Google), <b>Outlook</b> (de Microsoft) e <b>iCloud</b> (de Apple). Se abren en el navegador o en la app del móvil. Si tiene un móvil Android, ya tiene una cuenta de Gmail.","The best known are <b>Gmail</b> (Google), <b>Outlook</b> (Microsoft) and <b>iCloud</b> (Apple). You open them in the browser or in the phone app. If you have an Android phone, you already have a Gmail account."]},
+   {h:["Leer y escribir","Reading and writing"], list:[
+     ["Bandeja de entrada:","guarda los correos que recibe. Los nuevos salen en negrita.","Inbox:","keeps the emails you receive. New ones are in bold."],
+     ["Redactar:","pulse Redactar o Nuevo. En «Para» escriba la dirección; en «Asunto», de qué trata; abajo, el mensaje. Pulse Enviar.","Compose:","press Compose or New. In «To» type the address; in «Subject», what it is about; below, the message. Press Send."],
+     ["Adjuntar:","el clip 📎 sirve para enviar una foto o un documento.","Attach:","the paper clip 📎 is for sending a photo or document."],
+     ["Responder y reenviar:","Responder contesta a quien le escribió. Reenviar manda el correo a otra persona.","Reply and forward:","Reply answers the person who wrote to you. Forward sends the email to someone else."]]},
+   {h:["Correo no deseado","Spam"], p:["Los correos publicitarios o peligrosos suelen ir a la carpeta <b>Spam</b>. No abra archivos adjuntos de personas que no conoce.","Advertising or dangerous emails usually go to the <b>Spam</b> folder. Do not open attachments from people you do not know."]}
+  ],
+  words:[["Dirección de correo","nombre@proveedor.com","Email address","name@provider.com"],["Bandeja de entrada","Donde llegan los correos.","Inbox","Where emails arrive."],["Asunto","De qué trata el correo, en pocas palabras.","Subject","What the email is about, in a few words."],["Adjuntar","Enviar un archivo con el correo.","Attach","Send a file with the email."],["Responder","Contestar a quien le escribió.","Reply","Answer the person who wrote to you."],["Spam","Correo no deseado o peligroso.","Spam","Unwanted or dangerous email."]],
+  sort:{ask:["¿La dirección de correo está bien escrita?","Is the email address written correctly?"], cats:[["Bien","Correct"],["Mal","Wrong"]], items:[
+   ["pedro.ruiz@gmail.com","pedro.ruiz@gmail.com",0,"Tiene @ y no tiene espacios.","It has @ and no spaces."],["pedro ruiz@gmail.com","pedro ruiz@gmail.com",1,"Tiene un espacio.","It has a space."],["anagmail.com","anagmail.com",1,"Le falta la @.","The @ is missing."],["info@ayuntamiento.es","info@ayuntamiento.es",0,"Está bien escrita.","It is correct."],["luis@@hotmail.com","luis@@hotmail.com",1,"Tiene dos @.","It has two @."],["maria_23@outlook.es","maria_23@outlook.es",0,"Está bien escrita.","It is correct."]]},
+  quiz:[
+   {q:["El asunto de un correo es…","The subject of an email is…"], o:[["De qué trata el correo","What the email is about"],["La dirección","The address"],["La firma","The signature"]], w:["Escriba un asunto corto y claro.","Write a short, clear subject."]},
+   {q:["El clip 📎 sirve para…","The paper clip 📎 is for…"], o:[["Adjuntar un archivo","Attaching a file"],["Borrar el correo","Deleting the email"],["Imprimir","Printing"]], w:["Con el clip se envían fotos y documentos.","With the clip you send photos and documents."]},
+   {q:["Me llega un correo de un desconocido con un archivo raro…","I get an email from a stranger with a strange file…"], o:[["No lo abro","I do not open it"],["Lo abro enseguida","I open it straight away"],["Lo reenvío a todos","I forward it to everyone"]], w:["Puede tener un virus o ser un timo.","It may contain a virus or be a scam."]}],
+  practice:[["Entre en su correo (Gmail u Outlook).","Open your email (Gmail or Outlook)."],["Busque la Bandeja de entrada y abra un correo.","Find the Inbox and open an email."],["Escriba un correo a su docente con el asunto «Prueba».","Write an email to your teacher with the subject «Prueba»."],["Adjunte una foto o un documento.","Attach a photo or a document."],["Envíelo y compruebe que está en «Enviados».","Send it and check that it is in «Sent»."]]
+},
+{ id:"u10", b:"C", dev:"movil", t:["Conocer el móvil","Getting to know your phone"], sim:"touch",
+  goal:["Conocer las partes del móvil, encenderlo, desbloquearlo y usar los gestos.","Know the parts of the phone, turn it on, unlock it and use gestures."],
+  learn:[
+   {h:["Android e iPhone","Android and iPhone"], p:["Casi todos los móviles usan uno de estos dos sistemas: <b>Android</b> (Samsung, Xiaomi, Motorola, Oppo…) o <b>iOS</b>, el sistema del <b>iPhone</b> de Apple. Se parecen mucho; cambian algunos botones y nombres. Arriba puede elegir el suyo.","Almost all phones use one of these two systems: <b>Android</b> (Samsung, Xiaomi, Motorola, Oppo…) or <b>iOS</b>, the system of Apple's <b>iPhone</b>. They are very similar; some buttons and names change. You can choose yours above."]},
+   {h:["Las partes del móvil","The parts of the phone"], img:"phone", p:["Pantalla táctil, botón de encendido en un lado, botones de volumen, cámaras delante y detrás, altavoz, micrófono y, abajo, el puerto para cargar. El icono de la batería, arriba, indica cuánta carga queda.","Touch screen, power button on one side, volume buttons, front and back cameras, speaker, microphone and, at the bottom, the charging port. The battery icon at the top shows how much charge is left."]},
+   {h:["Encender y apagar","Turning on and off"],
+     android:["<b>Encender:</b> mantenga pulsado el botón de encendido unos segundos. <b>Apagar:</b> mantenga pulsado el botón de encendido (en algunos Samsung, encendido y bajar volumen a la vez) y toque «Apagar».","<b>Turn on:</b> hold the power button for a few seconds. <b>Turn off:</b> hold the power button (on some Samsungs, power and volume down together) and tap «Power off»."],
+     iphone:["<b>Encender:</b> mantenga pulsado el botón lateral hasta ver la manzana. <b>Apagar:</b> mantenga pulsados el botón lateral y un botón de volumen, y deslice «Deslizar para apagar».","<b>Turn on:</b> hold the side button until you see the apple. <b>Turn off:</b> hold the side button and one volume button, then drag «slide to power off»."]},
+   {h:["Desbloquear","Unlocking"],
+     android:["Deslice el dedo hacia arriba y ponga su PIN, su patrón o su huella.","Swipe up and enter your PIN, pattern or fingerprint."],
+     iphone:["Mire la pantalla (Face ID) o ponga el dedo en el botón (Touch ID) y deslice hacia arriba. Si no funciona, escriba su código.","Look at the screen (Face ID) or put your finger on the button (Touch ID) and swipe up. If it does not work, type your passcode."]},
+   {h:["Los gestos","Gestures"], list:[
+     ["Tocar:","un toque suave para abrir.","Tap:","a light touch to open."],
+     ["Mantener pulsado:","dejar el dedo un segundo. Salen más opciones.","Press and hold:","keep your finger down for a second. More options appear."],
+     ["Deslizar:","mover el dedo por la pantalla para pasar páginas o fotos.","Swipe:","move your finger across the screen to change pages or photos."],
+     ["Pellizcar:","separar dos dedos para agrandar (zoom) y juntarlos para hacerlo pequeño.","Pinch:","spread two fingers to zoom in and bring them together to zoom out."]]},
+   {h:["Volver atrás e ir al inicio","Going back and going home"],
+     android:["Abajo hay tres botones: ◁ atrás, ○ inicio y ▢ aplicaciones abiertas. Si no se ven, se usan gestos: deslizar desde abajo para ir al inicio y desde el borde lateral para volver atrás.","At the bottom there are three buttons: ◁ back, ○ home and ▢ open apps. If you cannot see them, use gestures: swipe up from the bottom to go home and from the side edge to go back."],
+     iphone:["No hay botón atrás. Deslice desde abajo hacia arriba para ir al inicio. Para volver atrás, deslice desde el borde izquierdo o toque «<» arriba a la izquierda. Los iPhone antiguos tienen un botón redondo abajo.","There is no back button. Swipe up from the bottom to go home. To go back, swipe from the left edge or tap «<» at the top left. Older iPhones have a round button at the bottom."]}
+  ],
+  words:[["Pantalla táctil","Pantalla que funciona con los dedos.","Touch screen","A screen that works with your fingers."],["Desbloquear","Abrir el móvil con PIN, huella o cara.","Unlock","Open the phone with PIN, fingerprint or face."],["Pantalla de inicio","La pantalla con los iconos de las apps.","Home screen","The screen with the app icons."],["Tocar","Un toque suave con el dedo.","Tap","A light touch with your finger."],["Mantener pulsado","Dejar el dedo un segundo.","Press and hold","Keep your finger down for a second."],["Deslizar","Mover el dedo por la pantalla.","Swipe","Move your finger across the screen."]],
+  quiz:[
+   {q:["Para ver más opciones de un icono…","To see more options for an icon…"], o:[["Lo mantengo pulsado","I press and hold it"],["Pulso el volumen","I press the volume button"],["Apago el móvil","I turn off the phone"]], w:["Al mantener pulsado aparecen más opciones.","Pressing and holding shows more options."]},
+   {q:["Para agrandar una foto…","To make a photo bigger…"], o:[["Separo dos dedos sobre la pantalla","I spread two fingers on the screen"],["Pulso el botón de encendido","I press the power button"],["Deslizo hacia abajo","I swipe down"]], w:["Es el gesto de pellizcar al revés.","It is the pinch gesture in reverse."]},
+   {q:["El iPhone usa el sistema…","The iPhone uses the system…"], o:[["iOS","iOS"],["Android","Android"],["Windows","Windows"]], w:["Android lo usan Samsung, Xiaomi, Motorola y otras marcas.","Android is used by Samsung, Xiaomi, Motorola and other brands."]}],
+  practice:[["Apague el móvil y vuelva a encenderlo.","Turn off your phone and turn it on again."],["Desbloquéelo.","Unlock it."],["Vaya a la pantalla de inicio.","Go to the home screen."],["Abra Galería o Fotos y agrande una foto con dos dedos.","Open Gallery or Photos and zoom in on a photo with two fingers."],["Vuelva atrás y después al inicio.","Go back and then to the home screen."]]
+},
+{ id:"u11", b:"C", dev:"movil", t:["Ajustes básicos del móvil","Basic phone settings"],
+  goal:["Conectarse a un wifi y cambiar la letra, el sonido y la batería.","Connect to wifi and change text size, sound and battery settings."],
+  learn:[
+   {h:["La app Ajustes","The Settings app"],
+     android:["Es el icono de una rueda dentada ⚙. Se llama «Ajustes» o «Configuración». Los menús pueden cambiar un poco según la marca.","It is the cogwheel icon ⚙. It is called «Ajustes» or «Configuración» (Settings). Menus can change a little depending on the brand."],
+     iphone:["Es el icono gris de una rueda dentada ⚙ llamado «Ajustes».","It is the grey cogwheel icon ⚙ called «Ajustes» (Settings)."]},
+   {h:["El panel rápido","Quick settings"],
+     android:["Deslice el dedo desde arriba hacia abajo. Aparecen botones para el wifi, los datos, la linterna, el sonido y el brillo.","Swipe down from the top. Buttons appear for wifi, mobile data, torch, sound and brightness."],
+     iphone:["Deslice desde la esquina de arriba a la derecha hacia abajo. Es el <b>Centro de control</b>: wifi, linterna, volumen y brillo.","Swipe down from the top right corner. This is <b>Control Centre</b>: wifi, torch, volume and brightness."]},
+   {h:["Conectarse a un wifi","Connecting to wifi"],
+     android:["Ajustes → Conexiones (o Redes e internet) → Wi-Fi → elija la red → escriba la contraseña → Conectar.","Settings → Connections (or Network and internet) → Wi-Fi → choose the network → type the password → Connect."],
+     iphone:["Ajustes → Wi-Fi → elija la red → escriba la contraseña → Conectarse.","Settings → Wi-Fi → choose the network → type the password → Join."]},
+   {h:["Letra más grande","Bigger text"],
+     android:["Ajustes → Pantalla → Tamaño de fuente (el nombre puede cambiar según la marca). Mueva la barra.","Settings → Display → Font size (the name can change depending on the brand). Move the slider."],
+     iphone:["Ajustes → Pantalla y brillo → Tamaño del texto. Mueva la barra.","Settings → Display & Brightness → Text Size. Move the slider."]},
+   {h:["Sonido, batería y conexiones","Sound, battery and connections"], list:[
+     ["Volumen:","con los botones del lado. En el panel rápido se elige sonido, vibración o silencio.","Volume:","with the side buttons. In quick settings you choose sound, vibrate or silent."],
+     ["Batería:","Ajustes → Batería. Ahí se ve cuánta queda y se activa el ahorro de energía (en iPhone, «Modo de bajo consumo»).","Battery:","Settings → Battery. You can see how much is left and turn on power saving (on iPhone, «Low Power Mode»)."],
+     ["Datos móviles:","si no hay wifi, el móvil usa los datos de su tarifa. Si se acaban, internet va lento.","Mobile data:","without wifi, the phone uses the data in your plan. When it runs out, the internet is slow."],
+     ["Modo avión ✈:","corta las llamadas, los datos y el wifi. Sirve en el avión o para ahorrar batería.","Airplane mode ✈:","turns off calls, data and wifi. Useful on a plane or to save battery."]]}
+  ],
+  words:[["Ajustes","La app para cambiar cómo funciona el móvil.","Settings","The app to change how the phone works."],["Wifi","Internet sin cables de casa o del centro.","Wifi","Wireless internet at home or at school."],["Datos móviles","Internet de su tarifa del móvil.","Mobile data","Internet from your phone plan."],["Panel rápido","Botones que salen al deslizar desde arriba.","Quick settings","Buttons that appear when you swipe down."],["Brillo","La luz de la pantalla.","Brightness","How bright the screen is."],["Modo avión","Corta todas las conexiones.","Airplane mode","Turns off all connections."]],
+  quiz:[
+   {q:["Para conectarme al wifi del centro voy a…","To connect to the school wifi I go to…"], o:[["Ajustes → Wi-Fi","Settings → Wi-Fi"],["La cámara","The camera"],["WhatsApp","WhatsApp"]], w:["Después elija la red y escriba la contraseña.","Then choose the network and type the password."]},
+   {q:["El modo avión…","Airplane mode…"], o:[["Corta las conexiones del móvil","Turns off the phone's connections"],["Carga más rápido el móvil","Charges the phone faster"],["Sube el volumen","Turns up the volume"]], w:["Con el modo avión no recibe llamadas.","In airplane mode you do not receive calls."]},
+   {q:["Si veo mal la letra del móvil…","If I cannot read the phone text well…"], o:[["Agrando el tamaño de letra en Ajustes","I make the text bigger in Settings"],["Compro otro móvil","I buy another phone"],["Apago la pantalla","I turn off the screen"]], w:["Está en Ajustes → Pantalla.","It is in Settings → Display."]}],
+  practice:[["Abra Ajustes.","Open Settings."],["Conéctese al wifi del aula. Su docente le dará la contraseña.","Connect to the classroom wifi. Your teacher will give you the password."],["Ponga la letra más grande y después déjela como le guste.","Make the text bigger and then leave it as you like it."],["Abra el panel rápido y encienda y apague la linterna.","Open quick settings and turn the torch on and off."],["Mire cuánta batería le queda.","Check how much battery you have left."]]
+},
+{ id:"u12", b:"C", dev:"movil", t:["Llamadas, contactos y WhatsApp","Calls, contacts and WhatsApp"],
+  goal:["Llamar, guardar contactos y usar WhatsApp: mensajes, audios, fotos y videollamadas.","Make calls, save contacts and use WhatsApp: messages, voice notes, photos and video calls."],
+  learn:[
+   {h:["Llamar por teléfono","Making a phone call"],
+     android:["Abra la app <b>Teléfono</b> (el auricular). Toque el teclado, marque el número y toque el botón verde.","Open the <b>Phone</b> app (the handset). Tap the keypad, dial the number and tap the green button."],
+     iphone:["Abra la app <b>Teléfono</b> (el auricular verde) → Teclado → marque el número → botón verde.","Open the <b>Phone</b> app (the green handset) → Keypad → dial the number → green button."]},
+   {h:["Guardar un contacto","Saving a contact"],
+     android:["App <b>Contactos</b> (o Teléfono → Contactos) → botón + → escriba el nombre y el número → Guardar.","<b>Contacts</b> app (or Phone → Contacts) → + button → type the name and number → Save."],
+     iphone:["Teléfono → Contactos → + (arriba a la derecha) → nombre y número → OK.","Phone → Contacts → + (top right) → name and number → Done."]},
+   {h:["WhatsApp: los chats","WhatsApp: chats"], p:["Cada conversación es un <b>chat</b>. Toque un nombre para abrirlo. Abajo, escriba en la caja de texto y toque la flecha verde para enviar.","Each conversation is a <b>chat</b>. Tap a name to open it. At the bottom, type in the text box and tap the green arrow to send."]},
+   {h:["Audios, fotos y videollamadas","Voice notes, photos and video calls"], list:[
+     ["Nota de voz:","mantenga pulsado el micrófono 🎤 mientras habla. Al soltar, se envía. Para cancelar, deslice a la izquierda.","Voice note:","hold the microphone 🎤 while you speak. When you let go, it is sent. To cancel, slide left."],
+     ["Foto:","toque el clip 📎 o el + y elija Galería/Fotos o la cámara.","Photo:","tap the clip 📎 or + and choose Gallery/Photos or the camera."],
+     ["Videollamada:","dentro del chat, toque el icono de la cámara de vídeo, arriba.","Video call:","inside the chat, tap the video camera icon at the top."],
+     ["Las palomitas:","✓ enviado; ✓✓ entregado; ✓✓ azules: leído (si la persona no lo ha desactivado).","Ticks:","✓ sent; ✓✓ delivered; blue ✓✓: read (unless the person has turned this off)."]]},
+   {h:["Grupos y cadenas","Groups and chain messages"], p:["En los grupos escribe mucha gente a la vez. No reenvíe mensajes que piden «pásalo» sin comprobar antes si son verdad.","In groups many people write at the same time. Do not forward messages that say «pass it on» without checking first if they are true."]}
+  ],
+  words:[["Contacto","Nombre y número guardados en el móvil.","Contact","A name and number saved on the phone."],["Chat","Una conversación por mensajes.","Chat","A conversation by messages."],["Nota de voz","Mensaje de audio grabado.","Voice note","A recorded audio message."],["Videollamada","Llamada en la que se ven las caras.","Video call","A call where you can see faces."],["Reenviar","Mandar a otra persona un mensaje recibido.","Forward","Send a message you received to someone else."],["Grupo","Chat con muchas personas.","Group","A chat with many people."]],
+  quiz:[
+   {q:["Dos palomitas azules ✓✓ significan…","Two blue ticks ✓✓ mean…"], o:[["Que el mensaje se ha leído","The message has been read"],["Que no ha llegado","It has not arrived"],["Que se ha borrado","It has been deleted"]], w:["Una palomita gris es «enviado».","One grey tick means «sent»."]},
+   {q:["Para enviar una nota de voz…","To send a voice note…"], o:[["Mantengo pulsado el micrófono","I hold the microphone"],["Toco la cámara","I tap the camera"],["Hago una llamada","I make a call"]], w:["Al soltar el dedo se envía.","It is sent when you lift your finger."]},
+   {q:["Un mensaje dice «reenvíalo a 10 personas»…","A message says «forward this to 10 people»…"], o:[["Compruebo antes si es verdad","I check first if it is true"],["Lo reenvío rápido","I forward it quickly"],["Lo mando a todos mis grupos","I send it to all my groups"]], w:["Muchas cadenas son bulos o timos.","Many chain messages are hoaxes or scams."]}],
+  practice:[["Guarde como contacto el número de un compañero o compañera.","Save a classmate's number as a contact."],["Envíele un saludo por WhatsApp.","Send them a greeting on WhatsApp."],["Envíe una nota de voz corta.","Send a short voice note."],["Envíe una foto del aula.","Send a photo of the classroom."],["Haga una videollamada corta, con su permiso.","Make a short video call, with their permission."]]
+},
+{ id:"u13", b:"C", dev:"movil", t:["Cámara, fotos y aplicaciones","Camera, photos and apps"],
+  goal:["Hacer fotos, compartirlas, leer códigos QR e instalar aplicaciones.","Take photos, share them, read QR codes and install apps."],
+  learn:[
+   {h:["Hacer una foto o un vídeo","Taking a photo or video"], p:["Abra la <b>Cámara</b>. Apunte, toque la pantalla donde quiera enfocar y pulse el botón redondo grande. Para grabar, elija «Vídeo» y pulse el botón rojo; vuelva a pulsarlo para parar.","Open the <b>Camera</b>. Point, tap the screen where you want to focus and press the big round button. To record, choose «Vídeo» and press the red button; press it again to stop."]},
+   {h:["Ver, compartir y borrar","Viewing, sharing and deleting"],
+     android:["Las fotos están en <b>Galería</b> o <b>Google Fotos</b>. Abra una foto: el botón Compartir la envía por WhatsApp o correo; la papelera la borra (queda unos días en la papelera de la app).","Photos are in <b>Gallery</b> or <b>Google Photos</b>. Open a photo: the Share button sends it by WhatsApp or email; the bin deletes it (it stays a few days in the app's bin)."],
+     iphone:["Las fotos están en la app <b>Fotos</b>. Abra una foto: el cuadrado con flecha la comparte; la papelera la borra (queda 30 días en «Eliminado»).","Photos are in the <b>Photos</b> app. Open a photo: the square with an arrow shares it; the bin deletes it (it stays 30 days in «Recently Deleted»)."]},
+   {h:["La tienda de aplicaciones","The app store"],
+     android:["Es la <b>Play Store</b> (el triángulo de colores). Necesita una cuenta de Google.","It is the <b>Play Store</b> (the coloured triangle). You need a Google account."],
+     iphone:["Es la <b>App Store</b> (la A azul). Necesita una cuenta de Apple.","It is the <b>App Store</b> (the blue A). You need an Apple account."]},
+   {h:["Instalar y quitar apps","Installing and removing apps"], p:["Abra la tienda, toque Buscar y escriba el nombre. Compruebe que es la app <b>oficial</b>: mire quién la publica y las opiniones. Toque Instalar (Android) u Obtener (iPhone). Para quitarla, mantenga pulsado el icono y elija Desinstalar o Eliminar app. Instale las actualizaciones: arreglan fallos y mejoran la seguridad.","Open the store, tap Search and type the name. Check it is the <b>official</b> app: look at who publishes it and the reviews. Tap Install (Android) or Get (iPhone). To remove it, press and hold the icon and choose Uninstall or Remove App. Install updates: they fix problems and improve security."]},
+   {h:["Los códigos QR","QR codes"], p:["Abra la cámara y apunte al código. Aparece un enlace: tóquelo para abrirlo. Abra solo códigos QR de sitios de confianza.","Open the camera and point it at the code. A link appears: tap it to open it. Only open QR codes from places you trust."]}
+  ],
+  words:[["Galería / Fotos","App donde se guardan las fotos.","Gallery / Photos","The app where photos are kept."],["Compartir","Enviar algo a otra persona o app.","Share","Send something to another person or app."],["Play Store","Tienda de apps de Android.","Play Store","Android's app store."],["App Store","Tienda de apps del iPhone.","App Store","The iPhone's app store."],["Instalar","Poner una app nueva en el móvil.","Install","Put a new app on the phone."],["Código QR","Cuadrado de puntos que abre un enlace.","QR code","A square of dots that opens a link."]],
+  quiz:[
+   {q:["Para instalar apps en un iPhone uso…","To install apps on an iPhone I use…"], o:[["La App Store","The App Store"],["La Play Store","The Play Store"],["WhatsApp","WhatsApp"]], w:["La Play Store es la tienda de Android.","The Play Store is the Android store."]},
+   {q:["Antes de instalar una app compruebo…","Before installing an app I check…"], o:[["Que es la oficial","That it is the official one"],["El color del icono","The colour of the icon"],["Nada","Nothing"]], w:["Hay apps falsas que copian a las de verdad.","There are fake apps that copy the real ones."]},
+   {q:["Para leer un código QR uso…","To read a QR code I use…"], o:[["La cámara","The camera"],["La calculadora","The calculator"],["Los contactos","The contacts"]], w:["Apunte con la cámara y toque el enlace.","Point the camera and tap the link."]}],
+  practice:[["Haga una foto del aula y otra de cerca a un objeto.","Take a photo of the classroom and a close-up of an object."],["Ábralas en Galería o Fotos y agrande una.","Open them in Gallery or Photos and zoom in on one."],["Envíe una foto por WhatsApp.","Send a photo by WhatsApp."],["Abra la tienda de aplicaciones y busque una app. Instálela solo si su docente se lo indica.","Open the app store and search for an app. Only install it if your teacher says so."],["Lea un código QR que le enseñe su docente.","Read a QR code that your teacher shows you."]]
+},
+{ id:"u14", b:"D", dev:"ambos", t:["Contraseñas y seguridad","Passwords and security"], sim:"password",
+  goal:["Crear contraseñas seguras y proteger el móvil y el ordenador.","Create strong passwords and protect your phone and computer."],
+  learn:[
+   {h:["¿Para qué sirven?","What are they for?"], p:["Las contraseñas protegen su correo, su banco y sus fotos. Si alguien sabe su contraseña, puede entrar como si fuera usted.","Passwords protect your email, your bank and your photos. If someone knows your password, they can get in as if they were you."]},
+   {h:["Una buena contraseña","A good password"], p:["Es <b>larga</b> (12 caracteres o más) y mezcla mayúsculas, minúsculas, números y algún símbolo. Un truco: unir palabras que solo usted relacione, con un número y un signo, por ejemplo «Gofio-Lunes-Teror-27!». Invente la suya.","It is <b>long</b> (12 characters or more) and mixes capitals, small letters, numbers and a symbol. A trick: join words that only you connect, with a number and a sign, for example «Gofio-Lunes-Teror-27!». Make up your own."]},
+   {h:["Lo que no hay que hacer","What not to do"], list:[
+     ["No use","123456, su nombre ni su fecha de nacimiento.","Do not use","123456, your name or your date of birth."],
+     ["No repita","la misma contraseña en todas partes.","Do not repeat","the same password everywhere."],
+     ["No la diga","a nadie, tampoco por teléfono. El banco nunca se la pide.","Do not tell it","to anyone, not even on the phone. The bank never asks for it."]]},
+   {h:["Más protección","More protection"], list:[
+     ["Bloqueo:","ponga PIN, huella o cara en el móvil. En el ordenador, Windows + L bloquea la pantalla si se levanta.","Lock:","use a PIN, fingerprint or face on your phone. On the computer, Windows + L locks the screen when you get up."],
+     ["Verificación en dos pasos:","además de la contraseña, le llega un código al móvil. Actívela en el correo y en WhatsApp. No dé ese código a nadie.","Two-step verification:","as well as the password, you get a code on your phone. Turn it on for email and WhatsApp. Never give that code to anyone."],
+     ["Wifi público:","en el wifi gratis de cafeterías o aeropuertos, no entre en el banco.","Public wifi:","on free wifi in cafés or airports, do not use your bank."],
+     ["Ayuda:","si tiene dudas, llame al <b>017</b>, la línea gratuita de ayuda en ciberseguridad de INCIBE.","Help:","if you have doubts, call <b>017</b>, INCIBE's free cybersecurity helpline."]]}
+  ],
+  words:[["Contraseña","Clave secreta para entrar.","Password","A secret key to get in."],["PIN","Contraseña corta de números.","PIN","A short number password."],["Verificación en dos pasos","Contraseña más un código al móvil.","Two-step verification","Password plus a code on your phone."],["Bloquear","Cerrar el aparato para que nadie entre.","Lock","Close the device so nobody can get in."],["Código","Número que llega por SMS para confirmar.","Code","A number sent by SMS to confirm."],["Datos personales","Nombre, DNI, dirección, cuenta del banco…","Personal data","Name, ID, address, bank account…"]],
+  quiz:[
+   {q:["¿Cuál es la contraseña más segura?","Which password is the safest?"], o:[["Gofio-Lunes-Teror-27!","Gofio-Lunes-Teror-27!"],["123456","123456"],["carmen","carmen"]], w:["Es larga y mezcla letras, números y signos.","It is long and mixes letters, numbers and signs."]},
+   {q:["Me llaman «del banco» y me piden la contraseña…","Someone calls «from the bank» and asks for my password…"], o:[["Cuelgo: el banco nunca la pide","I hang up: the bank never asks for it"],["Se la doy","I give it to them"],["Le doy solo la mitad","I give them half of it"]], w:["Después llame usted al número oficial de su banco.","Then call your bank's official number yourself."]},
+   {q:["Windows + L sirve para…","Windows + L is for…"], o:[["Bloquear el ordenador","Locking the computer"],["Apagarlo","Shutting it down"],["Abrir el correo","Opening email"]], w:["Para volver a entrar, escriba su contraseña o PIN.","To get back in, type your password or PIN."]}],
+  practice:[["Compruebe que su móvil se bloquea con PIN, huella o cara.","Check that your phone locks with a PIN, fingerprint or face."],["Bloquee el ordenador con Windows + L y vuelva a entrar.","Lock the computer with Windows + L and sign in again."],["Piense una contraseña segura con palabras suyas. No la escriba en el aula.","Think of a strong password with your own words. Do not write it down in class."],["En WhatsApp, busque: Ajustes → Cuenta → Verificación en dos pasos.","In WhatsApp, find: Settings → Account → Two-step verification."]]
+},
+{ id:"u15", b:"D", dev:"ambos", t:["Timos y bulos","Scams and fake news"],
+  goal:["Reconocer mensajes falsos y saber qué hacer.","Recognise fake messages and know what to do."],
+  learn:[
+   {h:["Los timos por mensaje","Scam messages"], p:["Llegan por SMS, WhatsApp o correo. Se hacen pasar por el banco, Correos, Hacienda, una empresa de paquetes o un familiar. Por SMS se llama <b>smishing</b>; por correo, <b>phishing</b>.","They arrive by SMS, WhatsApp or email. They pretend to be the bank, the post office, the tax office, a delivery company or a relative. By SMS it is called <b>smishing</b>; by email, <b>phishing</b>."]},
+   {h:["Señales de alarma","Warning signs"], list:[
+     ["Prisa:","«Su cuenta se bloqueará hoy».","Urgency:","«Your account will be blocked today»."],
+     ["Un enlace raro","para «verificar» sus datos.","A strange link","to «verify» your details."],
+     ["Le piden","contraseñas, códigos o los números de la tarjeta.","They ask for","passwords, codes or your card numbers."],
+     ["Premios","que no ha pedido.","Prizes","you never asked for."],
+     ["«Hola mamá, se me rompió el móvil,","este es mi número nuevo».","«Hi mum, my phone broke,","this is my new number»."]]},
+   {h:["Qué hacer","What to do"], p:["No toque el enlace y no conteste. Si duda, llame usted al número oficial (el de su tarjeta o el de la web oficial). Borre el mensaje y bloquee el número. Si ya dio datos del banco, llame enseguida a su banco y denúncielo.","Do not tap the link and do not reply. If in doubt, call the official number yourself (the one on your card or the official website). Delete the message and block the number. If you already gave bank details, call your bank straight away and report it."]},
+   {h:["Los bulos","Fake news (hoaxes)"], p:["Son noticias falsas que se comparten mucho. Antes de reenviar, pregúntese: ¿quién lo dice?, ¿sale en medios serios?, ¿la fecha es de ahora? Puede comprobarlo en webs como Maldita.es o Newtral.","They are false news stories that are shared a lot. Before forwarding, ask yourself: who says it?, is it in serious media?, is the date recent? You can check on websites like Maldita.es or Newtral."]},
+   {h:["Llamadas falsas","Fake calls"], p:["Alguien dice ser del banco o del «servicio técnico de Microsoft». Cuelgue. Microsoft no llama para arreglar su ordenador, y el banco no pide claves por teléfono.","Someone says they are from the bank or «Microsoft technical support». Hang up. Microsoft does not call to fix your computer, and the bank does not ask for passwords on the phone."]}
+  ],
+  words:[["Timo","Engaño para quitarle dinero o datos.","Scam","A trick to take your money or data."],["Smishing","Timo por SMS.","Smishing","A scam by SMS."],["Phishing","Timo por correo electrónico.","Phishing","A scam by email."],["Enlace","Texto que se toca para abrir una web.","Link","Text you tap to open a website."],["Bulo","Noticia falsa.","Hoax","A false news story."],["Bloquear un número","Hacer que no le pueda escribir ni llamar.","Block a number","Stop it from writing or calling you."]],
+  sort:{ask:["¿Es un timo o un mensaje fiable?","Is it a scam or a reliable message?"], cats:[["Timo","Scam"],["Fiable","Reliable"]], items:[
+   ["BANCO: Su cuenta será bloqueada hoy. Verifique sus datos en bit.ly/ba-nk2","BANK: Your account will be blocked today. Verify your details at bit.ly/ba-nk2",0,"Prisa y un enlace raro: es un timo.","Urgency and a strange link: it is a scam."],
+   ["Correos: su paquete está retenido. Pague 1,99 € aquí: correos-envio.top","Post office: your parcel is held. Pay €1.99 here: correos-envio.top",0,"Correos no cobra así. La dirección no es la oficial.","The post office does not charge like this. The address is not official."],
+   ["Hola mamá, se me cayó el móvil al agua. Este es mi número nuevo, escríbeme.","Hi mum, I dropped my phone in water. This is my new number, write to me.",0,"Es un timo muy común. Llame al número de siempre de su familiar.","A very common scam. Call your relative's usual number."],
+   ["Centro de salud: le recordamos su cita el martes 12 a las 10:30. No responda a este mensaje.","Health centre: reminder of your appointment on Tuesday 12th at 10:30. Do not reply to this message.",1,"No pide datos ni tiene enlaces: es un aviso normal.","It asks for no data and has no links: a normal reminder."],
+   ["¡Enhorabuena! Ha ganado un iPhone. Responda con los datos de su tarjeta.","Congratulations! You have won an iPhone. Reply with your card details.",0,"Premio no pedido y piden la tarjeta: timo.","A prize you did not ask for, and they want your card: scam."],
+   ["Su código de WhatsApp es 482-193. No lo comparta con nadie.","Your WhatsApp code is 482-193. Do not share it with anyone.",1,"Es fiable si lo ha pedido usted. Nunca dé este código a otra persona.","Reliable if you asked for it. Never give this code to anyone."]]},
+  quiz:[
+   {q:["Me llega un SMS con un enlace para «verificar mi cuenta»…","I get an SMS with a link to «verify my account»…"], o:[["No toco el enlace y llamo al número oficial del banco","I do not tap the link and call the bank's official number"],["Toco el enlace","I tap the link"],["Respondo con mis datos","I reply with my details"]], w:["Los bancos no piden datos por SMS.","Banks do not ask for details by SMS."]},
+   {q:["Antes de reenviar una noticia…","Before forwarding a news story…"], o:[["Compruebo quién la dice","I check who says it"],["La mando rápido","I send it quickly"],["La mando solo a la familia","I send it only to my family"]], w:["Puede comprobarla en Maldita.es o Newtral.","You can check it on Maldita.es or Newtral."]},
+   {q:["Me llaman de «Microsoft» para arreglar el ordenador…","«Microsoft» calls to fix my computer…"], o:[["Cuelgo","I hang up"],["Les dejo entrar en el ordenador","I let them into my computer"],["Les doy mi contraseña","I give them my password"]], w:["Es un timo conocido.","It is a well-known scam."]}],
+  practice:[["Revise sus SMS y busque algún mensaje sospechoso. Enséñelo en clase sin tocar el enlace.","Check your SMS for a suspicious message. Show it in class without tapping the link."],["Aprenda a bloquear un número en WhatsApp: abra el chat → toque el nombre arriba → Bloquear.","Learn to block a number on WhatsApp: open the chat → tap the name at the top → Block."],["Entre en Maldita.es y lea un bulo desmentido.","Go to Maldita.es and read a debunked hoax."],["Guarde el 017 en sus contactos como «Ayuda ciberseguridad».","Save 017 in your contacts as «Ayuda ciberseguridad»."]]
+},
+{ id:"u16", b:"D", dev:"ambos", t:["Trámites por internet","Online paperwork"],
+  goal:["Saber identificarse, rellenar formularios y guardar justificantes.","Know how to identify yourself, fill in forms and keep receipts."],
+  learn:[
+   {h:["Qué se puede hacer","What you can do"], p:["Por internet se puede pedir cita en el centro de salud, consultar la vida laboral, el paro o una beca, pedir certificados o pagar tasas.","Online you can book a health centre appointment, check your work history, unemployment benefit or a grant, request certificates or pay fees."]},
+   {h:["Identificarse","Identifying yourself"], p:["Para muchos trámites hay que demostrar quién es. Se usa <b>Cl@ve</b> (con la app Cl@ve en el móvil o con un código por SMS), el <b>certificado digital</b> o el <b>DNI electrónico</b>. Cl@ve se puede pedir en oficinas públicas o por internet.","For many procedures you must prove who you are. You use <b>Cl@ve</b> (with the Cl@ve app on your phone or a code by SMS), a <b>digital certificate</b> or an <b>electronic ID card</b>. You can get Cl@ve at public offices or online."]},
+   {h:["Siempre en la web oficial","Always on the official website"], p:["Entre escribiendo la dirección o desde el buscador, comprobando que es la página oficial. La cita médica del Servicio Canario de la Salud es gratis: desconfíe de las webs que cobran por pedir cita.","Go in by typing the address or from the search engine, checking that it is the official page. A Canary Health Service appointment is free: do not trust websites that charge to book it."]},
+   {h:["Formularios y justificantes","Forms and receipts"], p:["Lea cada recuadro. Los que llevan asterisco (*) son obligatorios. Revise todo antes de pulsar Enviar. Al final, guarde o haga una captura del <b>justificante</b>.","Read each box. Those with an asterisk (*) are required. Check everything before pressing Send. At the end, save the <b>receipt</b> or take a screenshot of it."]},
+   {h:["Captura de pantalla","Screenshot"], list:[
+     ["Ordenador:","Windows + Mayús + S y elija la zona.","Computer:","Windows + Shift + S and choose the area."],
+     ["Android:","pulse a la vez encendido y bajar volumen.","Android:","press power and volume down together."],
+     ["iPhone:","pulse a la vez el botón lateral y subir volumen.","iPhone:","press the side button and volume up together."]]},
+   {h:["Pedir ayuda","Asking for help"], p:["En su centro, en la biblioteca o en el ayuntamiento le pueden ayudar. No dé sus claves a desconocidos que se ofrecen a «hacerle el trámite».","At your school, the library or the town hall they can help you. Do not give your passwords to strangers who offer to «do the paperwork for you»."]}
+  ],
+  words:[["Trámite","Gestión con la administración.","Procedure","Official paperwork with the administration."],["Cl@ve","Sistema para identificarse en webs públicas.","Cl@ve","A system to identify yourself on public websites."],["Certificado digital","Archivo que demuestra quién es usted.","Digital certificate","A file that proves who you are."],["Formulario","Página con recuadros para rellenar.","Form","A page with boxes to fill in."],["Justificante","Papel o archivo que prueba que lo hizo.","Receipt","A paper or file that proves you did it."],["Captura de pantalla","Foto de lo que se ve en la pantalla.","Screenshot","A picture of what is on the screen."]],
+  quiz:[
+   {q:["Un recuadro con asterisco (*) es…","A box with an asterisk (*) is…"], o:[["Obligatorio","Required"],["Opcional","Optional"],["Un error","An error"]], w:["Sin rellenarlo no le deja enviar.","You cannot send without filling it in."]},
+   {q:["Una web le cobra 30 € por pedir cita en el médico…","A website charges €30 to book a doctor's appointment…"], o:[["Desconfío: la cita es gratis","I do not trust it: the appointment is free"],["Pago","I pay"],["Doy mi tarjeta","I give my card"]], w:["Use la web oficial del Servicio Canario de la Salud.","Use the Canary Health Service's official website."]},
+   {q:["Después de un trámite guardo…","After a procedure I keep…"], o:[["El justificante","The receipt"],["Nada","Nothing"],["Mi contraseña pegada a la pantalla","My password stuck on the screen"]], w:["El justificante prueba que lo hizo.","The receipt proves you did it."]}],
+  practice:[["Busque la web del Servicio Canario de la Salud y encuentre dónde se pide cita.","Find the Canary Health Service website and find where to book an appointment."],["Haga una captura de pantalla en el móvil y otra en el ordenador.","Take a screenshot on your phone and another on the computer."],["Rellene el formulario de práctica que le dé su docente, con datos inventados.","Fill in the practice form your teacher gives you, with made-up details."],["Pregunte en el centro cómo conseguir Cl@ve.","Ask at your school how to get Cl@ve."]]
+}
+];
+
+/* ---------- Estado ---------- */
+let S = {done:{}, checks:{}, device:"android", big:false, en:true};
+try { const raw = localStorage.getItem("cib-eipa"); if (raw) S = Object.assign(S, JSON.parse(raw)); } catch(e) {}
+function save(){ try { localStorage.setItem("cib-eipa", JSON.stringify(S)); } catch(e) {} }
+
+/* ---------- Utilidades ---------- */
+const $ = s => document.querySelector(s);
+function bi(p){ if(!p) return ""; return `<span class="es">${p[0]}</span>${p[1] ? `<span class="en" lang="en">${p[1]}</span>` : ""}`; }
+function rng(seed){ let h = 1779033703 ^ seed.length; for (let i=0;i<seed.length;i++){ h = Math.imul(h ^ seed.charCodeAt(i), 3432918353); h = h<<13 | h>>>19; }
+  return () => { h = Math.imul(h ^ h>>>16, 2246822507); h = Math.imul(h ^ h>>>13, 3266489909); h ^= h>>>16; return (h>>>0)/4294967296; }; }
+function shuffle(arr, seed){ const r = rng(seed), a = arr.map((x,i)=>[x,i]); for (let i=a.length-1;i>0;i--){ const j = Math.floor(r()*(i+1)); [a[i],a[j]] = [a[j],a[i]]; } return a; }
+const OK = ["✔ ¡Muy bien!","✔ Well done!"];
+function okHTML(extra){ return `<span class="es">${OK[0]} ${extra ? extra[0] : ""}</span>${`<span class="en" lang="en">${OK[1]} ${extra ? extra[1] : ""}</span>`}`; }
+const LETTERS = "ABCDEFGH";
+
+/* ---------- Navegación ---------- */
+function renderNav(cur){
+  let h = "";
+  for (const k of Object.keys(B)){
+    h += `<div class="nav-block"><p>${B[k][0]}<span class="en">${B[k][1]}</span></p>`;
+    U.forEach((u,i)=>{ if (u.b !== k) return;
+      h += `<a class="nav-link ${cur===u.id?"cur":""} ${S.done[u.id]?"done":""}" href="#${u.id}"><span class="nav-num">${S.done[u.id]?"✔":i+1}</span><span>${u.t[0]}<span class="en">${u.t[1]}</span></span></a>`; });
+    h += `</div>`;
+  }
+  h += `<div class="nav-block"><p>Docentes</p><a class="nav-link ${cur==="guia"?"cur":""}" href="#guia"><span class="nav-num">G</span><span>Guía docente</span></a><a class="nav-link ${cur==="cuaderno"?"cur":""}" href="#cuaderno"><span class="nav-num">F</span><span>Cuaderno de fichas</span></a></div>`;
+  $("#nav").innerHTML = h;
+  const n = Object.values(S.done).filter(Boolean).length;
+  $("#prog-i").style.width = (n/U.length*100)+"%";
+  $("#prog-t").textContent = `${n}/${U.length}`;
+}
+
+/* ---------- Inicio ---------- */
+function renderHome(){
+  let h = `<div class="hero"><div>
+    <p class="eyebrow">Educación de personas adultas · EIPA nivel I y II</p>
+    <h1>Curso de informática básica</h1>
+    <p class="en" style="font-size:1.1rem">Basic computer course</p>
+    <p class="lead">${bi(["Aprenda desde cero a usar el ordenador con Windows y el móvil, Android o iPhone. Cada unidad explica poco a poco y tiene ejercicios para practicar aquí y en su propio aparato.","Learn from scratch to use a Windows computer and a phone, Android or iPhone. Each unit explains step by step and has exercises to practise here and on your own device."])}</p>
+    <div class="hero-actions"><a class="btn" href="#u1">Empezar por la unidad 1 <span class="en-inline" style="color:inherit">Start</span></a><a class="btn ghost" href="#u10">Ir al móvil <span class="en-inline">Phone units</span></a></div>
+  </div><figure class="fig" aria-hidden="true">${SVG.pc}</figure></div>
+  <div class="steps">
+    <div class="step"><b>1</b>${bi(["Aprendemos: leemos y escuchamos la explicación.","Learn: read and listen to the explanation."])}</div>
+    <div class="step"><b>2</b>${bi(["Palabras clave del tema.","Key words of the unit."])}</div>
+    <div class="step"><b>3</b>${bi(["Practicamos aquí, con corrección al momento.","Practise here, with instant feedback."])}</div>
+    <div class="step"><b>4</b>${bi(["Lo hacemos en el ordenador o el móvil de verdad.","Do it on a real computer or phone."])}</div>
+  </div>
+  <p class="small-note">${bi(["Use el botón «English subtitles» de arriba para mostrar u ocultar el inglés, y «Letra grande» para leer mejor.","Use the «English subtitles» button at the top to show or hide English, and «Letra grande» for bigger text."])}</p>`;
+  for (const k of Object.keys(B)){
+    h += `<section class="bloque"><h2>${B[k][0]} <span class="en-inline">${B[k][1]}</span></h2><div class="ucards">`;
+    U.forEach((u,i)=>{ if (u.b !== k) return;
+      h += `<a class="ucard ${S.done[u.id]?"done":""}" href="#${u.id}"><span class="meta"><span>Unidad ${i+1}</span><span>${S.done[u.id]?"✔ Terminada":""}</span></span><h3>${u.t[0]}</h3><span class="en">${u.t[1]}</span><span><span class="tag">${DEV[u.dev][0]}</span></span></a>`; });
+    h += `</div></section>`;
+  }
+  return h;
+}
+
+/* ---------- Unidad ---------- */
+function learnCard(l){
+  let body = "";
+  if (l.p) body += `<p>${bi(l.p)}</p>`;
+  if (l.list) body += `<ul class="terms">${l.list.map(x=>`<li><span class="es"><b>${x[0]}</b> ${x[1]}</span>${x[3]?`<span class="en" lang="en"><b>${x[2]}</b> ${x[3]}</span>`:""}</li>`).join("")}</ul>`;
+  if (l.android) body += `<div class="dev-only android"><span class="devtag">Android</span><p>${bi(l.android)}</p></div><div class="dev-only iphone"><span class="devtag">iPhone</span><p>${bi(l.iphone)}</p></div>`;
+  const img = l.img ? `<figure class="fig">${SVG[l.img]}</figure>` : "";
+  return `<div class="card learn ${l.img?"has-img":""}"><div class="learn-text"><h3>${bi(l.h)}</h3>${body}<button class="listen" data-listen>🔊 Escuchar <span class="en-inline">Listen (Spanish)</span></button></div>${img}</div>`;
+}
+function quizHTML(u){
+  return u.quiz.map((q,qi)=>{ const opts = shuffle(q.o, u.id+"q"+qi);
+    return `<div class="q" data-u="${u.id}" data-q="${qi}"><p><b>${qi+1}.</b> ${bi(q.q)}</p><div class="opts">${opts.map(([o,oi])=>`<button class="opt" data-ok="${oi===0}">${bi(o)}</button>`).join("")}</div><p class="fb" hidden></p></div>`; }).join("");
+}
+function sortHTML(u){
+  const s = u.sort;
+  return `<div class="sort"><p class="instr">${bi(s.ask)}</p>${shuffle(s.items, u.id+"s").map(([it,ii])=>`<div class="sort-item" data-u="${u.id}" data-i="${ii}"><p><b>${it[0]}</b>${it[1]!==it[0]?`<span class="en" lang="en">${it[1]}</span>`:""}</p><div class="sort-btns">${s.cats.map((c,ci)=>`<button class="sbtn" data-ci="${ci}">${bi(c)}</button>`).join("")}</div><p class="fb" hidden></p></div>`).join("")}</div>`;
+}
+function renderUnit(u){
+  const idx = U.indexOf(u);
+  const hasDev = u.learn.some(l=>l.android);
+  const where = u.dev==="pc" ? ["Ahora en el ordenador","Now on the computer"] : u.dev==="movil" ? ["Ahora en su móvil","Now on your phone"] : ["Ahora en el ordenador o el móvil","Now on the computer or phone"];
+  let h = `<div class="unit-head">
+    <p class="eyebrow">${B[u.b][0]} · Unidad ${idx+1} de ${U.length} · ${DEV[u.dev][0]}</p>
+    <h1>${u.t[0]}</h1><p class="en h1en" lang="en">${u.t[1]}</p>
+    <p class="goal"><b>Va a aprender:</b> ${bi(u.goal)}</p>
+    <div class="toolbar no-print">
+      ${hasDev ? `<div class="devsel" role="group" aria-label="Elija su móvil"><button data-dev="android" aria-pressed="${S.device==="android"}">Android</button><button data-dev="iphone" aria-pressed="${S.device==="iphone"}">iPhone</button></div><span class="small-note">${bi(["Elija su móvil.","Choose your phone."])}</span>` : ""}
+      <button class="chip" data-print="${u.id}">🖨 Imprimir ficha <span class="en-inline">Print worksheet</span></button>
+    </div>
+  </div>
+  <section class="part"><h2><span class="pnum">1</span> Aprendemos <span class="en-inline">Learn</span></h2><div class="cards">${u.learn.map(learnCard).join("")}</div></section>
+  <section class="part"><h2><span class="pnum">2</span> Palabras clave <span class="en-inline">Key words</span></h2><dl class="words">${u.words.map(w=>`<div><dt>${w[0]}<span class="en" lang="en">${w[2]}</span></dt><dd>${w[1]}<span class="en" lang="en">${w[3]}</span></dd></div>`).join("")}</dl></section>
+  <section class="part"><h2><span class="pnum">3</span> Practicamos aquí <span class="en-inline">Practise here</span></h2>
+    ${u.sim ? `<div class="sim" data-sim="${u.sim}">${SIMS[u.sim].html()}</div>` : ""}
+    ${u.sort ? `<p class="sub">${bi(["Clasifique","Sort"])}</p>${sortHTML(u)}` : ""}
+    <p class="sub">${bi(["Preguntas","Questions"])}</p>${quizHTML(u)}
+  </section>
+  <section class="part"><h2><span class="pnum">4</span> ${where[0]} <span class="en-inline">${where[1]}</span></h2>
+    <p class="small-note" style="margin-bottom:10px">${bi(["Haga cada paso en su aparato y márquelo cuando lo termine.","Do each step on your device and tick it when you finish."])}</p>
+    ${u.practice.map((p,pi)=>{ const k = u.id+"-"+pi, on = !!S.checks[k]; return `<label class="check ${on?"on":""}" for="c-${k}"><input type="checkbox" id="c-${k}" data-check="${k}" ${on?"checked":""}><span>${bi(p)}</span></label>`; }).join("")}
+  </section>
+  <div class="finish no-print">
+    ${idx>0 ? `<a class="btn ghost" href="#${U[idx-1].id}">← Anterior</a>` : `<a class="btn ghost" href="#inicio">← Inicio</a>`}
+    <button class="donebtn" data-done="${u.id}" aria-pressed="${!!S.done[u.id]}">${S.done[u.id] ? "✔ Unidad terminada" : "He terminado esta unidad"} <span class="en-inline" style="color:inherit">${S.done[u.id] ? "Unit finished" : "I have finished this unit"}</span></button>
+    ${idx<U.length-1 ? `<a class="btn" href="#${U[idx+1].id}">Siguiente →</a>` : `<a class="btn" href="#inicio">Inicio</a>`}
+  </div>`;
+  return h;
+}
+
+/* ---------- Simuladores ---------- */
+function markDone(cell, msg){ cell.classList.add("done"); const st = cell.querySelector(".st"); if (st){ st.classList.remove("hint"); st.innerHTML = okHTML(msg); } }
+function hint(cell, p){ const st = cell.querySelector(".st"); if (st && !cell.classList.contains("done")){ st.classList.add("hint"); st.innerHTML = bi(p); } }
+const SIMS = {
+ mouse:{ html:()=>`<div class="sim-grid">
+  <div class="sim-cell" id="m1"><p class="task">${bi(["1. Haga clic 3 veces en el círculo azul. Cambia de sitio.","1. Click the blue circle 3 times. It moves."])}</p><div class="pad"><button class="target" aria-label="Círculo"></button></div><p class="st"></p></div>
+  <div class="sim-cell" id="m2"><p class="task">${bi(["2. Haga doble clic en la carpeta para abrirla.","2. Double-click the folder to open it."])}</p><div class="pad center"><div class="ico" id="m2f" tabindex="0">${SVG.folder}<span>Mis fotos</span></div></div><p class="st"></p></div>
+  <div class="sim-cell" id="m3"><p class="task">${bi(["3. Haga clic derecho en el documento y elija «Copiar».","3. Right-click the document and choose «Copiar» (Copy)."])}</p><div class="pad center" id="m3p"><div class="ico" id="m3d">${SVG.doc}<span>Carta.docx</span></div><div class="ctx" hidden><button data-c="no">Abrir</button><button data-c="ok">Copiar</button><button data-c="no">Cambiar nombre</button></div></div><p class="st"></p></div>
+  <div class="sim-cell" id="m4"><p class="task">${bi(["4. Arrastre el papel hasta la papelera.","4. Drag the paper to the bin."])}</p><div class="pad" id="m4p"><div class="paper" id="m4d">${SVG.doc}</div><div class="bin" id="m4b">${SVG.bin}</div></div><p class="st"></p></div>
+ </div>`,
+ init(r){
+  const c1 = r.querySelector("#m1"), t = c1.querySelector(".target"); let n = 0;
+  t.addEventListener("click", ()=>{ if (c1.classList.contains("done")) return; n++;
+    if (n>=3){ markDone(c1); t.style.background = "var(--ok)"; return; }
+    t.style.left = (8+Math.random()*70)+"%"; t.style.top = (8+Math.random()*55)+"%";
+    hint(c1, [`Lleva ${n} de 3.`, `${n} of 3 done.`]); });
+  const c2 = r.querySelector("#m2"), f = r.querySelector("#m2f");
+  f.addEventListener("click", ()=>{ f.classList.add("sel"); hint(c2, ["Eso es un clic. Pruebe dos clics seguidos y rápidos.","That is one click. Try two quick clicks."]); });
+  f.addEventListener("dblclick", ()=>{ f.querySelector("span").textContent = "Mis fotos (abierta)"; markDone(c2); });
+  const c3 = r.querySelector("#m3"), d = r.querySelector("#m3d"), ctx = c3.querySelector(".ctx"), pad3 = r.querySelector("#m3p");
+  d.addEventListener("click", ()=>{ d.classList.add("sel"); hint(c3, ["Ese es el botón izquierdo. Use el botón derecho.","That is the left button. Use the right button."]); });
+  d.addEventListener("contextmenu", e=>{ e.preventDefault(); const pr = pad3.getBoundingClientRect();
+    ctx.style.left = Math.min(e.clientX-pr.left, pr.width-170)+"px"; ctx.style.top = Math.min(e.clientY-pr.top, pr.height-120)+"px"; ctx.hidden = false; });
+  ctx.addEventListener("click", e=>{ const b = e.target.closest("button"); if (!b) return;
+    if (b.dataset.c==="ok"){ ctx.hidden = true; markDone(c3); } else hint(c3, ["Busque la palabra «Copiar».","Look for the word «Copiar»."]); });
+  const c4 = r.querySelector("#m4"), p = r.querySelector("#m4d"), bin = r.querySelector("#m4b"); let sx=0, sy=0, drag=false;
+  const over = ()=>{ const a = p.getBoundingClientRect(), b = bin.getBoundingClientRect(); return a.right>b.left && a.left<b.right && a.bottom>b.top && a.top<b.bottom; };
+  p.addEventListener("pointerdown", e=>{ if (c4.classList.contains("done")) return; drag = true; sx = e.clientX; sy = e.clientY; p.setPointerCapture(e.pointerId); p.style.cursor = "grabbing"; });
+  p.addEventListener("pointermove", e=>{ if (!drag) return; p.style.transform = `translate(${e.clientX-sx}px,${e.clientY-sy}px)`; bin.classList.toggle("hot", over()); });
+  p.addEventListener("pointerup", ()=>{ if (!drag) return; drag = false; p.style.cursor = "grab"; bin.classList.remove("hot");
+    if (over()){ p.style.display = "none"; markDone(c4); }
+    else { p.style.transform = ""; hint(c4, ["No ha llegado. Mantenga el botón apretado hasta la papelera.","Not there yet. Keep the button pressed until the bin."]); } });
+ }},
+ keyboard:{ tasks:[
+   {p:["Escriba su nombre. La primera letra, en mayúscula (Mayús + letra).","Type your name. The first letter in capitals (Shift + letter)."], test:v=>/^[A-ZÁÉÍÓÚÑ][a-záéíóúüñ]+/.test(v.trim()), h:["Recuerde: mantenga Mayús y pulse la primera letra.","Remember: hold Shift and press the first letter."]},
+   {p:["Escriba: Gran Canaria","Type: Gran Canaria"], test:v=>v.trim()==="Gran Canaria", h:["Dos mayúsculas y un espacio en medio.","Two capitals and a space in the middle."]},
+   {p:["Escriba con tilde: camión (pulse ´ y después la o)","Type with an accent: camión (press ´ and then o)"], test:v=>v.trim()==="camión", h:["La tilde está a la derecha de la P.","The accent key is to the right of P."]},
+   {p:["Escriba este correo: ana.perez@gmail.com (la @ es AltGr + 2)","Type this email: ana.perez@gmail.com (@ is AltGr + 2)"], test:v=>v.trim()==="ana.perez@gmail.com", h:["Todo en minúsculas y sin espacios.","All small letters and no spaces."]},
+   {p:["Escriba la pregunta: ¿Qué hora es?","Type the question: ¿Qué hora es?"], test:v=>v.trim()==="¿Qué hora es?", h:["¿ está en la segunda tecla a la derecha del 0, con Mayús.","¿ is on the second key to the right of 0, with Shift."]}],
+  html(){ return this.tasks.map((t,i)=>`<div class="kb-task sim-cell" id="k${i}"><label for="ki${i}" class="task">${bi(t.p)}</label><input id="ki${i}" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false"><p class="st"></p></div>`).join(""); },
+  init(r){ this.tasks.forEach((t,i)=>{ const c = r.querySelector("#k"+i), inp = r.querySelector("#ki"+i);
+    inp.addEventListener("input", ()=>{ if (t.test(inp.value)) markDone(c); else { c.classList.remove("done"); const st = c.querySelector(".st"); st.innerHTML = ""; } });
+    inp.addEventListener("blur", ()=>{ if (inp.value && !t.test(inp.value)) hint(c, t.h); }); }); }
+ },
+ touch:{ html:()=>`<p class="small-note" style="margin-bottom:10px">${bi(["Mejor si abre esta página en el móvil. En el ordenador funciona con el ratón.","Best if you open this page on your phone. On a computer it works with the mouse."])}</p><div class="sim-grid">
+   <div class="sim-cell" id="g1"><p class="task">${bi(["1. Toque el botón una vez.","1. Tap the button once."])}</p><div class="pad center"><button class="touchbtn" id="g1b">Toque</button></div><p class="st"></p></div>
+   <div class="sim-cell" id="g2"><p class="task">${bi(["2. Mantenga el dedo en el botón hasta que cambie (1 segundo).","2. Hold your finger on the button until it changes (1 second)."])}</p><div class="pad center"><button class="touchbtn" id="g2b">Mantenga</button></div><p class="st"></p></div>
+   <div class="sim-cell" id="g3"><p class="task">${bi(["3. Deslice la tarjeta hacia la izquierda hasta ver la 3.","3. Swipe the card to the left until you see number 3."])}</p><div class="pad"><div class="swipe" id="g3s" style="background:#0a58a8">1 ←</div></div><p class="st"></p></div>
+   <div class="sim-cell" id="g4"><p class="task">${bi(["4. Toque dos veces rápido la foto para agrandarla.","4. Double-tap the photo to zoom in."])}</p><div class="pad center"><div id="g4p" style="width:110px;height:80px;border-radius:10px;background:linear-gradient(#7fc4f5 55%,#e8c27a 55%);transition:transform .2s;touch-action:manipulation"></div></div><p class="st"></p></div>
+ </div>`,
+ init(r){
+  const c1 = r.querySelector("#g1"); r.querySelector("#g1b").addEventListener("click", e=>{ e.currentTarget.textContent = "✔"; markDone(c1); });
+  const c2 = r.querySelector("#g2"), b2 = r.querySelector("#g2b"); let tm = null;
+  const start = e=>{ e.preventDefault(); b2.classList.add("pressing"); tm = setTimeout(()=>{ b2.textContent = "✔"; b2.classList.remove("pressing"); markDone(c2); tm = null; }, 900); };
+  const stop = ()=>{ b2.classList.remove("pressing"); if (tm){ clearTimeout(tm); tm = null; hint(c2, ["Lo ha soltado pronto. Mantenga un poco más.","You let go too soon. Hold a little longer."]); } };
+  b2.addEventListener("pointerdown", start); b2.addEventListener("pointerup", stop); b2.addEventListener("pointerleave", stop); b2.addEventListener("contextmenu", e=>e.preventDefault());
+  const c3 = r.querySelector("#g3"), s = r.querySelector("#g3s"); let x0 = null, n = 1; const cols = ["#0a58a8","#1d7a3e","#8a4fb8"];
+  s.addEventListener("pointerdown", e=>{ x0 = e.clientX; s.setPointerCapture(e.pointerId); });
+  s.addEventListener("pointerup", e=>{ if (x0===null) return; const dx = e.clientX - x0; x0 = null;
+    if (dx < -50 && n < 3){ n++; s.style.background = cols[n-1]; s.textContent = n<3 ? n+" ←" : "3 ✔"; if (n===3) markDone(c3); }
+    else if (Math.abs(dx) <= 50 && n < 3) hint(c3, ["Mueva el dedo más largo, hacia la izquierda.","Move your finger further, to the left."]); });
+  const c4 = r.querySelector("#g4"), ph = r.querySelector("#g4p"); let last = 0;
+  ph.addEventListener("click", ()=>{ const now = Date.now(); if (now-last < 450){ ph.style.transform = "scale(1.7)"; markDone(c4); } last = now; });
+ }},
+ window:{ html:()=>`<ul class="tasklist" id="wt">
+   <li data-t="max">${bi(["1. Maximice la ventana (□).","1. Maximize the window (□)."])}</li>
+   <li data-t="min">${bi(["2. Minimícela (—) y recupérela con su icono de la barra de tareas.","2. Minimize it (—) and bring it back with its taskbar icon."])}</li>
+   <li data-t="close">${bi(["3. Ciérrela (✕).","3. Close it (✕)."])}</li></ul>
+  <div class="win-stage"><div class="win" id="ww" data-state="normal"><div class="win-bar"><span>Bloc de notas</span><div class="win-btns"><button data-w="min" aria-label="Minimizar">—</button><button data-w="max" aria-label="Maximizar">□</button><button data-w="close" aria-label="Cerrar">✕</button></div></div><div class="win-body">Lista de la compra:<br>papas, gofio, plátanos, queso</div></div>
+  <div class="taskbar"><button aria-label="Inicio">${SVG.start}</button><button class="tb-app open" id="wapp" aria-label="Bloc de notas">${SVG.note}</button></div></div>
+  <p class="st" id="wst" style="margin-top:8px"></p>`,
+ init(r){
+  const w = r.querySelector("#ww"), app = r.querySelector("#wapp"), st = r.querySelector("#wst"); let wasMin = false;
+  const tick = t=>{ r.querySelector(`#wt li[data-t="${t}"]`).classList.add("done"); if ([...r.querySelectorAll("#wt li")].every(li=>li.classList.contains("done"))) st.innerHTML = okHTML(["Ha completado las tres tareas.","You have completed all three tasks."]); };
+  r.querySelector(".win-btns").addEventListener("click", e=>{ const b = e.target.closest("button"); if (!b) return; const a = b.dataset.w;
+    if (a==="max"){ const m = w.dataset.state==="max"; w.dataset.state = m ? "normal" : "max"; if (!m) tick("max"); }
+    if (a==="min"){ w.dataset.state = "min"; wasMin = true; st.innerHTML = bi(["La ventana está escondida. Búsquela abajo, en la barra de tareas.","The window is hidden. Find it at the bottom, on the taskbar."]); }
+    if (a==="close"){ w.dataset.state = "closed"; app.style.visibility = "hidden"; tick("close");
+      if (!r.querySelector("#wreopen")){ const rb = document.createElement("button"); rb.id = "wreopen"; rb.className = "chip"; rb.style.marginTop = "8px"; rb.innerHTML = "Abrir otra vez <span class='en-inline'>Open again</span>"; rb.onclick = ()=>{ w.dataset.state = "normal"; app.style.visibility = "visible"; rb.remove(); }; st.after(rb); } } });
+  app.addEventListener("click", ()=>{ if (w.dataset.state==="min"){ w.dataset.state = "normal"; if (wasMin){ tick("min"); st.innerHTML = ""; } } else if (w.dataset.state!=="closed"){ w.dataset.state = "min"; wasMin = true; } });
+ }},
+ password:{ html:()=>`<div class="card pw"><label for="pwi" class="task">${bi(["Escriba una contraseña inventada y mire si es segura.","Type a made-up password and see if it is strong."])}</label>
+   <p class="small-note" style="margin:4px 0 8px">${bi(["No escriba aquí una contraseña que use de verdad. Esto no se guarda ni se envía.","Do not type a password you really use. Nothing is saved or sent."])}</p>
+   <input id="pwi" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Ejemplo: Gofio-Lunes-Teror-27!">
+   <div class="meter"><i id="pwm"></i></div><p class="pw-label" id="pwl">${bi(["Escriba para empezar.","Type to begin."])}</p>
+   <ul class="crit" id="pwc">
+    <li data-c="len">${bi(["12 caracteres o más","12 characters or more"])}</li>
+    <li data-c="up">${bi(["Una mayúscula","A capital letter"])}</li>
+    <li data-c="low">${bi(["Una minúscula","A small letter"])}</li>
+    <li data-c="num">${bi(["Un número","A number"])}</li>
+    <li data-c="sym">${bi(["Un símbolo (- ! ? # …)","A symbol (- ! ? # …)"])}</li>
+    <li data-c="com">${bi(["No es una contraseña conocida (123456, qwerty…)","It is not a common password (123456, qwerty…)"])}</li></ul></div>`,
+ init(r){
+  const inp = r.querySelector("#pwi"), m = r.querySelector("#pwm"), l = r.querySelector("#pwl");
+  const common = ["123456","12345678","123456789","password","qwerty","111111","contraseña","abc123","000000","iloveyou"];
+  inp.addEventListener("input", ()=>{ const v = inp.value;
+    const c = {len:v.length>=12, up:/[A-ZÁÉÍÓÚÑ]/.test(v), low:/[a-záéíóúñ]/.test(v), num:/\d/.test(v), sym:/[^A-Za-z0-9ÁÉÍÓÚÑáéíóúñ\s]/.test(v), com:v.length>0 && !common.includes(v.toLowerCase())};
+    r.querySelectorAll("#pwc li").forEach(li=>li.classList.toggle("on", c[li.dataset.c]));
+    let sc = Object.values(c).filter(Boolean).length; if (!c.len) sc = Math.min(sc, 3); if (!c.com) sc = 0;
+    const lv = !v ? null : sc<=2 ? [["Débil","Weak"],"var(--bad)",25] : sc<=4 ? [["Regular","Fair"],"var(--mark)",55] : sc===5 ? [["Buena","Good"],"var(--accent)",80] : [["Muy buena","Very strong"],"var(--ok)",100];
+    if (!lv){ m.style.width = "0"; l.innerHTML = bi(["Escriba para empezar.","Type to begin."]); return; }
+    m.style.width = lv[2]+"%"; m.style.background = lv[1]; l.innerHTML = bi(lv[0]); });
+ }}
+};
+
+/* ---------- Fichas imprimibles ---------- */
+function en(p){ return S.en && p ? `<span class="en" lang="en">${p}</span>` : ""; }
+function fichaHTML(u){
+  const idx = U.indexOf(u), wsh = shuffle(u.words, u.id+"w");
+  let h = `<section class="ficha"><div class="f-head"><div><p class="f-eyebrow">Curso de informática básica · EIPA · Unidad ${idx+1} · ${DEV[u.dev][0]}</p><h2>${u.t[0]}</h2>${en(u.t[1])}</div><div class="f-id"><p>Nombre: ______________________</p><p>Fecha: _____________</p></div></div>`;
+  h += `<h3>1. Una cada palabra con su significado. Escriba la letra.${en("Match each word with its meaning. Write the letter.")}</h3><table class="f-match">`;
+  u.words.forEach((w,i)=>{ const d = wsh[i][0]; h += `<tr><td>____ ${i+1}. <b>${w[0]}</b>${en(w[2])}</td><td><b>${LETTERS[i]}.</b> ${d[1]}${en(d[3])}</td></tr>`; });
+  h += `</table><h3>2. Marque la respuesta correcta.${en("Tick the correct answer.")}</h3>`;
+  u.quiz.forEach((q,qi)=>{ const opts = shuffle(q.o, u.id+"q"+qi); h += `<div class="f-q"><p><b>${qi+1}.</b> ${q.q[0]}${en(q.q[1])}</p>${opts.map(([o])=>`<span class="f-opt"><span class="box">☐</span> ${o[0]}${S.en && o[1]!==o[0] ? ` <i style="color:#555">(${o[1]})</i>` : ""}</span>`).join("")}</div>`; });
+  let n = 3;
+  if (u.sort){ const s = u.sort; h += `<h3>${n++}. ${s.ask[0]}${en(s.ask[1])}</h3><table class="f-tbl"><tr><th></th>${s.cats.map(c=>`<th>${c[0]}${S.en&&c[1]!==c[0]?` <i style="font-weight:400">(${c[1]})</i>`:""}</th>`).join("")}</tr>${shuffle(s.items,u.id+"s").map(([it])=>`<tr><td>${it[0]}${S.en && it[1]!==it[0] ? en(it[1]) : ""}</td>${s.cats.map(()=>`<td class="box" style="text-align:center">☐</td>`).join("")}</tr>`).join("")}</table>`; }
+  h += `<h3>${n++}. ${u.dev==="pc"?"En el ordenador":u.dev==="movil"?"En el móvil":"En el ordenador o el móvil"}: marque lo que sabe hacer.${en("On the device: tick what you can do.")}</h3><table class="f-tbl"><tr><th>Tarea${S.en?" <i style='font-weight:400'>(Task)</i>":""}</th><th>Solo/a${S.en?" <i style='font-weight:400'>(On my own)</i>":""}</th><th>Con ayuda${S.en?" <i style='font-weight:400'>(With help)</i>":""}</th></tr>${u.practice.map(p=>`<tr><td>${p[0]}${en(p[1])}</td><td class="box" style="text-align:center">☐</td><td class="box" style="text-align:center">☐</td></tr>`).join("")}</table>`;
+  h += `<h3>${n}. Escriba una frase sobre lo que ha aprendido hoy.${en("Write a sentence about what you learned today.")}</h3><div class="f-lines"><div></div><div></div></div></section>`;
+  return h;
+}
+function solHTML(u){
+  const idx = U.indexOf(u), wsh = shuffle(u.words, u.id+"w");
+  const pos = {}; wsh.forEach(([w,oi],i)=>{ pos[oi] = LETTERS[i]; });
+  let h = `<div class="sol-u"><h3>Unidad ${idx+1}. ${u.t[0]}</h3><p><b>1.</b> ${u.words.map((w,i)=>`${i+1}-${pos[i]}`).join(" · ")}</p>`;
+  h += `<p><b>2.</b> ${u.quiz.map((q,qi)=>{ const opts = shuffle(q.o, u.id+"q"+qi); const k = opts.findIndex(([,oi])=>oi===0); return `${qi+1}: ${q.o[0][0]} (opción ${k+1})`; }).join(" · ")}</p>`;
+  if (u.sort) h += `<p><b>3.</b> ${shuffle(u.sort.items,u.id+"s").map(([it])=>`${it[0].length>40?it[0].slice(0,40)+"…":it[0]} → ${u.sort.cats[it[2]][0]}`).join(" · ")}</p>`;
+  return h + `</div>`;
+}
+function printUnits(list){
+  const pa = $("#print-area");
+  pa.innerHTML = `<div class="cuaderno">${list.map(fichaHTML).join("")}<section class="ficha f-sol"><h2>Solucionario para el docente</h2><p style="margin-bottom:10px">Retire esta página antes de fotocopiar.</p>${list.map(solHTML).join("")}</section></div>`;
+  document.body.classList.add("printing");
+  const off = ()=>{ document.body.classList.remove("printing"); window.removeEventListener("afterprint", off); };
+  window.addEventListener("afterprint", off);
+  try { window.print(); } catch(e) {}
+}
+
+/* ---------- Guía y cuaderno ---------- */
+function renderGuia(){
+  const rows = U.map((u,i)=>`<tr><td>${i+1}</td><td>${u.t[0]}</td><td>${DEV[u.dev][0]}</td><td>${u.sim ? {mouse:"Simulador de ratón",keyboard:"Práctica de teclado",touch:"Gestos táctiles",window:"Simulador de ventanas",password:"Medidor de contraseñas"}[u.sim]+" · " : ""}${u.sort?"Clasificar · ":""}${u.quiz.length} preguntas · ${u.practice.length} tareas</td></tr>`).join("");
+  return `<div class="prose">
+  <h2>Guía docente</h2>
+  <p>Curso de 16 unidades para alumnado adulto de EIPA que empieza desde cero en el uso del ordenador con Windows y del móvil (Android e iPhone). El lenguaje es sencillo y se dirige al alumnado de usted, como en el resto de materiales del centro. Todos los textos llevan subtítulos en inglés para el alumnado extranjero; se ocultan con el botón «English subtitles».</p>
+  <h2>Cómo es cada unidad</h2>
+  <ul>
+   <li><b>1 · Aprendemos:</b> explicación en bloques cortos, con ilustraciones y botón «Escuchar» (lectura en voz alta en español). En el móvil, cada paso se muestra para Android o para iPhone según lo que elija el alumno o la alumna.</li>
+   <li><b>2 · Palabras clave:</b> seis términos con su significado.</li>
+   <li><b>3 · Practicamos aquí:</b> simulador o clasificación y preguntas con corrección inmediata y explicación.</li>
+   <li><b>4 · Ahora en el aparato:</b> lista de tareas reales para hacer en el ordenador o el móvil y marcar.</li>
+  </ul>
+  <h2>Sesión tipo (55 minutos)</h2>
+  <ul><li>10–15 min: explicación de «Aprendemos» con el proyector.</li><li>10–15 min: «Practicamos aquí» en parejas.</li><li>20–25 min: tareas en el aparato real, con apoyo.</li><li>5 min: cierre; cada persona marca «He terminado esta unidad» o completa la ficha.</li></ul>
+  <p>Las unidades 2, 3, 10 y 12 suelen necesitar dos sesiones con alumnado que nunca ha usado el aparato.</p>
+  <h2>Secuencia</h2>
+  <p>El bloque «Lo primero» (unidades 1–3) va al principio. Los bloques del ordenador (4–9) y del móvil (10–13) pueden alternarse según el grupo; muchas personas adultas avanzan más rápido empezando por el móvil, que ya usan. El bloque «Seguridad y trámites» (14–16) puede trabajarse en cualquier momento.</p>
+  <h2>Contenido</h2>
+  <div class="tbl-wrap"><table class="tbl"><tr><th>Nº</th><th>Unidad</th><th>Aparato</th><th>Ejercicios</th></tr>${rows}</table></div>
+  <h2>Relación con la evaluación inicial de EIPA 1</h2>
+  <p>El curso trabaja los indicadores digitales de la evaluación inicial: comunicarse con dispositivos (mensajería, videollamada, correo: unidades 9 y 12), buscar información y hacer trámites en línea (unidades 8 y 16) y aplicar normas básicas de seguridad digital (unidades 14 y 15). El uso básico del ordenador (encender, abrir un documento, escribir y guardar) corresponde a las unidades 2–7.</p>
+  <h2>Atención a la diversidad</h2>
+  <ul><li>Botón «Letra grande» y lectura en voz alta en cada explicación.</li><li>Subtítulos en inglés para el alumnado que aún no domina el español.</li><li>Trabajo en parejas: una persona lee el paso y la otra lo hace.</li><li>Para el alumnado con lectura inicial, combinar con las <i>Fichas digitales de lectura fácil</i> de EIPA 1 (carpeta 05_Materiales).</li><li>Cada unidad tiene una ficha imprimible con autoevaluación «solo/a – con ayuda» y solucionario en página aparte.</li></ul>
+  <h2>Privacidad</h2>
+  <p>El progreso solo se guarda en el navegador del aparato que se usa. En las prácticas se usan datos inventados; no se deben escribir contraseñas reales en el medidor de contraseñas ni en ninguna web de práctica.</p>
+  <h2>Imprimir</h2>
+  <p>El botón «Imprimir ficha» de cada unidad y el «Cuaderno de fichas» funcionan al abrir el archivo del curso en el navegador del ordenador. Si el visor donde lo abre bloquea la impresión, use el PDF del cuaderno que está en la misma carpeta del curso.</p>
+  </div>`;
+}
+function renderCuaderno(){
+  return `<div class="unit-head no-print"><h1>Cuaderno de fichas</h1><p class="en">Worksheet book</p><p style="margin-top:8px">Las 16 fichas del curso y, al final, el solucionario en página aparte. ${S.en ? "Incluye los subtítulos en inglés." : "Sin subtítulos en inglés."}</p><div class="toolbar"><button class="chip" data-printall>🖨 Imprimir el cuaderno</button></div></div>
+  <div class="cuaderno" style="margin-top:18px">${U.map(fichaHTML).join("")}<section class="ficha f-sol"><h2>Solucionario para el docente</h2><p style="margin-bottom:10px">Retire estas páginas antes de fotocopiar.</p>${U.map(solHTML).join("")}</section></div>`;
+}
+
+/* ---------- Router ---------- */
+function route(){
+  const id = (location.hash || "#inicio").slice(1);
+  const u = U.find(x=>x.id===id);
+  const main = $("#main");
+  if (u){ main.innerHTML = renderUnit(u); main.querySelectorAll("[data-sim]").forEach(el=>SIMS[el.dataset.sim].init(el)); document.title = `${u.t[0]} · Informática básica EIPA`; }
+  else if (id==="guia"){ main.innerHTML = renderGuia(); document.title = "Guía docente · Informática básica EIPA"; }
+  else if (id==="cuaderno"){ main.innerHTML = renderCuaderno(); document.title = "Cuaderno de fichas · Informática básica EIPA"; }
+  else { main.innerHTML = renderHome(); document.title = "Curso de Informática Básica EIPA"; }
+  renderNav(u ? u.id : id);
+  $("#aside").classList.remove("open"); $("#nav-toggle").setAttribute("aria-expanded","false");
+  window.scrollTo(0,0);
+}
+
+/* ---------- Eventos ---------- */
+function applyPrefs(){
+  document.body.classList.toggle("no-en", !S.en);
+  document.documentElement.classList.toggle("big", S.big);
+  document.body.classList.toggle("dev-android", S.device==="android");
+  document.body.classList.toggle("dev-iphone", S.device==="iphone");
+  $("#t-en").setAttribute("aria-pressed", S.en); $("#t-en").textContent = S.en ? "English subtitles: ON" : "English subtitles: OFF";
+  $("#t-big").setAttribute("aria-pressed", S.big);
+}
+$("#t-en").addEventListener("click", ()=>{ S.en = !S.en; save(); applyPrefs(); if (location.hash==="#cuaderno") route(); });
+$("#t-big").addEventListener("click", ()=>{ S.big = !S.big; save(); applyPrefs(); });
+$("#nav-toggle").addEventListener("click", ()=>{ const a = $("#aside"); a.classList.toggle("open"); $("#nav-toggle").setAttribute("aria-expanded", a.classList.contains("open")); });
+document.addEventListener("click", e=>{
+  const opt = e.target.closest(".opt");
+  if (opt && !opt.disabled){ const qd = opt.closest(".q"), u = U.find(x=>x.id===qd.dataset.u), q = u.quiz[+qd.dataset.q], fb = qd.querySelector(".fb");
+    fb.hidden = false;
+    if (opt.dataset.ok==="true"){ opt.classList.add("ok"); qd.querySelectorAll(".opt").forEach(b=>b.disabled = true); fb.className = "fb ok"; fb.innerHTML = okHTML(q.w); }
+    else { opt.classList.add("bad"); fb.className = "fb bad"; fb.innerHTML = bi(["✘ No es correcto. Inténtelo otra vez.","✘ Not correct. Try again."]); }
+    return; }
+  const sb = e.target.closest(".sbtn");
+  if (sb){ const it = sb.closest(".sort-item"); if (it.dataset.solved) return; const u = U.find(x=>x.id===it.dataset.u), item = u.sort.items[+it.dataset.i], fb = it.querySelector(".fb");
+    fb.hidden = false;
+    if (+sb.dataset.ci === item[2]){ sb.classList.add("ok"); it.dataset.solved = "1"; fb.className = "fb ok"; fb.innerHTML = okHTML(item[3] ? [item[3], item[4]] : null); }
+    else { sb.classList.add("bad"); fb.className = "fb bad"; fb.innerHTML = bi(["✘ Piénselo otra vez.","✘ Think again."]); }
+    return; }
+  const dv = e.target.closest("[data-dev]");
+  if (dv){ S.device = dv.dataset.dev; save(); applyPrefs(); document.querySelectorAll("[data-dev]").forEach(b=>b.setAttribute("aria-pressed", b.dataset.dev===S.device)); return; }
+  const dn = e.target.closest("[data-done]");
+  if (dn){ const id = dn.dataset.done; S.done[id] = !S.done[id]; save(); route(); return; }
+  const pr = e.target.closest("[data-print]");
+  if (pr){ printUnits([U.find(x=>x.id===pr.dataset.print)]); return; }
+  if (e.target.closest("[data-printall]")){ try { window.print(); } catch(err) {} return; }
+  const ls = e.target.closest("[data-listen]");
+  if (ls){ try { const box = ls.closest(".learn-text"); const txt = [...box.querySelectorAll(".es")].map(x=>x.textContent).join(". ");
+      speechSynthesis.cancel(); const ut = new SpeechSynthesisUtterance(txt); ut.lang = "es-ES"; ut.rate = 0.9; speechSynthesis.speak(ut); } catch(err) {} return; }
+});
+document.addEventListener("change", e=>{ const c = e.target.closest("[data-check]"); if (!c) return; S.checks[c.dataset.check] = c.checked; save(); c.closest(".check").classList.toggle("on", c.checked); });
+window.addEventListener("hashchange", route);
+applyPrefs(); route();
+</script>
+</body>
+</html>
