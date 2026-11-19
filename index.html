@@ -270,6 +270,20 @@ body.dev-android .dev-only.android, body.dev-iphone .dev-only.iphone{display:blo
   .cuaderno .ficha:last-child{break-after:auto}
 }
 @media (prefers-reduced-motion: reduce){ *{transition:none !important;animation:none !important} }
+/* Puntuación */
+.qcount{margin:14px 0 4px;padding:10px 14px;border:1px dashed var(--line);border-radius:var(--r);color:var(--muted);font-size:.95rem}
+.qcount b{color:var(--ink)}
+.score{margin:16px 0 4px;padding:18px 20px;border-radius:var(--r);border:2px solid var(--accent);background:var(--surface);display:grid;grid-template-columns:auto 1fr;gap:6px 20px;align-items:center}
+.score.hi{border-color:var(--ok);background:var(--ok-bg)}
+.score .nota{grid-row:span 3;font-family:var(--font-display);font-weight:700;font-size:3rem;line-height:1;text-align:center;min-width:110px}
+.score .nota small{display:block;font-size:.85rem;font-weight:500;color:var(--muted);margin-top:6px}
+.score h3{font-size:1.3rem}
+.score .btn{justify-self:start}
+.nav-score{margin-left:auto;font-size:.8rem;font-weight:700;opacity:.85;white-space:nowrap}
+.notas-tbl{width:100%;border-collapse:collapse;margin-top:14px;background:var(--surface)}
+.notas-tbl th,.notas-tbl td{border-bottom:1px solid var(--line);padding:9px 10px;text-align:left;vertical-align:top}
+.notas-tbl td.n{font-weight:700;text-align:right;white-space:nowrap}
+@media (max-width:560px){.notas-tbl .hide-sm{display:none}.notas-tbl th,.notas-tbl td{padding:8px 6px}.score{grid-template-columns:1fr}.score .nota{grid-row:auto;text-align:left}}
 </style>
 </head>
 <body class="dev-android">
@@ -724,9 +738,50 @@ const U = [
 ];
 
 /* ---------- Estado ---------- */
-let S = {done:{}, checks:{}, device:"android", big:false, en:true};
+let S = {done:{}, checks:{}, scores:{}, device:"android", big:false, en:true};
 try { const raw = localStorage.getItem("cib-eipa"); if (raw) S = Object.assign(S, JSON.parse(raw)); } catch(e) {}
+if (!S.scores) S.scores = {};
 function save(){ try { localStorage.setItem("cib-eipa", JSON.stringify(S)); } catch(e) {} }
+
+/* ---------- Puntuación ----------
+   Cuenta solo el PRIMER intento de cada pregunta o elemento de clasificar.
+   Se puede seguir probando hasta acertar (para aprender), pero ya no suma. */
+let ATT = null; // intento en curso: {u, first:{key:bool}}
+const RETRY = {}; // unidades en las que se ha pulsado "Repetir"
+function qTotal(u){ return u.quiz.length + (u.sort ? u.sort.items.length : 0); }
+function fmtNota(n){ return (Math.round(n*10)/10).toLocaleString("es-ES"); }
+function verdict(n){
+  if (n >= 9) return ["¡Sobresaliente!","Outstanding!"];
+  if (n >= 7) return ["¡Notable! Muy buen trabajo.","Very good work!"];
+  if (n >= 5) return ["Aprobado. ¡Bien hecho!","Pass. Well done!"];
+  return ["Todavía no. Repase la parte 1 y vuelva a intentarlo.","Not yet. Review part 1 and try again."];
+}
+function scoreHTML(u){
+  const sc = S.scores[u.id];
+  if (!sc || RETRY[u.id]) return `<div class="qcount" id="qcount">${bi(["Responda todos los ejercicios de esta parte para ver su nota. Cuenta el primer intento.","Answer all the exercises in this part to see your mark. Your first try counts."])}<div>Respondidas · Answered: <b id="qc-n">0</b> / ${qTotal(u)}</div></div>`;
+  const v = verdict(sc.nota);
+  return `<div class="score ${sc.nota>=5?"hi":""}" id="score" role="status">
+    <div class="nota">${fmtNota(sc.nota)}<small>de 10 · out of 10</small></div>
+    <h3>${bi(v)}</h3>
+    <p>${bi([`Ha acertado ${sc.ok} de ${sc.total} a la primera.${sc.best>sc.nota?` Su mejor nota: ${fmtNota(sc.best)}.`:""}`,`You got ${sc.ok} of ${sc.total} right first time.${sc.best>sc.nota?` Your best mark: ${fmtNota(sc.best)}.`:""}`])}</p>
+    <button class="btn ghost" data-retry="${u.id}">↻ Repetir el cuestionario <span class="en-inline" style="color:inherit">Try again</span></button>
+  </div>`;
+}
+function recordAnswer(u, key, ok){
+  if (!ATT || ATT.u !== u.id) ATT = {u:u.id, first:{}};
+  if (key in ATT.first) return;
+  ATT.first[key] = ok;
+  const n = Object.keys(ATT.first).length, total = qTotal(u);
+  const c = document.getElementById("qc-n"); if (c) c.textContent = n;
+  if (n < total) return;
+  const good = Object.values(ATT.first).filter(Boolean).length, nota = good/total*10;
+  const prev = S.scores[u.id];
+  S.scores[u.id] = {ok:good, total, nota, best:Math.max(nota, prev ? prev.best : 0), date:new Date().toISOString().slice(0,10)};
+  save(); ATT = null; delete RETRY[u.id];
+  const box = document.getElementById("qcount") || document.getElementById("score");
+  if (box){ box.outerHTML = scoreHTML(u); const s = document.getElementById("score"); if (s) s.scrollIntoView({behavior:"smooth", block:"center"}); }
+  renderNav(u.id);
+}
 
 /* ---------- Utilidades ---------- */
 const $ = s => document.querySelector(s);
@@ -744,9 +799,10 @@ function renderNav(cur){
   for (const k of Object.keys(B)){
     h += `<div class="nav-block"><p>${B[k][0]}<span class="en">${B[k][1]}</span></p>`;
     U.forEach((u,i)=>{ if (u.b !== k) return;
-      h += `<a class="nav-link ${cur===u.id?"cur":""} ${S.done[u.id]?"done":""}" href="#${u.id}"><span class="nav-num">${S.done[u.id]?"✔":i+1}</span><span>${u.t[0]}<span class="en">${u.t[1]}</span></span></a>`; });
+      h += `<a class="nav-link ${cur===u.id?"cur":""} ${S.done[u.id]?"done":""}" href="#${u.id}"><span class="nav-num">${S.done[u.id]?"✔":i+1}</span><span>${u.t[0]}<span class="en">${u.t[1]}</span></span>${S.scores[u.id] ? `<span class="nav-score">${fmtNota(S.scores[u.id].best)}</span>` : ""}</a>`; });
     h += `</div>`;
   }
+  h += `<div class="nav-block"><p>Mi progreso <span class="en">My progress</span></p><a class="nav-link ${cur==="notas"?"cur":""}" href="#notas"><span class="nav-num">★</span><span>Mis notas<span class="en">My marks</span></span></a></div>`;
   h += `<div class="nav-block"><p>Docentes</p><a class="nav-link ${cur==="guia"?"cur":""}" href="#guia"><span class="nav-num">G</span><span>Guía docente</span></a><a class="nav-link ${cur==="cuaderno"?"cur":""}" href="#cuaderno"><span class="nav-num">F</span><span>Cuaderno de fichas</span></a></div>`;
   $("#nav").innerHTML = h;
   const n = Object.values(S.done).filter(Boolean).length;
@@ -773,7 +829,7 @@ function renderHome(){
   for (const k of Object.keys(B)){
     h += `<section class="bloque"><h2>${B[k][0]} <span class="en-inline">${B[k][1]}</span></h2><div class="ucards">`;
     U.forEach((u,i)=>{ if (u.b !== k) return;
-      h += `<a class="ucard ${S.done[u.id]?"done":""}" href="#${u.id}"><span class="meta"><span>Unidad ${i+1}</span><span>${S.done[u.id]?"✔ Terminada":""}</span></span><h3>${u.t[0]}</h3><span class="en">${u.t[1]}</span><span><span class="tag">${DEV[u.dev][0]}</span></span></a>`; });
+      h += `<a class="ucard ${S.done[u.id]?"done":""}" href="#${u.id}"><span class="meta"><span>Unidad ${i+1}</span><span>${S.scores[u.id] ? `Nota: ${fmtNota(S.scores[u.id].best)}` : ""}${S.scores[u.id] && S.done[u.id] ? " · " : ""}${S.done[u.id]?"✔ Terminada":""}</span></span><h3>${u.t[0]}</h3><span class="en">${u.t[1]}</span><span><span class="tag">${DEV[u.dev][0]}</span></span></a>`; });
     h += `</div></section>`;
   }
   return h;
@@ -815,6 +871,7 @@ function renderUnit(u){
     ${u.sim ? `<div class="sim" data-sim="${u.sim}">${SIMS[u.sim].html()}</div>` : ""}
     ${u.sort ? `<p class="sub">${bi(["Clasifique","Sort"])}</p>${sortHTML(u)}` : ""}
     <p class="sub">${bi(["Preguntas","Questions"])}</p>${quizHTML(u)}
+    ${scoreHTML(u)}
   </section>
   <section class="part"><h2><span class="pnum">4</span> ${where[0]} <span class="en-inline">${where[1]}</span></h2>
     <p class="small-note" style="margin-bottom:10px">${bi(["Haga cada paso en su aparato y márquelo cuando lo termine.","Do each step on your device and tick it when you finish."])}</p>
@@ -1000,12 +1057,26 @@ function renderCuaderno(){
   <div class="cuaderno" style="margin-top:18px">${U.map(fichaHTML).join("")}<section class="ficha f-sol"><h2>Solucionario para el docente</h2><p style="margin-bottom:10px">Retire estas páginas antes de fotocopiar.</p>${U.map(solHTML).join("")}</section></div>`;
 }
 
+/* ---------- Mis notas ---------- */
+function renderNotas(){
+  const hechas = U.filter(u=>S.scores[u.id]);
+  const media = hechas.length ? hechas.reduce((a,u)=>a+S.scores[u.id].best,0)/hechas.length : null;
+  const rows = U.map((u,i)=>{ const sc = S.scores[u.id];
+    return `<tr><td class="hide-sm">${i+1}</td><td><a href="#${u.id}">${u.t[0]}</a><span class="en" lang="en">${u.t[1]}</span></td><td class="hide-sm">${sc ? `${sc.ok} / ${sc.total}` : "—"}</td><td class="n">${sc ? fmtNota(sc.nota) : "—"}</td><td class="n">${sc ? fmtNota(sc.best) : "—"}</td></tr>`; }).join("");
+  return `<div class="unit-head"><p class="eyebrow">Mi progreso</p><h1>Mis notas</h1><p class="en h1en" lang="en">My marks</p>
+    <p class="lead">${bi([`Cuestionarios hechos: ${hechas.length} de ${U.length}.${media!==null ? ` Nota media (con sus mejores notas): ${fmtNota(media)}.` : ""}`,`Quizzes done: ${hechas.length} of ${U.length}.${media!==null ? ` Average (best marks): ${fmtNota(media)}.` : ""}`])}</p>
+    <p class="small-note">${bi(["Las notas se guardan en este aparato y en este navegador.","Marks are saved on this device and in this browser."])}</p></div>
+    <table class="notas-tbl"><thead><tr><th class="hide-sm">#</th><th>Unidad · Unit</th><th class="hide-sm">Aciertos · Right</th><th style="text-align:right">Nota · Mark</th><th style="text-align:right">Mejor · Best</th></tr></thead><tbody>${rows}</tbody></table>`;
+}
+
 /* ---------- Router ---------- */
 function route(){
   const id = (location.hash || "#inicio").slice(1);
   const u = U.find(x=>x.id===id);
   const main = $("#main");
+  ATT = null; for (const k in RETRY) delete RETRY[k];
   if (u){ main.innerHTML = renderUnit(u); main.querySelectorAll("[data-sim]").forEach(el=>SIMS[el.dataset.sim].init(el)); document.title = `${u.t[0]} · Informática básica EIPA`; }
+  else if (id==="notas"){ main.innerHTML = renderNotas(); document.title = "Mis notas · Informática básica EIPA"; }
   else if (id==="guia"){ main.innerHTML = renderGuia(); document.title = "Guía docente · Informática básica EIPA"; }
   else if (id==="cuaderno"){ main.innerHTML = renderCuaderno(); document.title = "Cuaderno de fichas · Informática básica EIPA"; }
   else { main.innerHTML = renderHome(); document.title = "Curso de Informática Básica EIPA"; }
@@ -1030,17 +1101,26 @@ document.addEventListener("click", e=>{
   const opt = e.target.closest(".opt");
   if (opt && !opt.disabled){ const qd = opt.closest(".q"), u = U.find(x=>x.id===qd.dataset.u), q = u.quiz[+qd.dataset.q], fb = qd.querySelector(".fb");
     fb.hidden = false;
+    recordAnswer(u, "q"+qd.dataset.q, opt.dataset.ok==="true");
     if (opt.dataset.ok==="true"){ opt.classList.add("ok"); qd.querySelectorAll(".opt").forEach(b=>b.disabled = true); fb.className = "fb ok"; fb.innerHTML = okHTML(q.w); }
     else { opt.classList.add("bad"); fb.className = "fb bad"; fb.innerHTML = bi(["✘ No es correcto. Inténtelo otra vez.","✘ Not correct. Try again."]); }
     return; }
   const sb = e.target.closest(".sbtn");
   if (sb){ const it = sb.closest(".sort-item"); if (it.dataset.solved) return; const u = U.find(x=>x.id===it.dataset.u), item = u.sort.items[+it.dataset.i], fb = it.querySelector(".fb");
     fb.hidden = false;
+    recordAnswer(u, "s"+it.dataset.i, +sb.dataset.ci === item[2]);
     if (+sb.dataset.ci === item[2]){ sb.classList.add("ok"); it.dataset.solved = "1"; fb.className = "fb ok"; fb.innerHTML = okHTML(item[3] ? [item[3], item[4]] : null); }
     else { sb.classList.add("bad"); fb.className = "fb bad"; fb.innerHTML = bi(["✘ Piénselo otra vez.","✘ Think again."]); }
     return; }
   const dv = e.target.closest("[data-dev]");
   if (dv){ S.device = dv.dataset.dev; save(); applyPrefs(); document.querySelectorAll("[data-dev]").forEach(b=>b.setAttribute("aria-pressed", b.dataset.dev===S.device)); return; }
+  const rt = e.target.closest("[data-retry]");
+  if (rt){ const id = rt.dataset.retry, u = U.find(x=>x.id===id);
+    // nuevo intento: la nota guardada se mantiene hasta terminar el siguiente
+    RETRY[id] = true; ATT = null;
+    $("#main").innerHTML = renderUnit(u); $("#main").querySelectorAll("[data-sim]").forEach(el=>SIMS[el.dataset.sim].init(el));
+    const first = document.querySelector(".sort-item, .q"); if (first) first.scrollIntoView({block:"center"});
+    return; }
   const dn = e.target.closest("[data-done]");
   if (dn){ const id = dn.dataset.done; S.done[id] = !S.done[id]; save(); route(); return; }
   const pr = e.target.closest("[data-print]");
