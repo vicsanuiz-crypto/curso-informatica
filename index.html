@@ -283,6 +283,18 @@ body.dev-android .dev-only.android, body.dev-iphone .dev-only.iphone{display:blo
 .notas-tbl{width:100%;border-collapse:collapse;margin-top:14px;background:var(--surface)}
 .notas-tbl th,.notas-tbl td{border-bottom:1px solid var(--line);padding:9px 10px;text-align:left;vertical-align:top}
 .notas-tbl td.n{font-weight:700;text-align:right;white-space:nowrap}
+/* Cuenta con código */
+.chip.acc{text-decoration:none;color:inherit;font-weight:700;border-color:var(--accent)}
+.chip.acc.on{background:var(--ok-bg);border-color:var(--ok);color:var(--ink)}
+.sync{font-size:.8rem;color:var(--muted)}
+.sync.err{color:var(--bad);font-weight:700}
+.login{display:grid;gap:12px;max-width:460px;margin-top:16px}
+.login label[for]{font-weight:700}
+.login input[type=text]{font:inherit;font-size:1.6rem;letter-spacing:.12em;text-transform:uppercase;padding:12px 14px;border:2px solid var(--line);border-radius:10px;background:var(--surface-2);color:var(--ink);font-family:var(--font-display)}
+.login input[type=text]:focus{border-color:var(--accent)}
+.login .btn{justify-self:start;font-size:1.05rem}
+.acc-banner{display:flex;gap:14px;align-items:center;justify-content:space-between;flex-wrap:wrap;background:var(--surface);border:2px solid var(--mark);border-radius:var(--r);padding:14px 18px;margin-bottom:18px}
+.acc-banner p{max-width:62ch}
 @media (max-width:560px){.notas-tbl .hide-sm{display:none}.notas-tbl th,.notas-tbl td{padding:8px 6px}.score{grid-template-columns:1fr}.score .nota{grid-row:auto;text-align:left}}
 </style>
 </head>
@@ -296,6 +308,7 @@ body.dev-android .dev-only.android, body.dev-iphone .dev-only.iphone{display:blo
     <div class="ctrls">
       <button class="chip" id="t-en" aria-pressed="true" title="Mostrar u ocultar los subtítulos en inglés">English subtitles</button>
       <button class="chip" id="t-big" aria-pressed="false">Letra grande</button>
+      <a class="chip acc" id="t-acc" href="#entrar">👤 Entrar con código</a><span class="sync" id="sync" aria-live="polite"></span>
       <a class="chip" href="#guia" style="text-decoration:none;color:inherit">Guía docente</a>
       <span class="prog" title="Unidades terminadas"><span class="prog-bar"><i id="prog-i"></i></span><span id="prog-t">0/16</span></span>
     </div>
@@ -741,7 +754,74 @@ const U = [
 let S = {done:{}, checks:{}, scores:{}, device:"android", big:false, en:true};
 try { const raw = localStorage.getItem("cib-eipa"); if (raw) S = Object.assign(S, JSON.parse(raw)); } catch(e) {}
 if (!S.scores) S.scores = {};
-function save(){ try { localStorage.setItem("cib-eipa", JSON.stringify(S)); } catch(e) {} }
+function save(){
+  // Con código de clase, el progreso va a la nube; en este aparato solo quedan las preferencias
+  // y el progreso "sin código" que hubiera antes (LOCALP).
+  try { localStorage.setItem("cib-eipa", JSON.stringify(CODE ? Object.assign({}, S, LOCALP) : S)); } catch(e) {}
+  if (CODE) pushCloud();
+}
+
+/* ---------- Cuenta con código de clase (Firebase) ----------
+   El alumnado entra con un código al azar que le da su docente (p. ej. MOLA-4821).
+   No se guardan nombres ni contraseñas. Si no hay internet, el curso funciona igual sin cuenta. */
+const FB_CFG = {apiKey:"AIzaSyCKbkwgRjIHfcW_xhA7agvSPJH1NXhMJQc", authDomain:"curso-informatica-eipa.firebaseapp.com", projectId:"curso-informatica-eipa", appId:"1:258113754394:web:98b2de0fdf8ec3930548a3"};
+const FB_URL = "https://www.gstatic.com/firebasejs/10.12.2/";
+let FB = null, CODE = null, LOCALP = null, pushT = null;
+async function fbInit(){
+  if (FB) return FB;
+  const app = await import(FB_URL + "firebase-app.js"), fs = await import(FB_URL + "firebase-firestore.js");
+  FB = {fs, db: fs.getFirestore(app.initializeApp(FB_CFG))};
+  return FB;
+}
+function normCode(s){ const t = String(s||"").toUpperCase().replace(/[^A-Z0-9]/g,""); return /^[A-Z]{4}[0-9]{4}$/.test(t) ? t.slice(0,4)+"-"+t.slice(4) : null; }
+function storedCode(){ try { return sessionStorage.getItem("cib-code") || localStorage.getItem("cib-code"); } catch(e) { return null; } }
+function setSync(st){ const el = $("#sync"); if (!el) return;
+  el.className = "sync" + (st==="err" ? " err" : "");
+  el.textContent = !CODE ? "" : st==="saving" ? "Guardando…" : st==="err" ? "⚠ Sin conexión: no se ha guardado" : "✓ Guardado"; }
+function accUI(){ const a = $("#t-acc"); if (!a) return;
+  a.classList.toggle("on", !!CODE); a.textContent = CODE ? `👤 ${CODE}` : "👤 Entrar con código"; if (!CODE) setSync(""); }
+async function cloudLogin(code, remember){
+  const {fs, db} = await fbInit();
+  const snap = await fs.getDoc(fs.doc(db, "alumnos", code));
+  if (!snap.exists()) { const e = new Error("nf"); e.nf = true; throw e; }
+  const d = snap.data();
+  if (!CODE) LOCALP = {done:S.done, checks:S.checks, scores:S.scores};
+  CODE = code; S.done = d.done || {}; S.checks = d.checks || {}; S.scores = d.scores || {};
+  try { sessionStorage.setItem("cib-code", code); if (remember) localStorage.setItem("cib-code", code); } catch(e) {}
+  accUI(); setSync("ok");
+}
+function cloudLogout(){
+  if (LOCALP){ S.done = LOCALP.done; S.checks = LOCALP.checks; S.scores = LOCALP.scores; }
+  CODE = null; LOCALP = null; clearTimeout(pushT);
+  try { sessionStorage.removeItem("cib-code"); localStorage.removeItem("cib-code"); } catch(e) {}
+  accUI();
+}
+function pushCloud(){
+  clearTimeout(pushT); setSync("saving");
+  pushT = setTimeout(async ()=>{
+    const code = CODE; if (!code) return;
+    try { const {fs, db} = await fbInit();
+      await fs.updateDoc(fs.doc(db, "alumnos", code), {scores:S.scores, done:S.done, checks:S.checks, actualizado:fs.serverTimestamp()});
+      if (CODE === code) setSync("ok");
+    } catch(e) { if (CODE === code) setSync("err"); }
+  }, 700);
+}
+function renderEntrar(){
+  if (CODE) return `<div class="unit-head"><p class="eyebrow">Mi cuenta · My account</p><h1>Ha entrado con su código</h1><p class="en h1en" lang="en">You are signed in with your code</p>
+    <p class="lead" style="margin-top:12px;font-size:1.3rem"><b>${CODE}</b></p>
+    <p style="margin-top:8px">${bi(["Sus notas y su progreso se guardan en su cuenta. Puede seguir en cualquier ordenador o móvil escribiendo este código.","Your marks and progress are saved in your account. You can continue on any computer or phone by typing this code."])}</p>
+    <div class="hero-actions"><a class="btn" href="#inicio">Ir al curso <span class="en-inline" style="color:inherit">Go to the course</span></a><button class="btn ghost" data-logout>Salir <span class="en-inline">Sign out</span></button></div>
+    <p class="small-note" style="margin-top:12px">${bi(["Si el ordenador es del centro, pulse «Salir» al terminar.","If it is a school computer, press «Salir» when you finish."])}</p></div>`;
+  return `<div class="unit-head"><p class="eyebrow">Mi cuenta · My account</p><h1>Entrar con mi código</h1><p class="en h1en" lang="en">Sign in with my code</p>
+    <p style="margin-top:10px">${bi(["Su docente le da un código en un papel, por ejemplo MOLA-4821. Con él se guardan sus notas y puede seguir en cualquier aparato. No hace falta nombre ni contraseña.","Your teacher gives you a code on a piece of paper, for example MOLA-4821. With it your marks are saved and you can continue on any device. No name or password is needed."])}</p>
+    <form class="login" id="login-form" autocomplete="off">
+      <label for="code-in">Su código <span class="en-inline">Your code</span></label>
+      <input type="text" id="code-in" placeholder="MOLA-4821" maxlength="12" autocapitalize="characters" spellcheck="false" enterkeyhint="go">
+      <label class="check" for="code-rem"><input type="checkbox" id="code-rem"><span>${bi(["Recordar en este aparato. Márquelo solo si el móvil u ordenador es suyo.","Remember on this device. Tick it only if the phone or computer is yours."])}</span></label>
+      <button class="btn" type="submit">Entrar <span class="en-inline" style="color:inherit">Sign in</span></button>
+      <p class="fb" id="login-msg" hidden></p>
+    </form></div>`;
+}
 
 /* ---------- Puntuación ----------
    Cuenta solo el PRIMER intento de cada pregunta o elemento de clasificar.
@@ -812,7 +892,8 @@ function renderNav(cur){
 
 /* ---------- Inicio ---------- */
 function renderHome(){
-  let h = `<div class="hero"><div>
+  let h = CODE ? "" : `<div class="acc-banner"><p>${bi(["¿Tiene un código de clase? Entre con él para guardar sus notas y seguir en cualquier aparato.","Do you have a class code? Sign in to save your marks and continue on any device."])}</p><a class="btn" href="#entrar">👤 Entrar con mi código <span class="en-inline" style="color:inherit">Sign in</span></a></div>`;
+  h += `<div class="hero"><div>
     <p class="eyebrow">Educación de personas adultas · EIPA nivel I y II</p>
     <h1>Curso de informática básica</h1>
     <p class="en" style="font-size:1.1rem">Basic computer course</p>
@@ -1065,7 +1146,7 @@ function renderNotas(){
     return `<tr><td class="hide-sm">${i+1}</td><td><a href="#${u.id}">${u.t[0]}</a><span class="en" lang="en">${u.t[1]}</span></td><td class="hide-sm">${sc ? `${sc.ok} / ${sc.total}` : "—"}</td><td class="n">${sc ? fmtNota(sc.nota) : "—"}</td><td class="n">${sc ? fmtNota(sc.best) : "—"}</td></tr>`; }).join("");
   return `<div class="unit-head"><p class="eyebrow">Mi progreso</p><h1>Mis notas</h1><p class="en h1en" lang="en">My marks</p>
     <p class="lead">${bi([`Cuestionarios hechos: ${hechas.length} de ${U.length}.${media!==null ? ` Nota media (con sus mejores notas): ${fmtNota(media)}.` : ""}`,`Quizzes done: ${hechas.length} of ${U.length}.${media!==null ? ` Average (best marks): ${fmtNota(media)}.` : ""}`])}</p>
-    <p class="small-note">${bi(["Las notas se guardan en este aparato y en este navegador.","Marks are saved on this device and in this browser."])}</p></div>
+    <p class="small-note">${CODE ? bi([`Sus notas se guardan en su cuenta (código ${CODE}). Su docente también las ve.`,`Your marks are saved in your account (code ${CODE}). Your teacher can see them too.`]) : bi(["Sin código, las notas se guardan solo en este aparato. Entre con su código de clase para guardarlas en su cuenta.","Without a code, marks are saved only on this device. Sign in with your class code to save them in your account."])}</p></div>
     <table class="notas-tbl"><thead><tr><th class="hide-sm">#</th><th>Unidad · Unit</th><th class="hide-sm">Aciertos · Right</th><th style="text-align:right">Nota · Mark</th><th style="text-align:right">Mejor · Best</th></tr></thead><tbody>${rows}</tbody></table>`;
 }
 
@@ -1076,6 +1157,7 @@ function route(){
   const main = $("#main");
   ATT = null; for (const k in RETRY) delete RETRY[k];
   if (u){ main.innerHTML = renderUnit(u); main.querySelectorAll("[data-sim]").forEach(el=>SIMS[el.dataset.sim].init(el)); document.title = `${u.t[0]} · Informática básica EIPA`; }
+  else if (id==="entrar"){ main.innerHTML = renderEntrar(); document.title = "Entrar · Informática básica EIPA"; const ci = $("#code-in"); if (ci) setTimeout(()=>ci.focus(), 50); }
   else if (id==="notas"){ main.innerHTML = renderNotas(); document.title = "Mis notas · Informática básica EIPA"; }
   else if (id==="guia"){ main.innerHTML = renderGuia(); document.title = "Guía docente · Informática básica EIPA"; }
   else if (id==="cuaderno"){ main.innerHTML = renderCuaderno(); document.title = "Cuaderno de fichas · Informática básica EIPA"; }
@@ -1114,6 +1196,7 @@ document.addEventListener("click", e=>{
     return; }
   const dv = e.target.closest("[data-dev]");
   if (dv){ S.device = dv.dataset.dev; save(); applyPrefs(); document.querySelectorAll("[data-dev]").forEach(b=>b.setAttribute("aria-pressed", b.dataset.dev===S.device)); return; }
+  if (e.target.closest("[data-logout]")){ cloudLogout(); location.hash = "#inicio"; route(); return; }
   const rt = e.target.closest("[data-retry]");
   if (rt){ const id = rt.dataset.retry, u = U.find(x=>x.id===id);
     // nuevo intento: la nota guardada se mantiene hasta terminar el siguiente
@@ -1131,8 +1214,25 @@ document.addEventListener("click", e=>{
       speechSynthesis.cancel(); const ut = new SpeechSynthesisUtterance(txt); ut.lang = "es-ES"; ut.rate = 0.9; speechSynthesis.speak(ut); } catch(err) {} return; }
 });
 document.addEventListener("change", e=>{ const c = e.target.closest("[data-check]"); if (!c) return; S.checks[c.dataset.check] = c.checked; save(); c.closest(".check").classList.toggle("on", c.checked); });
+document.addEventListener("submit", async e=>{
+  if (e.target.id !== "login-form") return;
+  e.preventDefault();
+  const msg = $("#login-msg"), btn = e.target.querySelector("button[type=submit]"), code = normCode($("#code-in").value);
+  const say = (cls, p)=>{ msg.hidden = false; msg.className = "fb " + cls; msg.innerHTML = bi(p); };
+  if (!code) return say("bad", ["✘ El código tiene 4 letras y 4 números, por ejemplo MOLA-4821.","✘ The code has 4 letters and 4 numbers, for example MOLA-4821."]);
+  btn.disabled = true; say("", ["Comprobando…","Checking…"]);
+  try { await cloudLogin(code, $("#code-rem").checked); location.hash = "#inicio"; route(); }
+  catch(err){ btn.disabled = false;
+    say("bad", err.nf ? ["✘ Ese código no existe. Revíselo o pregunte a su docente.","✘ That code does not exist. Check it or ask your teacher."]
+                      : ["✘ No hay conexión con internet. Puede usar el curso sin código y probar más tarde.","✘ No internet connection. You can use the course without a code and try later."]); }
+});
 window.addEventListener("hashchange", route);
-applyPrefs(); route();
+applyPrefs(); accUI(); route();
+(async ()=>{ const c = normCode(storedCode()); if (!c) return;
+  const a = $("#t-acc"); if (a) a.textContent = "👤 Conectando…";
+  try { await cloudLogin(c, false); route(); }
+  catch(err){ if (err.nf) cloudLogout(); else { accUI(); const s = $("#sync"); if (s){ s.className = "sync err"; s.textContent = "⚠ Sin conexión"; } } }
+})();
 </script>
 </body>
 </html>
