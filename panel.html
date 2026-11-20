@@ -76,6 +76,11 @@ td input.apodo{width:120px;padding:4px 6px;border-width:1px}
 .card ol{margin:2mm 0 0;padding-left:5mm}
 .card .en{color:#555;font-style:italic;font-size:9pt}
 .card .name{margin-top:3mm;border-bottom:1px solid #999;height:7mm;font-size:9pt;color:#555}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin:6px 0 4px;border-bottom:2px solid var(--line)}
+.tabs button{border:0;background:none;padding:8px 14px;font-weight:700;color:var(--muted);border-bottom:4px solid transparent;margin-bottom:-2px}
+.tabs button[aria-selected="true"]{color:var(--accent);border-bottom-color:var(--accent)}
+td select.lvl{padding:3px 4px;border:1px solid var(--line);border-radius:6px;background:var(--surface-2)}
+th.u small{display:block;font-weight:400}
 @media (max-width:860px){ .wrap{grid-template-columns:1fr} }
 @media print{
   @page{size:A4;margin:10mm}
@@ -87,7 +92,7 @@ td input.apodo{width:120px;padding:4px 6px;border-width:1px}
 </head>
 <body>
 <header class="top"><div class="top-in">
-  <h1>Panel docente<small>Curso de Informática Básica · EIPA</small></h1>
+  <h1>Panel docente<small>Aula Digital EIPA · Informática · IA · LibreOffice</small></h1>
   <a class="btn ghost" href="./" target="_blank" rel="noopener">Abrir el curso</a>
   <span id="who" class="small muted"></span>
   <button class="btn ghost" id="logout" hidden>Salir</button>
@@ -111,6 +116,8 @@ td input.apodo{width:120px;padding:4px 6px;border-width:1px}
 </div>
 <div id="print-area"></div>
 
+<script src="datos-ia.js"></script>
+<script src="datos-libreoffice.js"></script>
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
@@ -120,7 +127,23 @@ const app = initializeApp({apiKey:"AIzaSyCKbkwgRjIHfcW_xhA7agvSPJH1NXhMJQc", aut
 const auth = getAuth(app), db = getFirestore(app);
 const $ = s => document.querySelector(s);
 const COURSE_URL = "vicsanuiz-crypto.github.io/curso-informatica";
-const UNITS = ["Hardware y software","El ratón","El teclado","Encender, apagar y el escritorio","Las ventanas","Archivos y carpetas","Escribir un documento","Internet y el navegador","El correo electrónico","Conocer el móvil","Ajustes básicos del móvil","Llamadas, contactos y WhatsApp","Cámara, fotos y aplicaciones","Contraseñas y seguridad","Timos y bulos","Trámites por internet"];
+const INF = ["Hardware y software","El ratón","El teclado","Encender, apagar y el escritorio","Las ventanas","Archivos y carpetas","Escribir un documento","Internet y el navegador","El correo electrónico","Conocer el móvil","Ajustes básicos del móvil","Llamadas, contactos y WhatsApp","Cámara, fotos y aplicaciones","Contraseñas y seguridad","Timos y bulos","Trámites por internet"];
+const IAU = typeof IA_UNITS !== "undefined" ? IA_UNITS : [], LOU = typeof LO_UNITS !== "undefined" ? LO_UNITS : [];
+// Columnas de cada curso: {id, lab, t}. En La IA y Yo dependen del nivel de cada alumno.
+const COLS = {
+  inf: INF.map((t,i)=>({id:"u"+(i+1), lab:"U"+(i+1), t})),
+  lo: LOU.map(u=>({id:u.id, lab:(u.b==="W"?"W":"C")+u.id.slice(1), t:(u.b==="W"?"Writer: ":"Calc: ")+u.t[0]})),
+  ia: lvl => IAU.filter(u=>u.b==="N"+lvl).map((u,i)=>({id:u.id, lab:"S"+(i+1), t:`Nivel ${lvl} · ${u.t[0]}`}))
+};
+const CNAME = {inf:"Informática básica", ia:"La IA y Yo", lo:"LibreOffice"};
+let curC = "inf";
+// Nivel de La IA y Yo de un alumno: el asignado o, si no hay, el que más ha usado
+function iaLevel(s){
+  if ([1,2,3].includes(s.nivelIA)) return s.nivelIA;
+  const sc = s.scores || {}, cnt = [1,2,3].map(l=>Object.keys(sc).filter(k=>sc[k] && k.startsWith("ia"+l+"s")).length);
+  return cnt[1] > cnt[0] && cnt[1] >= cnt[2] ? 2 : cnt[2] > cnt[0] ? 3 : 1;
+}
+const colsFor = (s, c) => c==="ia" ? COLS.ia(iaLevel(s)) : COLS[c];
 const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const fmt = n => n == null ? "" : (Math.round(n*10)/10).toLocaleString("es-ES");
 const gcls = n => n >= 7 ? "hi" : n >= 5 ? "md" : "lo";
@@ -170,22 +193,27 @@ function selectGroup(id){
 }
 
 /* ---- Alumnado ---- */
-function stats(s){
-  const sc = s.scores || {}, keys = Object.keys(sc).filter(k=>sc[k]);
-  const media = keys.length ? keys.reduce((a,k)=>a+sc[k].best, 0)/keys.length : null;
-  const done = Object.values(s.done || {}).filter(Boolean).length;
-  const t = s.actualizado && s.actualizado.toDate ? s.actualizado.toDate() : null;
-  return {n:keys.length, media, done, last: t ? t.toLocaleDateString("es-ES", {day:"numeric", month:"short"}) + " " + t.toLocaleTimeString("es-ES", {hour:"2-digit", minute:"2-digit"}) : "—"};
+function lastSeen(s){ const t = s.actualizado && s.actualizado.toDate ? s.actualizado.toDate() : null;
+  return t ? t.toLocaleDateString("es-ES", {day:"numeric", month:"short"}) + " " + t.toLocaleTimeString("es-ES", {hour:"2-digit", minute:"2-digit"}) : "—"; }
+function stats(s, c){
+  const sc = s.scores || {}, cols = colsFor(s, c), got = cols.filter(k=>sc[k.id]);
+  const media = got.length ? got.reduce((a,k)=>a+sc[k.id].best, 0)/got.length : null;
+  // En La IA y Yo, cuántas sesiones con nota tiene en los otros niveles
+  const otros = c!=="ia" ? "" : [1,2,3].filter(l=>l!==iaLevel(s)).map(l=>{ const n = COLS.ia(l).filter(k=>sc[k.id]).length; return n ? `N${l}: ${n}` : ""; }).filter(Boolean).join(" · ");
+  return {n:got.length, total:cols.length, media, otros, last:lastSeen(s)};
 }
 function renderMain(){
   const g = groups.find(x=>x.id===cur);
   if (!g){ $("#main").innerHTML = `<p class="muted">Cree un grupo o elija uno de la lista.</p>`; return; }
-  const st = students.map(stats), withMark = st.filter(x=>x.media!=null);
+  const c = curC, st = students.map(s=>stats(s, c)), withMark = st.filter(x=>x.media!=null);
   const avg = withMark.length ? withMark.reduce((a,x)=>a+x.media,0)/withMark.length : null;
-  const head = UNITS.map((u,i)=>`<th class="u" title="${esc(u)}">U${i+1}</th>`).join("");
-  const rows = students.map((s,i)=>{ const x = st[i], sc = s.scores || {};
-    const cells = UNITS.map((_,k)=>{ const v = sc["u"+(k+1)]; return `<td class="u">${v ? `<span class="g ${gcls(v.best)}" title="${esc(UNITS[k])}: mejor ${fmt(v.best)} · última ${fmt(v.nota)}">${fmt(v.best)}</span>` : `<span class="muted">·</span>`}</td>`; }).join("");
-    return `<tr><td class="code">${s.code}</td><td><input class="apodo" data-apodo="${s.code}" value="${esc(s.apodo)}" placeholder="iniciales" maxlength="20"></td><td>${x.n}/16</td><td>${x.media!=null ? `<span class="g ${gcls(x.media)}">${fmt(x.media)}</span>` : "—"}</td>${cells}<td class="small muted">${x.last}</td><td><button class="del" data-del="${s.code}" title="Borrar este código">✕</button></td></tr>`; }).join("");
+  const ncols = c==="ia" ? 12 : COLS[c].length;
+  const head = c==="ia" ? Array.from({length:12},(_,i)=>`<th class="u">S${i+1}</th>`).join("") : COLS[c].map(k=>`<th class="u" title="${esc(k.t)}">${k.lab}</th>`).join("");
+  const rows = students.map((s,i)=>{ const x = st[i], sc = s.scores || {}, cols = colsFor(s, c);
+    const cells = cols.map(k=>{ const v = sc[k.id]; return `<td class="u">${v ? `<span class="g ${gcls(v.best)}" title="${esc(k.t)}: mejor ${fmt(v.best)} · última ${fmt(v.nota)}">${fmt(v.best)}</span>` : `<span class="muted" title="${esc(k.t)}">·</span>`}</td>`; }).join("");
+    const lvl = c==="ia" ? `<td><select class="lvl" data-lvl="${s.code}" title="Nivel de La IA y Yo">${[0,1,2,3].map(l=>`<option value="${l}" ${(s.nivelIA||0)===l?"selected":""}>${l ? "Nivel "+l : "Sin asignar (N"+iaLevel(s)+")"}</option>`).join("")}</select></td>` : "";
+    return `<tr><td class="code">${s.code}</td><td><input class="apodo" data-apodo="${s.code}" value="${esc(s.apodo)}" placeholder="iniciales" maxlength="20"></td>${lvl}<td>${x.n}/${x.total}</td><td>${x.media!=null ? `<span class="g ${gcls(x.media)}">${fmt(x.media)}</span>` : "—"}</td>${cells}${c==="ia" ? `<td class="small muted">${x.otros || "—"}</td>` : ""}<td class="small muted">${x.last}</td><td><button class="del" data-del="${s.code}" title="Borrar este código">✕</button></td></tr>`; }).join("");
+  const tabs = Object.keys(CNAME).map(k=>`<button role="tab" data-tab="${k}" aria-selected="${k===c}">${CNAME[k]}</button>`).join("");
   $("#main").innerHTML = `
     <div class="ghead"><h2>${esc(g.nombre)}</h2>
       <div class="row">
@@ -194,9 +222,10 @@ function renderMain(){
         <button class="btn ghost" id="csv" ${students.length?"":"disabled"}>⬇ Excel (CSV)</button>
         <button class="btn danger" id="del-group">Borrar grupo</button>
       </div></div>
-    <div class="stats"><div class="stat"><b>${students.length}</b>alumnos</div><div class="stat"><b>${st.filter(x=>x.n>0).length}</b>han hecho algún cuestionario</div><div class="stat"><b>${avg!=null?fmt(avg):"—"}</b>nota media del grupo</div></div>
-    ${students.length ? `<div class="tbl-wrap"><table><thead><tr><th>Código</th><th>Apodo</th><th>Cuestionarios</th><th>Media</th>${head}<th>Última vez</th><th></th></tr></thead><tbody>${rows}</tbody></table></div>
-    <p class="small muted" style="margin-top:8px">Cada casilla muestra la mejor nota de esa unidad. Pase el ratón por encima para ver también la última. Se actualiza sola mientras el alumnado trabaja.</p>` : `<p class="muted">Este grupo aún no tiene códigos. Escriba cuántos alumnos tiene y pulse «Crear códigos».</p>`}
+    <div class="tabs" role="tablist">${tabs}</div>
+    <div class="stats"><div class="stat"><b>${students.length}</b>alumnos</div><div class="stat"><b>${st.filter(x=>x.n>0).length}</b>han hecho algún cuestionario de ${CNAME[c]}</div><div class="stat"><b>${avg!=null?fmt(avg):"—"}</b>nota media en ${CNAME[c]}</div></div>
+    ${students.length ? `<div class="tbl-wrap"><table><thead><tr><th>Código</th><th>Apodo</th>${c==="ia"?"<th>Nivel</th>":""}<th>Cuestionarios</th><th>Media</th>${head}${c==="ia"?"<th>Otros niveles</th>":""}<th>Última vez</th><th></th></tr></thead><tbody>${rows}</tbody></table></div>
+    <p class="small muted" style="margin-top:8px">${c==="ia" ? "Elija el nivel de cada alumno: el curso le abrirá ese nivel. Las columnas S1–S12 son las sesiones de su nivel; «Otros niveles» cuenta las sesiones con nota en los demás. " : c==="lo" ? "W1–W12 son las unidades de Writer y C1–C12 las de Calc. " : ""}Cada casilla muestra la mejor nota. Pase el ratón por encima para ver el título y la última nota. Se actualiza sola mientras el alumnado trabaja.</p>` : `<p class="muted">Este grupo aún no tiene códigos. Escriba cuántos alumnos tiene y pulse «Crear códigos».</p>`}
     <p class="msg" id="main-msg" hidden></p>`;
 }
 $("#main").addEventListener("submit", async e=>{
@@ -206,12 +235,15 @@ $("#main").addEventListener("submit", async e=>{
   btn.disabled = false;
 });
 $("#main").addEventListener("change", e=>{
+  const l = e.target.closest("[data-lvl]");
+  if (l){ const v = +l.value; updateDoc(doc(db, "alumnos", l.dataset.lvl), {nivelIA: v || null}).catch(err=>showMsg("No se guardó el nivel: " + err.code, "bad")); return; }
   const a = e.target.closest("[data-apodo]"); if (!a) return;
   updateDoc(doc(db, "alumnos", a.dataset.apodo), {apodo:a.value.trim().slice(0,20)}).catch(err=>showMsg("No se guardó el apodo: " + err.code, "bad"));
 });
 $("#main").addEventListener("click", async e=>{
   const d = e.target.closest("[data-del]");
   if (d){ if (!confirm(`¿Borrar el código ${d.dataset.del} y todas sus notas? No se puede deshacer.`)) return; await deleteDoc(doc(db, "alumnos", d.dataset.del)); return; }
+  const tb = e.target.closest("[data-tab]"); if (tb){ curC = tb.dataset.tab; renderMain(); return; }
   if (e.target.closest("#print")) return printCards();
   if (e.target.closest("#csv")) return downloadCSV();
   if (e.target.closest("#del-group")){
@@ -243,7 +275,7 @@ async function createStudent(){
 function printCards(){
   const g = groups.find(x=>x.id===cur);
   $("#print-area").innerHTML = `<div class="cards">${students.map(s=>`<div class="card">
-    <h3>Curso de Informática Básica <span class="en">Basic Computer Course</span></h3>
+    <h3>Aula Digital EIPA <span class="en">Digital Classroom</span></h3>
     <div>Su código · <span class="en">Your code</span></div>
     <div class="c">${s.code}</div>
     <ol><li>Abra / <span class="en">Open</span>: <b>${COURSE_URL}</b></li><li>Pulse «👤 Entrar con código» · <span class="en">Press «Sign in with code»</span></li><li>Escriba su código · <span class="en">Type your code</span></li></ol>
@@ -254,11 +286,14 @@ function printCards(){
 /* ---- CSV para Excel (separador ;) ---- */
 function downloadCSV(){
   const g = groups.find(x=>x.id===cur), q = v => `"${String(v ?? "").replace(/"/g,'""')}"`;
-  const lines = [["Código","Apodo","Cuestionarios hechos","Media (mejores notas)","Unidades terminadas", ...UNITS.map((u,i)=>`U${i+1} ${u}`), "Última vez"].map(q).join(";")];
-  students.forEach(s=>{ const x = stats(s), sc = s.scores || {};
-    lines.push([s.code, s.apodo, x.n, fmt(x.media), x.done, ...UNITS.map((_,k)=>sc["u"+(k+1)] ? fmt(sc["u"+(k+1)].best) : ""), x.last].map(q).join(";")); });
+  const c = curC, ia = c==="ia";
+  // En La IA y Yo se exportan los tres niveles completos (36 columnas) y el nivel de cada alumno
+  const cols = ia ? [1,2,3].flatMap(l=>COLS.ia(l).map(k=>({...k, lab:`N${l} ${k.lab}`}))) : COLS[c];
+  const lines = [["Código","Apodo", ...(ia ? ["Nivel"] : []), "Cuestionarios hechos","Media (mejores notas)", ...cols.map(k=>`${k.lab} ${k.t}`), "Última vez"].map(q).join(";")];
+  students.forEach(s=>{ const x = stats(s, c), sc = s.scores || {};
+    lines.push([s.code, s.apodo, ...(ia ? [iaLevel(s)] : []), `${x.n}/${x.total}`, fmt(x.media), ...cols.map(k=>sc[k.id] ? fmt(sc[k.id].best) : ""), x.last].map(q).join(";")); });
   const blob = new Blob(["﻿" + lines.join("\r\n")], {type:"text/csv;charset=utf-8"});
-  const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = `Notas_${g.nombre.replace(/[^\wÀ-ÿ-]+/g,"_")}.csv`; a.click();
+  const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = `Notas_${CNAME[c].replace(/\s+/g,"_")}_${g.nombre.replace(/[^\wÀ-ÿ-]+/g,"_")}.csv`; a.click();
   setTimeout(()=>URL.revokeObjectURL(a.href), 1000);
 }
 </script>

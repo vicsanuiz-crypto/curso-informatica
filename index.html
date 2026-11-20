@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Curso de Informática Básica EIPA</title>
+<title>Aula Digital EIPA</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Lexend:wght@500;700&display=swap" rel="stylesheet">
@@ -295,6 +295,68 @@ body.dev-android .dev-only.android, body.dev-iphone .dev-only.iphone{display:blo
 .login .btn{justify-self:start;font-size:1.05rem}
 .acc-banner{display:flex;gap:14px;align-items:center;justify-content:space-between;flex-wrap:wrap;background:var(--surface);border:2px solid var(--mark);border-radius:var(--r);padding:14px 18px;margin-bottom:18px}
 .acc-banner p{max-width:62ch}
+/* Simulador de Writer */
+.wsim{border:1px solid var(--line);border-radius:var(--r);overflow:hidden;background:var(--surface-2)}
+.wbar{display:flex;flex-wrap:wrap;gap:4px;align-items:center;padding:6px 8px;background:var(--surface);border-bottom:1px solid var(--line)}
+.wbar button{border:1px solid var(--line);background:var(--surface);border-radius:6px;padding:4px 8px;min-width:44px;display:flex;flex-direction:column;align-items:center;line-height:1.1}
+.wbar button small{font-size:.62rem;color:var(--muted)}
+.wbar button:hover{border-color:var(--accent)}
+.wsize{font-size:.8rem;display:flex;gap:4px;align-items:center}
+.wsize select{font:inherit;padding:3px}
+.wsep{width:1px;height:28px;background:var(--line);margin:0 4px}
+.wpage{background:#fff;color:#111;margin:14px auto;max-width:560px;min-height:220px;padding:28px 34px;box-shadow:0 2px 10px rgba(0,0,0,.15);font-family:"Liberation Serif","Times New Roman",serif;font-size:1rem}
+.wp{margin:0 0 10px;cursor:text;user-select:none;-webkit-user-select:none}
+.wp.li{display:list-item;list-style:disc;margin-left:22px;margin-bottom:2px}
+.ww{border-radius:2px;cursor:pointer}
+.ww.wsel{background:#b4d5fe}
+.ww.f-b{font-weight:700}.ww.f-i{font-style:italic}.ww.f-u{text-decoration:underline}
+/* Simulador de Calc */
+.csim{border:1px solid var(--line);border-radius:var(--r);overflow:hidden;background:var(--surface)}
+.cfbar{display:flex;align-items:center;gap:6px;padding:6px 8px;border-bottom:1px solid var(--line);background:var(--surface-2)}
+.cname{min-width:56px;text-align:center;border:1px solid var(--line);border-radius:4px;background:var(--surface);padding:3px 6px;font-weight:700;font-variant-numeric:tabular-nums}
+.cfx{font-style:italic;font-weight:700;color:var(--muted)}
+.cinput{flex:1;min-width:0;font-family:Consolas,monospace;font-size:1rem;padding:5px 8px;border:2px solid var(--accent);border-radius:4px;background:#fff;color:#111}
+.cgrid-wrap{overflow-x:auto}
+.cgrid{border-collapse:collapse;font-family:"Liberation Sans",Arial,sans-serif;font-size:.92rem;background:#fff;color:#111;min-width:100%}
+.cgrid th{background:#eef1f4;color:#333;font-weight:400;border:1px solid #c9ced4;padding:2px 6px;min-width:28px;text-align:center}
+.cgrid td{border:1px solid #d9dde2;padding:3px 8px;min-width:96px;height:26px;white-space:nowrap;cursor:cell}
+.cgrid td.num{text-align:right;font-variant-numeric:tabular-nums}
+.cgrid td.sel{outline:2px solid #1a6ad6;outline-offset:-2px;background:#eef5ff}
+.cgrid td.err{color:#b3261e;font-weight:700}
+details.nav-block > summary p::before{content:"▾ ";color:var(--muted)}
+details.nav-block:not([open]) > summary p::before{content:"▸ "}
+/* Aula Digital: portada y cursos */
+.courses{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:20px}
+.course-card{background:var(--surface);border:1px solid var(--line);border-top:8px solid var(--accent);border-radius:var(--r);padding:18px;display:flex;flex-direction:column;gap:8px}
+.course-card.c-ia{border-top-color:var(--mark)} .course-card.c-lo{border-top-color:var(--ok)}
+.course-card h2{font-size:1.4rem}
+.course-card .hero-actions{margin-top:auto;padding-top:6px}
+.cprog{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:.85rem;color:var(--muted)}
+.cprog .prog-bar{width:120px}
+.fig.big-ic{display:grid;place-items:center;font-size:7rem;line-height:1}
+.hero.hub{background:linear-gradient(120deg,var(--surface) 60%,var(--surface-2))}
+@media (max-width:980px){.courses{grid-template-columns:1fr}}
+.nav-home,.nav-course{margin-bottom:4px}
+.nav-course{background:var(--surface-2)}
+details.nav-block > summary{list-style:none;cursor:pointer}
+details.nav-block > summary::-webkit-details-marker{display:none}
+.tag.mine{background:var(--mark);color:#1b1400}
+.chip.on{background:var(--accent);color:var(--accent-ink) !important;border-color:var(--accent)}
+.u-ic{font-size:.9em}
+/* Unidades: pasos, supuestos y prompts */
+.howto-steps{margin:0;padding-left:1.4em;display:grid;gap:8px}
+.howto-steps li{padding-left:4px}
+.tip{background:var(--surface-2);border-left:4px solid var(--mark);border-radius:8px;padding:8px 12px}
+.kind{display:inline-block;font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:3px 10px;border-radius:999px;background:var(--surface-2);color:var(--accent);margin-bottom:6px}
+.q-case{border-left:5px solid var(--mark)}
+.case-box{background:var(--surface-2);border:1px dashed var(--line);border-radius:10px;padding:10px 12px;margin-bottom:8px;font-weight:700}
+.case-box .en{font-weight:400}
+.prompt-box{margin-top:12px;background:var(--surface);border:2px dashed var(--accent);border-radius:var(--r);padding:14px 16px;display:grid;gap:8px}
+.ptxt{white-space:pre-wrap;overflow-wrap:anywhere;font-size:.95rem}
+.prompt-box .chip{justify-self:start}
+.warn-note{background:var(--surface-2);border-left:5px solid var(--mark);border-radius:8px;padding:10px 12px}
+.prose h3{margin:14px 0 6px}
+.toc{columns:3}
 @media (max-width:560px){.notas-tbl .hide-sm{display:none}.notas-tbl th,.notas-tbl td{padding:8px 6px}.score{grid-template-columns:1fr}.score .nota{grid-row:auto;text-align:left}}
 </style>
 </head>
@@ -303,7 +365,7 @@ body.dev-android .dev-only.android, body.dev-iphone .dev-only.iphone{display:blo
   <div class="top-in">
     <a class="brand" href="#inicio">
       <svg class="logo" viewBox="0 0 40 40" aria-hidden="true"><rect x="3" y="6" width="26" height="18" rx="3" fill="#0a58a8"/><rect x="13" y="24" width="6" height="5" fill="#0a58a8"/><rect x="9" y="29" width="14" height="3" rx="1.5" fill="#0a58a8"/><rect x="25" y="14" width="13" height="23" rx="3" fill="#f2b705" stroke="#13202c" stroke-width="1.5"/><circle cx="31.5" cy="33" r="1.4" fill="#13202c"/></svg>
-      <span><b>Informática básica</b><small>EIPA · Ordenador y móvil</small></span>
+      <span><b>Aula Digital EIPA</b><small>Informática · IA · LibreOffice</small></span>
     </a>
     <div class="ctrls">
       <button class="chip" id="t-en" aria-pressed="true" title="Mostrar u ocultar los subtítulos en inglés">English subtitles</button>
@@ -323,6 +385,8 @@ body.dev-android .dev-only.android, body.dev-iphone .dev-only.iphone{display:blo
 </div>
 <div id="print-area"></div>
 
+<script src="datos-ia.js"></script>
+<script src="datos-libreoffice.js"></script>
 <script>
 /* ---------- Ilustraciones ---------- */
 const SVG = {
@@ -390,9 +454,25 @@ const B = {
  A:["Lo primero","First steps"],
  B:["El ordenador con Windows","The Windows computer"],
  C:["El móvil: Android e iPhone","The mobile phone: Android and iPhone"],
- D:["Seguridad y trámites","Safety and online services"]
+ D:["Seguridad y trámites","Safety and online services"],
+ N1:["Nivel 1 · Primeros pasos","Level 1 · First steps"],
+ N2:["Nivel 2 · La IA en mi día a día","Level 2 · AI in my daily life"],
+ N3:["Nivel 3 · Crear con IA","Level 3 · Creating with AI"],
+ W:["Writer: documentos de texto","Writer: text documents"],
+ K:["Calc: hojas de cálculo","Calc: spreadsheets"]
 };
 const DEV = {pc:["Ordenador","Computer"], movil:["Móvil","Phone"], ambos:["Ordenador y móvil","Computer and phone"]};
+
+/* ---------- Cursos del Aula Digital (en este orden) ---------- */
+const COURSES = {
+ inf:{t:["Informática básica","Basic computing"], ic:"💻", blocks:["A","B","C","D"], word:["Unidad","Unit"], pernum:false,
+      d:["Desde cero: el ordenador con Windows, el móvil Android o iPhone, internet, el correo y la seguridad.","From scratch: the Windows computer, Android or iPhone, the internet, email and safety."]},
+ ia: {t:["La IA y Yo","AI and Me"], ic:"🤖", blocks:["N1","N2","N3"], word:["Sesión","Session"], pernum:true,
+      d:["Usar la inteligencia artificial sin miedo: hablarle, pedirle bien, crear imágenes y vídeos y que no te engañen. Tres niveles.","Use artificial intelligence without fear: talk to it, ask well, create images and videos, and don't get tricked. Three levels."]},
+ lo: {t:["LibreOffice","LibreOffice"], ic:"📝", blocks:["W","K"], word:["Unidad","Unit"], pernum:true,
+      d:["El documento de texto (Writer) y la hoja de cálculo (Calc): cartas, currículum, tablas, sumas, gráficos y un presupuesto.","Text documents (Writer) and spreadsheets (Calc): letters, CV, tables, sums, charts and a budget."]}
+};
+const CKEYS = Object.keys(COURSES);
 
 /* ---------- Unidades ----------
    Formato: textos en pares [español, inglés]. En las preguntas, la primera opción es la correcta (se barajan al mostrarlas). */
@@ -749,6 +829,14 @@ const U = [
   practice:[["Busque la web del Servicio Canario de la Salud y encuentre dónde se pide cita.","Find the Canary Health Service website and find where to book an appointment."],["Haga una captura de pantalla en el móvil y otra en el ordenador.","Take a screenshot on your phone and another on the computer."],["Rellene el formulario de práctica que le dé su docente, con datos inventados.","Fill in the practice form your teacher gives you, with made-up details."],["Pregunte en el centro cómo conseguir Cl@ve.","Ask at your school how to get Cl@ve."]]
 }
 ];
+U.forEach(u=>{ u.c = u.c || "inf"; });
+if (typeof IA_UNITS !== "undefined") U.push(...IA_UNITS);
+if (typeof LO_UNITS !== "undefined") U.push(...LO_UNITS);
+const unitsOf = c => U.filter(u=>u.c===c);
+function unitNum(u){ const C = COURSES[u.c], list = C.pernum ? U.filter(x=>x.c===u.c && x.b===u.b) : unitsOf(u.c); return list.indexOf(u) + 1; }
+function unitLabel(u){ const w = COURSES[u.c].word; return [`${w[0]} ${unitNum(u)}`, `${w[1]} ${unitNum(u)}`]; }
+let CUR_C = "inf";   // curso que se está viendo
+let NIVEL_IA = null; // nivel de La IA y Yo que asigna el docente (si lo hay)
 
 /* ---------- Estado ---------- */
 let S = {done:{}, checks:{}, scores:{}, device:"android", big:false, en:true};
@@ -787,12 +875,13 @@ async function cloudLogin(code, remember){
   const d = snap.data();
   if (!CODE) LOCALP = {done:S.done, checks:S.checks, scores:S.scores};
   CODE = code; S.done = d.done || {}; S.checks = d.checks || {}; S.scores = d.scores || {};
+  NIVEL_IA = [1,2,3].includes(d.nivelIA) ? d.nivelIA : null;
   try { sessionStorage.setItem("cib-code", code); if (remember) localStorage.setItem("cib-code", code); } catch(e) {}
   accUI(); setSync("ok");
 }
 function cloudLogout(){
   if (LOCALP){ S.done = LOCALP.done; S.checks = LOCALP.checks; S.scores = LOCALP.scores; }
-  CODE = null; LOCALP = null; clearTimeout(pushT);
+  CODE = null; LOCALP = null; NIVEL_IA = null; clearTimeout(pushT);
   try { sessionStorage.removeItem("cib-code"); localStorage.removeItem("cib-code"); } catch(e) {}
   accUI();
 }
@@ -874,43 +963,93 @@ function okHTML(extra){ return `<span class="es">${OK[0]} ${extra ? extra[0] : "
 const LETTERS = "ABCDEFGH";
 
 /* ---------- Navegación ---------- */
+function courseDone(c){ return unitsOf(c).filter(u=>S.done[u.id]).length; }
 function renderNav(cur){
   let h = "";
-  for (const k of Object.keys(B)){
-    h += `<div class="nav-block"><p>${B[k][0]}<span class="en">${B[k][1]}</span></p>`;
-    U.forEach((u,i)=>{ if (u.b !== k) return;
-      h += `<a class="nav-link ${cur===u.id?"cur":""} ${S.done[u.id]?"done":""}" href="#${u.id}"><span class="nav-num">${S.done[u.id]?"✔":i+1}</span><span>${u.t[0]}<span class="en">${u.t[1]}</span></span>${S.scores[u.id] ? `<span class="nav-score">${fmtNota(S.scores[u.id].best)}</span>` : ""}</a>`; });
+  const onHub = cur==="inicio" || cur==="notas" || cur==="entrar" || cur==="guia";
+  if (onHub){
+    h += `<div class="nav-block"><p>Cursos <span class="en">Courses</span></p>`;
+    CKEYS.forEach(c=>{ const C = COURSES[c];
+      h += `<a class="nav-link" href="#curso/${c}"><span class="nav-num">${C.ic}</span><span>${C.t[0]}<span class="en">${C.t[1]}</span></span><span class="nav-score">${courseDone(c)}/${unitsOf(c).length}</span></a>`; });
     h += `</div>`;
+  } else {
+    const C = COURSES[CUR_C];
+    h += `<a class="nav-link nav-home" href="#inicio"><span class="nav-num">⌂</span><span>Todos los cursos<span class="en">All courses</span></span></a>`;
+    h += `<a class="nav-link nav-course ${cur==="curso/"+CUR_C?"cur":""}" href="#curso/${CUR_C}"><span class="nav-num">${C.ic}</span><span><b>${C.t[0]}</b><span class="en">${C.t[1]}</span></span></a>`;
+    const curU = U.find(x=>x.id===cur);
+    for (const k of C.blocks){
+      // En La IA y Yo solo se despliega el nivel que se está viendo (o el asignado)
+      const open = CUR_C!=="ia" || (curU ? curU.b===k : k===("N"+(NIVEL_IA||1)));
+      h += `<details class="nav-block" ${open ? "open" : ""}><summary><p>${B[k][0]}<span class="en">${B[k][1]}</span></p></summary>`;
+      U.forEach(u=>{ if (u.c !== CUR_C || u.b !== k) return;
+        h += `<a class="nav-link ${cur===u.id?"cur":""} ${S.done[u.id]?"done":""}" href="#${u.id}"><span class="nav-num">${S.done[u.id]?"✔":unitNum(u)}</span><span>${u.t[0]}<span class="en">${u.t[1]}</span></span>${S.scores[u.id] ? `<span class="nav-score">${fmtNota(S.scores[u.id].best)}</span>` : ""}</a>`; });
+      h += `</details>`;
+    }
   }
   h += `<div class="nav-block"><p>Mi progreso <span class="en">My progress</span></p><a class="nav-link ${cur==="notas"?"cur":""}" href="#notas"><span class="nav-num">★</span><span>Mis notas<span class="en">My marks</span></span></a></div>`;
-  h += `<div class="nav-block"><p>Docentes</p><a class="nav-link ${cur==="guia"?"cur":""}" href="#guia"><span class="nav-num">G</span><span>Guía docente</span></a><a class="nav-link ${cur==="cuaderno"?"cur":""}" href="#cuaderno"><span class="nav-num">F</span><span>Cuaderno de fichas</span></a></div>`;
+  h += `<div class="nav-block"><p>Docentes</p><a class="nav-link ${cur==="guia"?"cur":""}" href="#guia"><span class="nav-num">G</span><span>Guía docente</span></a><a class="nav-link ${cur==="cuaderno/"+CUR_C?"cur":""}" href="#cuaderno/${CUR_C}"><span class="nav-num">F</span><span>Fichas: ${COURSES[CUR_C].t[0]}</span></a><a class="nav-link" href="panel.html" target="_blank" rel="noopener"><span class="nav-num">P</span><span>Panel docente</span></a></div>`;
   $("#nav").innerHTML = h;
-  const n = Object.values(S.done).filter(Boolean).length;
-  $("#prog-i").style.width = (n/U.length*100)+"%";
-  $("#prog-t").textContent = `${n}/${U.length}`;
+  const list = onHub ? U : unitsOf(CUR_C), n = list.filter(u=>S.done[u.id]).length;
+  $("#prog-i").style.width = (n/list.length*100)+"%";
+  $("#prog-t").textContent = `${n}/${list.length}`;
+  $(".prog").title = onHub ? "Unidades terminadas en todos los cursos" : "Unidades terminadas en " + COURSES[CUR_C].t[0];
 }
 
-/* ---------- Inicio ---------- */
+/* ---------- Portada: los tres cursos ---------- */
+function accBanner(){ return CODE ? "" : `<div class="acc-banner"><p>${bi(["¿Tiene un código de clase? Entre con él para guardar sus notas y seguir en cualquier aparato.","Do you have a class code? Sign in to save your marks and continue on any device."])}</p><a class="btn" href="#entrar">👤 Entrar con mi código <span class="en-inline" style="color:inherit">Sign in</span></a></div>`; }
 function renderHome(){
-  let h = CODE ? "" : `<div class="acc-banner"><p>${bi(["¿Tiene un código de clase? Entre con él para guardar sus notas y seguir en cualquier aparato.","Do you have a class code? Sign in to save your marks and continue on any device."])}</p><a class="btn" href="#entrar">👤 Entrar con mi código <span class="en-inline" style="color:inherit">Sign in</span></a></div>`;
-  h += `<div class="hero"><div>
-    <p class="eyebrow">Educación de personas adultas · EIPA nivel I y II</p>
-    <h1>Curso de informática básica</h1>
-    <p class="en" style="font-size:1.1rem">Basic computer course</p>
-    <p class="lead">${bi(["Aprenda desde cero a usar el ordenador con Windows y el móvil, Android o iPhone. Cada unidad explica poco a poco y tiene ejercicios para practicar aquí y en su propio aparato.","Learn from scratch to use a Windows computer and a phone, Android or iPhone. Each unit explains step by step and has exercises to practise here and on your own device."])}</p>
-    <div class="hero-actions"><a class="btn" href="#u1">Empezar por la unidad 1 <span class="en-inline" style="color:inherit">Start</span></a><a class="btn ghost" href="#u10">Ir al móvil <span class="en-inline">Phone units</span></a></div>
+  let h = accBanner();
+  h += `<div class="hero hub"><div>
+    <p class="eyebrow">Educación de personas adultas · EIPA</p>
+    <h1>Aula Digital EIPA</h1>
+    <p class="en" style="font-size:1.1rem">Digital Classroom</p>
+    <p class="lead">${bi(["Tres cursos, uno detrás de otro: primero el ordenador y el móvil, después la inteligencia artificial y por último los programas de oficina. Con un solo código guarda su progreso en los tres.","Three courses, one after another: first the computer and the phone, then artificial intelligence and finally office programs. One code saves your progress in all three."])}</p>
   </div><figure class="fig" aria-hidden="true">${SVG.pc}</figure></div>
+  <div class="courses">`;
+  CKEYS.forEach((c,i)=>{ const C = COURSES[c], L = unitsOf(c), d = courseDone(c), sc = L.filter(u=>S.scores[u.id]);
+    const avg = sc.length ? sc.reduce((a,u)=>a+S.scores[u.id].best,0)/sc.length : null;
+    const next = L.find(u=>!S.done[u.id]) || L[0];
+    const lvl = c==="ia" && NIVEL_IA ? `<span class="tag">Su nivel: ${NIVEL_IA}</span>` : "";
+    h += `<article class="course-card c-${c}">
+      <p class="eyebrow">Curso ${i+1} · ${C.blocks.length} ${c==="ia"?"niveles":"bloques"} · ${L.length} ${c==="ia"?"sesiones":"unidades"}</p>
+      <h2><span aria-hidden="true">${C.ic}</span> ${C.t[0]}</h2><span class="en">${C.t[1]}</span>
+      <p>${bi(C.d)}</p>
+      <div class="cprog"><span class="prog-bar"><i style="width:${d/L.length*100}%"></i></span><span>${d}/${L.length}${avg!=null?` · Nota media ${fmtNota(avg)}`:""}</span>${lvl}</div>
+      <div class="hero-actions"><a class="btn" href="#curso/${c}">Abrir el curso <span class="en-inline" style="color:inherit">Open</span></a>${d ? `<a class="btn ghost" href="#${next.id}">Seguir: ${next.t[0]}</a>` : ""}</div>
+    </article>`; });
+  h += `</div>
+  <p class="small-note" style="margin-top:14px">${bi(["Use el botón «English subtitles» de arriba para mostrar u ocultar el inglés, y «Letra grande» para leer mejor.","Use the «English subtitles» button at the top to show or hide English, and «Letra grande» for bigger text."])}</p>`;
+  return h;
+}
+
+/* ---------- Página de un curso ---------- */
+function renderCourse(c){
+  const C = COURSES[c];
+  let h = accBanner();
+  const intro = {
+    inf:["Aprenda desde cero a usar el ordenador con Windows y el móvil, Android o iPhone. Cada unidad explica poco a poco y tiene ejercicios para practicar aquí y en su propio aparato.","Learn from scratch to use a Windows computer and a phone, Android or iPhone. Each unit explains step by step and has exercises to practise here and on your own device."],
+    ia:["Tres cursos en uno. El Nivel 1 se hace hablando con la IA; el Nivel 2 la usa para la vida diaria; el Nivel 3 crea con ella. Tu docente te dice por qué nivel empezar.","Three courses in one. Level 1 is done by talking to the AI; Level 2 uses it for daily life; Level 3 creates with it. Your teacher tells you which level to start with."],
+    lo:["LibreOffice es gratuito y sirve para lo mismo que Word y Excel. Primero Writer, para escribir documentos; después Calc, para hacer cuentas y tablas. Hágalo en un ordenador con LibreOffice instalado.","LibreOffice is free and does the same as Word and Excel. First Writer, for writing documents; then Calc, for calculations and tables. Do it on a computer with LibreOffice installed."]
+  }[c];
+  const first = unitsOf(c)[0];
+  h += `<div class="hero"><div>
+    <p class="eyebrow">Aula Digital EIPA · Curso ${CKEYS.indexOf(c)+1} de ${CKEYS.length}</p>
+    <h1><span aria-hidden="true">${C.ic}</span> ${C.t[0]}</h1>
+    <p class="en" style="font-size:1.1rem">${C.t[1]}</p>
+    <p class="lead">${bi(intro)}</p>
+    <div class="hero-actions"><a class="btn" href="#${c==="ia" && NIVEL_IA ? "ia"+NIVEL_IA+"s1" : first.id}">Empezar <span class="en-inline" style="color:inherit">Start</span></a>${c==="inf" ? `<a class="btn ghost" href="#u10">Ir al móvil <span class="en-inline">Phone units</span></a>` : ""}${c==="lo" ? `<a class="btn ghost" href="#k1">Ir a Calc <span class="en-inline">Go to Calc</span></a>` : ""}<a class="btn ghost" href="#inicio">← Todos los cursos</a></div>
+  </div><figure class="fig big-ic" aria-hidden="true">${c==="inf" ? SVG.pc : `<span>${C.ic}</span>`}</figure></div>
   <div class="steps">
     <div class="step"><b>1</b>${bi(["Aprendemos: leemos y escuchamos la explicación.","Learn: read and listen to the explanation."])}</div>
-    <div class="step"><b>2</b>${bi(["Palabras clave del tema.","Key words of the unit."])}</div>
-    <div class="step"><b>3</b>${bi(["Practicamos aquí, con corrección al momento.","Practise here, with instant feedback."])}</div>
-    <div class="step"><b>4</b>${bi(["Lo hacemos en el ordenador o el móvil de verdad.","Do it on a real computer or phone."])}</div>
-  </div>
-  <p class="small-note">${bi(["Use el botón «English subtitles» de arriba para mostrar u ocultar el inglés, y «Letra grande» para leer mejor.","Use the «English subtitles» button at the top to show or hide English, and «Letra grande» for bigger text."])}</p>`;
-  for (const k of Object.keys(B)){
-    h += `<section class="bloque"><h2>${B[k][0]} <span class="en-inline">${B[k][1]}</span></h2><div class="ucards">`;
-    U.forEach((u,i)=>{ if (u.b !== k) return;
-      h += `<a class="ucard ${S.done[u.id]?"done":""}" href="#${u.id}"><span class="meta"><span>Unidad ${i+1}</span><span>${S.scores[u.id] ? `Nota: ${fmtNota(S.scores[u.id].best)}` : ""}${S.scores[u.id] && S.done[u.id] ? " · " : ""}${S.done[u.id]?"✔ Terminada":""}</span></span><h3>${u.t[0]}</h3><span class="en">${u.t[1]}</span><span><span class="tag">${DEV[u.dev][0]}</span></span></a>`; });
+    <div class="step"><b>2</b>${bi(c==="ia" ? ["Cómo se hace, paso a paso.","How to do it, step by step."] : ["Palabras clave del tema.","Key words of the unit."])}</div>
+    <div class="step"><b>3</b>${bi(["Practicamos aquí, con nota al terminar.","Practise here, with a mark at the end."])}</div>
+    <div class="step"><b>4</b>${bi(c==="ia" ? ["La tarea, con la IA de verdad.","The task, with a real AI."] : c==="lo" ? ["Lo hacemos en LibreOffice de verdad.","Do it in real LibreOffice."] : ["Lo hacemos en el ordenador o el móvil de verdad.","Do it on a real computer or phone."])}</div>
+  </div>`;
+  for (const k of C.blocks){
+    const mine = c==="ia" && NIVEL_IA && k==="N"+NIVEL_IA;
+    h += `<section class="bloque"><h2>${B[k][0]} <span class="en-inline">${B[k][1]}</span>${mine ? ` <span class="tag mine">Tu nivel</span>` : ""}</h2><div class="ucards">`;
+    U.forEach(u=>{ if (u.c !== c || u.b !== k) return; const lab = unitLabel(u);
+      h += `<a class="ucard ${S.done[u.id]?"done":""}" href="#${u.id}"><span class="meta"><span>${u.ic ? u.ic+" " : ""}${lab[0]}</span><span>${S.scores[u.id] ? `Nota: ${fmtNota(S.scores[u.id].best)}` : ""}${S.scores[u.id] && S.done[u.id] ? " · " : ""}${S.done[u.id]?"✔ Terminada":""}</span></span><h3>${u.t[0]}</h3><span class="en">${u.t[1]}</span><span><span class="tag">${c==="inf" ? DEV[u.dev][0] : B[u.b][0].split(":")[0].split(" · ")[0]}</span></span></a>`; });
     h += `</div></section>`;
   }
   return h;
@@ -921,55 +1060,254 @@ function learnCard(l){
   let body = "";
   if (l.p) body += `<p>${bi(l.p)}</p>`;
   if (l.list) body += `<ul class="terms">${l.list.map(x=>`<li><span class="es"><b>${x[0]}</b> ${x[1]}</span>${x[3]?`<span class="en" lang="en"><b>${x[2]}</b> ${x[3]}</span>`:""}</li>`).join("")}</ul>`;
+  if (l.steps) body += `<ol class="howto-steps">${l.steps.map(s=>`<li>${bi(s)}</li>`).join("")}</ol>`;
   if (l.android) body += `<div class="dev-only android"><span class="devtag">Android</span><p>${bi(l.android)}</p></div><div class="dev-only iphone"><span class="devtag">iPhone</span><p>${bi(l.iphone)}</p></div>`;
+  if (l.tip) body += `<p class="tip">💡 ${bi(l.tip)}</p>`;
   const img = l.img ? `<figure class="fig">${SVG[l.img]}</figure>` : "";
   return `<div class="card learn ${l.img?"has-img":""}"><div class="learn-text"><h3>${bi(l.h)}</h3>${body}<button class="listen" data-listen>🔊 Escuchar <span class="en-inline">Listen (Spanish)</span></button></div>${img}</div>`;
 }
 function quizHTML(u){
+  let n = 0;
   return u.quiz.map((q,qi)=>{ const opts = shuffle(q.o, u.id+"q"+qi);
-    return `<div class="q" data-u="${u.id}" data-q="${qi}"><p><b>${qi+1}.</b> ${bi(q.q)}</p><div class="opts">${opts.map(([o,oi])=>`<button class="opt" data-ok="${oi===0}">${bi(o)}</button>`).join("")}</div><p class="fb" hidden></p></div>`; }).join("");
+    const head = q.kind==="case"
+      ? `<p class="kind">Supuesto práctico <span class="en-inline">Case</span></p><p class="case-box">${bi(q.q)}</p><p><b>${++n}.</b> ${bi(q.ask)}</p>`
+      : `<p><b>${++n}.</b> ${bi(q.q)}</p>`;
+    return `<div class="q ${q.kind==="case"?"q-case":""}" data-u="${u.id}" data-q="${qi}">${head}<div class="opts">${opts.map(([o,oi])=>`<button class="opt" data-ok="${oi===0}">${bi(o)}</button>`).join("")}</div><p class="fb" hidden></p></div>`; }).join("");
 }
 function sortHTML(u){
   const s = u.sort;
   return `<div class="sort"><p class="instr">${bi(s.ask)}</p>${shuffle(s.items, u.id+"s").map(([it,ii])=>`<div class="sort-item" data-u="${u.id}" data-i="${ii}"><p><b>${it[0]}</b>${it[1]!==it[0]?`<span class="en" lang="en">${it[1]}</span>`:""}</p><div class="sort-btns">${s.cats.map((c,ci)=>`<button class="sbtn" data-ci="${ci}">${bi(c)}</button>`).join("")}</div><p class="fb" hidden></p></div>`).join("")}</div>`;
 }
 function renderUnit(u){
-  const idx = U.indexOf(u);
+  const L = unitsOf(u.c), idx = L.indexOf(u), C = COURSES[u.c], lab = unitLabel(u);
   const hasDev = u.learn.some(l=>l.android);
-  const where = u.dev==="pc" ? ["Ahora en el ordenador","Now on the computer"] : u.dev==="movil" ? ["Ahora en su móvil","Now on your phone"] : ["Ahora en el ordenador o el móvil","Now on the computer or phone"];
+  const where = u.where || (u.dev==="pc" ? ["Ahora en el ordenador","Now on the computer"] : u.dev==="movil" ? ["Ahora en su móvil","Now on your phone"] : ["Ahora en el ordenador o el móvil","Now on the computer or phone"]);
+  let p = 0;
   let h = `<div class="unit-head">
-    <p class="eyebrow">${B[u.b][0]} · Unidad ${idx+1} de ${U.length} · ${DEV[u.dev][0]}</p>
-    <h1>${u.t[0]}</h1><p class="en h1en" lang="en">${u.t[1]}</p>
-    <p class="goal"><b>Va a aprender:</b> ${bi(u.goal)}</p>
+    <p class="eyebrow">${C.t[0]} · ${B[u.b][0]} · ${lab[0]}${u.c==="inf" ? " · " + DEV[u.dev][0] : ""}</p>
+    <h1>${u.ic ? `<span class="u-ic" aria-hidden="true">${u.ic}</span> ` : ""}${u.t[0]}</h1><p class="en h1en" lang="en">${u.t[1]}</p>
+    ${u.goal ? `<p class="goal"><b>${u.c==="ia" ? "Vas a aprender:" : "Va a aprender:"}</b> ${bi(u.goal)}</p>` : ""}
     <div class="toolbar no-print">
       ${hasDev ? `<div class="devsel" role="group" aria-label="Elija su móvil"><button data-dev="android" aria-pressed="${S.device==="android"}">Android</button><button data-dev="iphone" aria-pressed="${S.device==="iphone"}">iPhone</button></div><span class="small-note">${bi(["Elija su móvil.","Choose your phone."])}</span>` : ""}
       <button class="chip" data-print="${u.id}">🖨 Imprimir ficha <span class="en-inline">Print worksheet</span></button>
     </div>
   </div>
-  <section class="part"><h2><span class="pnum">1</span> Aprendemos <span class="en-inline">Learn</span></h2><div class="cards">${u.learn.map(learnCard).join("")}</div></section>
-  <section class="part"><h2><span class="pnum">2</span> Palabras clave <span class="en-inline">Key words</span></h2><dl class="words">${u.words.map(w=>`<div><dt>${w[0]}<span class="en" lang="en">${w[2]}</span></dt><dd>${w[1]}<span class="en" lang="en">${w[3]}</span></dd></div>`).join("")}</dl></section>
-  <section class="part"><h2><span class="pnum">3</span> Practicamos aquí <span class="en-inline">Practise here</span></h2>
-    ${u.sim ? `<div class="sim" data-sim="${u.sim}">${SIMS[u.sim].html()}</div>` : ""}
+  <section class="part"><h2><span class="pnum">${++p}</span> Aprendemos <span class="en-inline">Learn</span></h2><div class="cards">${u.learn.map(learnCard).join("")}</div></section>`;
+  if (u.words && u.words.length) h += `<section class="part"><h2><span class="pnum">${++p}</span> Palabras clave <span class="en-inline">Key words</span></h2><dl class="words">${u.words.map(w=>`<div><dt>${w[0]}<span class="en" lang="en">${w[2]}</span></dt><dd>${w[1]}<span class="en" lang="en">${w[3]}</span></dd></div>`).join("")}</dl></section>`;
+  h += `<section class="part"><h2><span class="pnum">${++p}</span> Practicamos aquí <span class="en-inline">Practise here</span></h2>
+    ${u.sim ? `<div class="sim" data-sim="${u.sim}" data-u="${u.id}">${SIMS[u.sim].html(u)}</div>` : ""}
     ${u.sort ? `<p class="sub">${bi(["Clasifique","Sort"])}</p>${sortHTML(u)}` : ""}
-    <p class="sub">${bi(["Preguntas","Questions"])}</p>${quizHTML(u)}
+    <p class="sub">${bi(u.quiz.some(q=>q.kind==="case") ? ["Preguntas y supuestos prácticos","Questions and practical cases"] : ["Preguntas","Questions"])}</p>${quizHTML(u)}
     ${scoreHTML(u)}
   </section>
-  <section class="part"><h2><span class="pnum">4</span> ${where[0]} <span class="en-inline">${where[1]}</span></h2>
-    <p class="small-note" style="margin-bottom:10px">${bi(["Haga cada paso en su aparato y márquelo cuando lo termine.","Do each step on your device and tick it when you finish."])}</p>
-    ${u.practice.map((p,pi)=>{ const k = u.id+"-"+pi, on = !!S.checks[k]; return `<label class="check ${on?"on":""}" for="c-${k}"><input type="checkbox" id="c-${k}" data-check="${k}" ${on?"checked":""}><span>${bi(p)}</span></label>`; }).join("")}
+  <section class="part"><h2><span class="pnum">${++p}</span> ${where[0]} <span class="en-inline">${where[1]}</span></h2>
+    <p class="small-note" style="margin-bottom:10px">${bi(u.c==="ia" ? ["Hazlo con la IA y márcalo cuando lo termines.","Do it with the AI and tick it when you finish."] : ["Haga cada paso y márquelo cuando lo termine.","Do each step and tick it when you finish."])}</p>
+    ${u.practice.map((pr,pi)=>{ const k = u.id+"-"+pi, on = !!S.checks[k]; return `<label class="check ${on?"on":""}" for="c-${k}"><input type="checkbox" id="c-${k}" data-check="${k}" ${on?"checked":""}><span>${bi(pr)}</span></label>`; }).join("")}
+    ${u.prompt ? `<div class="prompt-box"><p class="kind">Prompt para copiar <span class="en-inline">Prompt to copy</span></p><p class="ptxt">${bi(u.prompt)}</p><button class="chip" data-copy-prompt="${u.id}">📋 Copiar <span class="en-inline">Copy</span></button></div>` : ""}
   </section>
   <div class="finish no-print">
-    ${idx>0 ? `<a class="btn ghost" href="#${U[idx-1].id}">← Anterior</a>` : `<a class="btn ghost" href="#inicio">← Inicio</a>`}
+    ${idx>0 ? `<a class="btn ghost" href="#${L[idx-1].id}">← Anterior</a>` : `<a class="btn ghost" href="#curso/${u.c}">← ${C.t[0]}</a>`}
     <button class="donebtn" data-done="${u.id}" aria-pressed="${!!S.done[u.id]}">${S.done[u.id] ? "✔ Unidad terminada" : "He terminado esta unidad"} <span class="en-inline" style="color:inherit">${S.done[u.id] ? "Unit finished" : "I have finished this unit"}</span></button>
-    ${idx<U.length-1 ? `<a class="btn" href="#${U[idx+1].id}">Siguiente →</a>` : `<a class="btn" href="#inicio">Inicio</a>`}
+    ${idx<L.length-1 ? `<a class="btn" href="#${L[idx+1].id}">Siguiente →</a>` : `<a class="btn" href="#inicio">Todos los cursos</a>`}
   </div>`;
   return h;
+}
+
+/* ---------- Mini evaluador de fórmulas para el simulador de Calc ----------
+   Admite números con coma decimal y %, textos entre comillas, celdas (con o sin $), rangos A1:B3,
+   + - * / ^ &, comparaciones (= <> < > <= >=) y las funciones SUMA, PROMEDIO, MAX, MIN, CONTAR, CONTARA y SI (separadas por ;). */
+function calcEval(src, get){
+  const toks = []; let i = 0;
+  const re = /\s*(?:(\d+(?:,\d+)?%?)|("[^"]*")|(\$?[A-Z]+\$?\d+(?::\$?[A-Z]+\$?\d+)?)|([A-ZÁÉÍÓÚÑ]+)(?=\()|(<=|>=|<>|[-+*/^&=<>();]))/y;
+  while (i < src.length){
+    re.lastIndex = i; const m = re.exec(src);
+    if (!m) return "#¿NOMBRE?";
+    i = re.lastIndex;
+    if (m[1]) toks.push({t:"n", v:parseFloat(m[1].replace(",", ".")) / (m[1].endsWith("%") ? 100 : 1)});
+    else if (m[2]) toks.push({t:"s", v:m[2].slice(1, -1)});
+    else if (m[3]) toks.push({t:"r", v:m[3].replace(/\$/g, "")});
+    else if (m[4]) toks.push({t:"f", v:m[4]});
+    else toks.push({t:"o", v:m[5]});
+    if (/^\s*$/.test(src.slice(i))) break;
+  }
+  let p = 0; const peek = ()=>toks[p], next = ()=>toks[p++];
+  const ERR = v => typeof v === "string" && v.startsWith("#");
+  const num = v => v === null ? 0 : typeof v === "number" ? v : NaN;
+  const cells = ref => { const [a, b] = ref.split(":"); if (!b) return [get(a)];
+    const ca = a.match(/([A-Z]+)(\d+)/), cb = b.match(/([A-Z]+)(\d+)/), out = [];
+    for (let c = Math.min(ca[1].charCodeAt(0), cb[1].charCodeAt(0)); c <= Math.max(ca[1].charCodeAt(0), cb[1].charCodeAt(0)); c++)
+      for (let r = Math.min(+ca[2], +cb[2]); r <= Math.max(+ca[2], +cb[2]); r++) out.push(get(String.fromCharCode(c) + r));
+    return out; };
+  const FN = {
+    SUMA: a => a.flat().filter(x=>typeof x==="number").reduce((s,x)=>s+x, 0),
+    PROMEDIO: a => { const n = a.flat().filter(x=>typeof x==="number"); return n.length ? n.reduce((s,x)=>s+x,0)/n.length : "#DIV/0!"; },
+    MAX: a => { const n = a.flat().filter(x=>typeof x==="number"); return n.length ? Math.max(...n) : 0; },
+    MIN: a => { const n = a.flat().filter(x=>typeof x==="number"); return n.length ? Math.min(...n) : 0; },
+    CONTAR: a => a.flat().filter(x=>typeof x==="number").length,
+    CONTARA: a => a.flat().filter(x=>x!==null && x!=="").length
+  };
+  function primary(){
+    const t = next(); if (!t) return "Err:501";
+    if (t.t === "n" || t.t === "s") return t.v;
+    if (t.t === "r") return t.v.includes(":") ? cells(t.v) : get(t.v);
+    if (t.t === "o" && t.v === "-") { const v = primary(); return ERR(v) ? v : -num(v); }
+    if (t.t === "o" && t.v === "+") return primary();
+    if (t.t === "o" && t.v === "(") { const v = expr(); if (!peek() || peek().v !== ")") return "Err:501"; next(); return v; }
+    if (t.t === "f") {
+      next(); // (
+      const args = [];
+      if (peek() && peek().v !== ")") { args.push(expr()); while (peek() && peek().v === ";") { next(); args.push(expr()); } }
+      if (!peek() || peek().v !== ")") return "Err:501"; next();
+      if (t.v === "SI") { const c = args[0]; if (ERR(c)) return c; const r = (typeof c === "number" ? c !== 0 : !!c) ? args[1] : args[2]; return r === undefined ? (typeof c === "number" ? c !== 0 : !!c) : r; }
+      if (!FN[t.v]) return "#¿NOMBRE?";
+      const flat = args.map(x => Array.isArray(x) ? x : [x]); const e = flat.flat().find(ERR); if (e) return e;
+      return FN[t.v](flat);
+    }
+    return "Err:501";
+  }
+  function pow(){ let v = primary(); while (peek() && peek().v === "^") { next(); const r = primary(); v = Math.pow(num(v), num(r)); } return v; }
+  function mul(){ let v = pow(); while (peek() && (peek().v === "*" || peek().v === "/")) { const o = next().v, r = pow(); if (ERR(v)) return v; if (ERR(r)) return r;
+    if (Array.isArray(v) || Array.isArray(r)) return "#¡VALOR!"; v = o === "*" ? num(v)*num(r) : (num(r) === 0 ? "#DIV/0!" : num(v)/num(r)); if (ERR(v)) return v; } return v; }
+  function add(){ let v = mul(); while (peek() && (peek().v === "+" || peek().v === "-")) { const o = next().v, r = mul(); if (ERR(v)) return v; if (ERR(r)) return r;
+    if (Array.isArray(v) || Array.isArray(r)) return "#¡VALOR!"; v = o === "+" ? num(v)+num(r) : num(v)-num(r); } return v; }
+  function cat(){ let v = add(); while (peek() && peek().v === "&") { next(); const r = add(); v = String(v ?? "") + String(r ?? ""); } return v; }
+  function expr(){ let v = cat(); while (peek() && ["=","<>","<",">","<=",">="].includes(peek().v)) { const o = next().v, r = cat(); const a = v ?? 0, b = r ?? 0;
+    v = {"=":a==b,"<>":a!=b,"<":a<b,">":a>b,"<=":a<=b,">=":a>=b}[o]; } return v; }
+  const out = expr();
+  if (p < toks.length) return "Err:501";
+  if (Array.isArray(out)) return "#¡VALOR!";
+  if (typeof out === "number" && !isFinite(out)) return "#¡VALOR!";
+  if (out === true) return "VERDADERO"; if (out === false) return "FALSO";
+  return out ?? 0;
 }
 
 /* ---------- Simuladores ---------- */
 function markDone(cell, msg){ cell.classList.add("done"); const st = cell.querySelector(".st"); if (st){ st.classList.remove("hint"); st.innerHTML = okHTML(msg); } }
 function hint(cell, p){ const st = cell.querySelector(".st"); if (st && !cell.classList.contains("done")){ st.classList.add("hint"); st.innerHTML = bi(p); } }
 const SIMS = {
+/* --- Writer: formato de letra y de párrafo --- */
+writer:{
+  html(){
+    const P = [["Fiesta del barrio"],["El sábado hay una fiesta muy importante en la plaza."],["Música"],["Comida"],["Baile"]];
+    const tasks = [["Centre el título «Fiesta del barrio».","Centre the heading «Fiesta del barrio»."],["Ponga todo el título en tamaño 24.","Make the whole heading size 24."],["Ponga en negrita la palabra «importante».","Make the word «importante» bold."],["Convierta Música, Comida y Baile en una lista con viñetas.","Turn Música, Comida and Baile into a bulleted list."]];
+    return `<p class="small-note" style="margin-bottom:8px">${bi(["Un clic en una palabra la selecciona. Otro clic en la misma palabra selecciona todo el párrafo. Con Mayús + clic añade otro párrafo.","One click on a word selects it. Another click on the same word selects the whole paragraph. Shift + click adds another paragraph."])}</p>
+    <ol class="tasklist">${tasks.map((t,i)=>`<li data-wt="${i}">${bi(t)}</li>`).join("")}</ol>
+    <div class="wsim">
+      <div class="wbar" role="toolbar" aria-label="Barra de formato">
+        <label class="wsize">Tamaño <select data-w="size">${[10,11,12,14,16,18,20,24,28].map(s=>`<option ${s===12?"selected":""}>${s}</option>`).join("")}</select></label>
+        <button data-w="b" title="Negrita"><b>N</b><small>Negrita</small></button>
+        <button data-w="i" title="Cursiva"><i>K</i><small>Cursiva</small></button>
+        <button data-w="u" title="Subrayado"><u>S</u><small>Subrayado</small></button>
+        <span class="wsep"></span>
+        <button data-w="left" title="Alinear a la izquierda">⇤<small>Izquierda</small></button>
+        <button data-w="center" title="Centrar">↔<small>Centrar</small></button>
+        <button data-w="right" title="Alinear a la derecha">⇥<small>Derecha</small></button>
+        <button data-w="list" title="Lista con viñetas">•≡<small>Viñetas</small></button>
+      </div>
+      <div class="wpage">${P.map((p,i)=>`<p class="wp" data-p="${i}">${p[0].split(" ").map(w=>`<span class="ww">${w}</span>`).join(" ")}</p>`).join("")}</div>
+    </div>
+    <p class="st hint">${bi(["Empiece por seleccionar algo.","Start by selecting something."])}</p>`;
+  },
+  init(root){
+    let sel = []; // spans seleccionados
+    const ps = [...root.querySelectorAll(".wp")], st = root.querySelector(".st");
+    const say = (p, ok)=>{ st.className = "st" + (ok ? "" : " hint"); st.innerHTML = ok ? okHTML(p) : bi(p); };
+    const paint = ()=>{ root.querySelectorAll(".ww").forEach(s=>s.classList.toggle("wsel", sel.includes(s))); };
+    root.querySelector(".wpage").addEventListener("click", e=>{
+      const w = e.target.closest(".ww"); if (!w) return;
+      const p = w.parentElement, all = [...p.querySelectorAll(".ww")];
+      if (e.shiftKey && sel.length) sel = [...new Set([...sel, ...all])];
+      else if (sel.length===1 && sel[0]===w) sel = all;
+      else sel = [w];
+      paint();
+      const nP = new Set(sel.map(s=>s.parentElement)).size;
+      say(sel.length===1 ? ["Palabra seleccionada: «"+w.textContent+"». Ahora elija un formato.","Word selected. Now choose a format."] : [nP>1 ? nP+" párrafos seleccionados." : "Párrafo seleccionado.", nP>1 ? nP+" paragraphs selected." : "Paragraph selected."]);
+    });
+    const apply = (k, v)=>{
+      if (!sel.length){ say(["Primero seleccione el texto: haga clic en una palabra.","First select the text: click a word."]); return; }
+      const paras = [...new Set(sel.map(s=>s.parentElement))];
+      if (k==="b"||k==="i"||k==="u"){ const on = !sel.every(s=>s.classList.contains("f-"+k)); sel.forEach(s=>s.classList.toggle("f-"+k, on)); }
+      else if (k==="size"){ sel.forEach(s=>{ s.style.fontSize = (v/12)+"em"; s.dataset.size = v; });
+        // si todo el párrafo tiene el mismo tamaño, también los espacios
+        paras.forEach(p=>{ const ws = [...p.querySelectorAll(".ww")]; if (ws.every(s=>s.dataset.size==v)){ p.style.fontSize = (v/12)+"em"; ws.forEach(s=>s.style.fontSize = "1em"); } }); }
+      else if (k==="list"){ const on = !paras.every(p=>p.classList.contains("li")); paras.forEach(p=>p.classList.toggle("li", on)); }
+      else paras.forEach(p=>{ p.style.textAlign = k; p.dataset.align = k; });
+      check();
+    };
+    root.querySelector(".wbar").addEventListener("click", e=>{ const b = e.target.closest("button[data-w]"); if (b) apply(b.dataset.w); });
+    root.querySelector("select[data-w=size]").addEventListener("change", e=>apply("size", +e.target.value));
+    const done = new Set();
+    function check(){
+      const tw = i=>[...ps[i].querySelectorAll(".ww")];
+      const ok = [
+        ps[0].dataset.align==="center",
+        tw(0).every(s=>s.dataset.size==="24"),
+        tw(1).some(s=>s.textContent==="importante" && s.classList.contains("f-b")),
+        [2,3,4].every(i=>ps[i].classList.contains("li"))];
+      ok.forEach((v,i)=>{ const li = root.querySelector(`[data-wt="${i}"]`); li.classList.toggle("done", v); if (v) done.add(i); });
+      if (ok.every(Boolean)){ root.closest(".sim").classList.add("done"); say(["¡Todas las tareas hechas! Así se da formato en Writer.","All tasks done! That's how you format in Writer."], true); }
+      else if (ok.some(Boolean)) say([`Llevas ${ok.filter(Boolean).length} de 4. ¡Sigue!`,`${ok.filter(Boolean).length} of 4 done. Keep going!`], true);
+    }
+  }
+},
+/* --- Calc: hoja de práctica que comprueba fórmulas --- */
+calc:{
+  html(u){
+    const cfg = CALC_TASKS[u.id] || {tasks:[]};
+    const cols = ["A","B","C","D","E"], rows = Math.max(6, ...Object.keys(cfg.data||{}).map(k=>+k.slice(1))) + 1;
+    return `<ol class="tasklist">${cfg.tasks.map((t,i)=>`<li data-ct="${i}">${bi(t.t)}</li>`).join("")}</ol>
+    <div class="csim">
+      <div class="cfbar"><span class="cname" aria-label="Cuadro de nombre">A1</span><span class="cfx">fx</span><input class="cinput" type="text" spellcheck="false" autocomplete="off" aria-label="Barra de fórmulas" placeholder="Haga clic en una celda y escriba aquí; pulse Intro"></div>
+      <div class="cgrid-wrap"><table class="cgrid"><thead><tr><th></th>${cols.map(c=>`<th>${c}</th>`).join("")}</tr></thead><tbody>${Array.from({length:rows},(_,r)=>`<tr><th>${r+1}</th>${cols.map(c=>`<td data-c="${c}${r+1}"></td>`).join("")}</tr>`).join("")}</tbody></table></div>
+    </div>
+    <p class="st hint">${bi(["Haga clic en la celda que dice la tarea y escriba la fórmula en la barra de arriba.","Click the cell the task names and type the formula in the bar above."])}</p>`;
+  },
+  init(root){
+    const cfg = CALC_TASKS[root.dataset.u] || {data:{}, tasks:[]};
+    const content = Object.assign({}, cfg.data); // celda -> número, texto o "=fórmula"
+    let cur = "A1";
+    const inp = root.querySelector(".cinput"), nameBox = root.querySelector(".cname"), st = root.querySelector(".st");
+    const say = (p, ok)=>{ st.className = "st" + (ok ? "" : " hint"); st.innerHTML = ok ? okHTML(p) : bi(p); };
+    const show = v => typeof v === "number" ? (Math.round(v*100)/100).toLocaleString("es-ES", {maximumFractionDigits:2}) : (v ?? "");
+    const val = (ref, seen = new Set())=>{
+      ref = ref.replace(/\$/g, "");
+      const c = content[ref];
+      if (typeof c === "string" && c.startsWith("=")){ if (seen.has(ref)) return "Err:522"; seen.add(ref); return calcEval(c.slice(1), r=>val(r, new Set(seen))); }
+      return c === undefined || c === "" ? null : c;
+    };
+    const render = ()=>{ root.querySelectorAll("td[data-c]").forEach(td=>{ const v = val(td.dataset.c); td.textContent = show(v); td.classList.toggle("num", typeof v === "number"); td.classList.toggle("sel", td.dataset.c===cur); td.classList.toggle("err", typeof v === "string" && v.startsWith("#")); }); };
+    const pick = ref=>{ cur = ref; nameBox.textContent = ref; const c = content[ref]; inp.value = typeof c === "number" ? String(c).replace(".", ",") : (c ?? ""); render(); inp.focus(); };
+    root.querySelector(".cgrid").addEventListener("click", e=>{ const td = e.target.closest("td[data-c]"); if (td) pick(td.dataset.c); });
+    inp.addEventListener("keydown", e=>{
+      if (e.key !== "Enter") return; e.preventDefault();
+      let t = inp.value.trim();
+      if (t.startsWith("=")) t = "=" + t.slice(1).replace(/("[^"]*")|([^"]+)/g, (m, q, o)=> q ? q : o.toUpperCase().replace(/\s+/g, ""));
+      else if (/^-?\d+([.,]\d+)?%?$/.test(t)) t = parseFloat(t.replace(",", ".")) / (t.endsWith("%") ? 100 : 1);
+      if (t === "") delete content[cur]; else content[cur] = t;
+      render(); check(cur);
+      const m = cur.match(/^([A-E])(\d+)$/); pick(m[1] + (+m[2] + 1));
+    });
+    function check(changed){
+      let allOk = true;
+      cfg.tasks.forEach((t,i)=>{
+        const li = root.querySelector(`[data-ct="${i}"]`), c = content[t.cell], v = val(t.cell);
+        const valOk = typeof t.val === "number" ? typeof v === "number" && Math.abs(v - t.val) < 0.005 : v === t.val;
+        const ok = typeof c === "string" && c.startsWith("=") && valOk && t.need.test(c);
+        li.classList.toggle("done", ok); if (!ok) allOk = false;
+        if (changed === t.cell){
+          if (ok) say(["Correcto: " + t.cell + " = " + show(v) + ".","Correct: " + t.cell + " = " + show(v) + "."], true);
+          else if (typeof c !== "string" || !c.startsWith("=")) say(["Recuerde: una fórmula empieza con =. Si escribe el número, no se actualiza solo.","Remember: a formula starts with =. If you type the number, it won't update itself."]);
+          else if (valOk) say(["El resultado es correcto, pero use la fórmula que pide la tarea.","The result is right, but use the formula the task asks for."]);
+          else if (typeof v === "string" && v.startsWith("#")) say(["Calc muestra un error (" + v + "). Revise los nombres de las funciones y los ; entre las partes.","Calc shows an error (" + v + "). Check function names and the ; between parts."]);
+          else say(["El resultado no es el esperado. Revise las celdas de la fórmula.","The result isn't the expected one. Check the cells in the formula."]);
+        }
+      });
+      if (allOk && cfg.tasks.length){ root.closest(".sim").classList.add("done"); say(["¡Todas las fórmulas correctas! Ahora hágalo en Calc de verdad.","All formulas correct! Now do it in real Calc."], true); }
+    }
+    render();
+  }
+},
+
  mouse:{ html:()=>`<div class="sim-grid">
   <div class="sim-cell" id="m1"><p class="task">${bi(["1. Haga clic 3 veces en el círculo azul. Cambia de sitio.","1. Click the blue circle 3 times. It moves."])}</p><div class="pad"><button class="target" aria-label="Círculo"></button></div><p class="st"></p></div>
   <div class="sim-cell" id="m2"><p class="task">${bi(["2. Haga doble clic en la carpeta para abrirla.","2. Double-click the folder to open it."])}</p><div class="pad center"><div class="ico" id="m2f" tabindex="0">${SVG.folder}<span>Mis fotos</span></div></div><p class="st"></p></div>
@@ -1074,24 +1412,29 @@ const SIMS = {
 /* ---------- Fichas imprimibles ---------- */
 function en(p){ return S.en && p ? `<span class="en" lang="en">${p}</span>` : ""; }
 function fichaHTML(u){
-  const idx = U.indexOf(u), wsh = shuffle(u.words, u.id+"w");
-  let h = `<section class="ficha"><div class="f-head"><div><p class="f-eyebrow">Curso de informática básica · EIPA · Unidad ${idx+1} · ${DEV[u.dev][0]}</p><h2>${u.t[0]}</h2>${en(u.t[1])}</div><div class="f-id"><p>Nombre: ______________________</p><p>Fecha: _____________</p></div></div>`;
-  h += `<h3>1. Una cada palabra con su significado. Escriba la letra.${en("Match each word with its meaning. Write the letter.")}</h3><table class="f-match">`;
-  u.words.forEach((w,i)=>{ const d = wsh[i][0]; h += `<tr><td>____ ${i+1}. <b>${w[0]}</b>${en(w[2])}</td><td><b>${LETTERS[i]}.</b> ${d[1]}${en(d[3])}</td></tr>`; });
-  h += `</table><h3>2. Marque la respuesta correcta.${en("Tick the correct answer.")}</h3>`;
-  u.quiz.forEach((q,qi)=>{ const opts = shuffle(q.o, u.id+"q"+qi); h += `<div class="f-q"><p><b>${qi+1}.</b> ${q.q[0]}${en(q.q[1])}</p>${opts.map(([o])=>`<span class="f-opt"><span class="box">☐</span> ${o[0]}${S.en && o[1]!==o[0] ? ` <i style="color:#555">(${o[1]})</i>` : ""}</span>`).join("")}</div>`; });
-  let n = 3;
+  const C = COURSES[u.c], lab = unitLabel(u);
+  let n = 1;
+  let h = `<section class="ficha"><div class="f-head"><div><p class="f-eyebrow">Aula Digital EIPA · ${C.t[0]} · ${B[u.b][0]} · ${lab[0]}</p><h2>${u.t[0]}</h2>${en(u.t[1])}</div><div class="f-id"><p>Nombre: ______________________</p><p>Fecha: _____________</p></div></div>`;
+  if (u.words && u.words.length){ const wsh = shuffle(u.words, u.id+"w");
+    h += `<h3>${n++}. Una cada palabra con su significado. Escriba la letra.${en("Match each word with its meaning. Write the letter.")}</h3><table class="f-match">`;
+    u.words.forEach((w,i)=>{ const d = wsh[i][0]; h += `<tr><td>____ ${i+1}. <b>${w[0]}</b>${en(w[2])}</td><td><b>${LETTERS[i]}.</b> ${d[1]}${en(d[3])}</td></tr>`; });
+    h += `</table>`; }
+  h += `<h3>${n++}. Marque la respuesta correcta.${en("Tick the correct answer.")}</h3>`;
+  u.quiz.forEach((q,qi)=>{ const opts = shuffle(q.o, u.id+"q"+qi);
+    h += `<div class="f-q"><p><b>${qi+1}.</b> ${q.kind==="case" ? `<i>${q.q[0]}</i> ${q.ask[0]}${en(q.q[1]+" "+q.ask[1])}` : `${q.q[0]}${en(q.q[1])}`}</p>${opts.map(([o])=>`<span class="f-opt"><span class="box">☐</span> ${o[0]}${S.en && o[1]!==o[0] ? ` <i style="color:#555">(${o[1]})</i>` : ""}</span>`).join("")}</div>`; });
   if (u.sort){ const s = u.sort; h += `<h3>${n++}. ${s.ask[0]}${en(s.ask[1])}</h3><table class="f-tbl"><tr><th></th>${s.cats.map(c=>`<th>${c[0]}${S.en&&c[1]!==c[0]?` <i style="font-weight:400">(${c[1]})</i>`:""}</th>`).join("")}</tr>${shuffle(s.items,u.id+"s").map(([it])=>`<tr><td>${it[0]}${S.en && it[1]!==it[0] ? en(it[1]) : ""}</td>${s.cats.map(()=>`<td class="box" style="text-align:center">☐</td>`).join("")}</tr>`).join("")}</table>`; }
-  h += `<h3>${n++}. ${u.dev==="pc"?"En el ordenador":u.dev==="movil"?"En el móvil":"En el ordenador o el móvil"}: marque lo que sabe hacer.${en("On the device: tick what you can do.")}</h3><table class="f-tbl"><tr><th>Tarea${S.en?" <i style='font-weight:400'>(Task)</i>":""}</th><th>Solo/a${S.en?" <i style='font-weight:400'>(On my own)</i>":""}</th><th>Con ayuda${S.en?" <i style='font-weight:400'>(With help)</i>":""}</th></tr>${u.practice.map(p=>`<tr><td>${p[0]}${en(p[1])}</td><td class="box" style="text-align:center">☐</td><td class="box" style="text-align:center">☐</td></tr>`).join("")}</table>`;
+  const where = u.where || (u.dev==="pc" ? ["En el ordenador","On the computer"] : u.dev==="movil" ? ["En el móvil","On the phone"] : ["En el ordenador o el móvil","On the device"]);
+  h += `<h3>${n++}. ${where[0]}: marque lo que sabe hacer.${en(where[1]+": tick what you can do.")}</h3><table class="f-tbl"><tr><th>Tarea${S.en?" <i style='font-weight:400'>(Task)</i>":""}</th><th>Solo/a${S.en?" <i style='font-weight:400'>(On my own)</i>":""}</th><th>Con ayuda${S.en?" <i style='font-weight:400'>(With help)</i>":""}</th></tr>${u.practice.map(p=>`<tr><td>${p[0]}${en(p[1])}</td><td class="box" style="text-align:center">☐</td><td class="box" style="text-align:center">☐</td></tr>`).join("")}</table>`;
   h += `<h3>${n}. Escriba una frase sobre lo que ha aprendido hoy.${en("Write a sentence about what you learned today.")}</h3><div class="f-lines"><div></div><div></div></div></section>`;
   return h;
 }
 function solHTML(u){
-  const idx = U.indexOf(u), wsh = shuffle(u.words, u.id+"w");
-  const pos = {}; wsh.forEach(([w,oi],i)=>{ pos[oi] = LETTERS[i]; });
-  let h = `<div class="sol-u"><h3>Unidad ${idx+1}. ${u.t[0]}</h3><p><b>1.</b> ${u.words.map((w,i)=>`${i+1}-${pos[i]}`).join(" · ")}</p>`;
-  h += `<p><b>2.</b> ${u.quiz.map((q,qi)=>{ const opts = shuffle(q.o, u.id+"q"+qi); const k = opts.findIndex(([,oi])=>oi===0); return `${qi+1}: ${q.o[0][0]} (opción ${k+1})`; }).join(" · ")}</p>`;
-  if (u.sort) h += `<p><b>3.</b> ${shuffle(u.sort.items,u.id+"s").map(([it])=>`${it[0].length>40?it[0].slice(0,40)+"…":it[0]} → ${u.sort.cats[it[2]][0]}`).join(" · ")}</p>`;
+  const lab = unitLabel(u); let n = 1;
+  let h = `<div class="sol-u"><h3>${COURSES[u.c].t[0]} · ${B[u.b][0].split(":")[0]} · ${lab[0]}. ${u.t[0]}</h3>`;
+  if (u.words && u.words.length){ const wsh = shuffle(u.words, u.id+"w"), pos = {}; wsh.forEach(([w,oi],i)=>{ pos[oi] = LETTERS[i]; });
+    h += `<p><b>${n++}.</b> ${u.words.map((w,i)=>`${i+1}-${pos[i]}`).join(" · ")}</p>`; }
+  h += `<p><b>${n++}.</b> ${u.quiz.map((q,qi)=>{ const opts = shuffle(q.o, u.id+"q"+qi); const k = opts.findIndex(([,oi])=>oi===0); return `${qi+1}: ${q.o[0][0]} (opción ${k+1})`; }).join(" · ")}</p>`;
+  if (u.sort) h += `<p><b>${n++}.</b> ${shuffle(u.sort.items,u.id+"s").map(([it])=>`${it[0].length>40?it[0].slice(0,40)+"…":it[0]} → ${u.sort.cats[it[2]][0]}`).join(" · ")}</p>`;
   return h + `</div>`;
 }
 function printUnits(list){
@@ -1104,65 +1447,100 @@ function printUnits(list){
 }
 
 /* ---------- Guía y cuaderno ---------- */
+const SIMNAME = {mouse:"Simulador de ratón",keyboard:"Práctica de teclado",touch:"Gestos táctiles",window:"Simulador de ventanas",password:"Medidor de contraseñas",writer:"Simulador de Writer",calc:"Simulador de hoja de cálculo"};
+function guideTable(c){
+  return `<div class="tbl-wrap"><table class="tbl"><tr><th>Bloque</th><th>Nº</th><th>Unidad</th><th>Ejercicios</th></tr>${unitsOf(c).map(u=>`<tr><td>${B[u.b][0].split(":")[0]}</td><td>${unitNum(u)}</td><td>${u.t[0]}</td><td>${u.sim ? SIMNAME[u.sim]+" · " : ""}${u.sort?"Clasificar · ":""}${u.quiz.filter(q=>q.kind!=="case").length} preguntas${u.quiz.some(q=>q.kind==="case") ? " · " + u.quiz.filter(q=>q.kind==="case").length + " supuestos" : ""} · ${u.practice.length} ${u.practice.length===1?"tarea":"tareas"}</td></tr>`).join("")}</table></div>`;
+}
 function renderGuia(){
-  const rows = U.map((u,i)=>`<tr><td>${i+1}</td><td>${u.t[0]}</td><td>${DEV[u.dev][0]}</td><td>${u.sim ? {mouse:"Simulador de ratón",keyboard:"Práctica de teclado",touch:"Gestos táctiles",window:"Simulador de ventanas",password:"Medidor de contraseñas"}[u.sim]+" · " : ""}${u.sort?"Clasificar · ":""}${u.quiz.length} preguntas · ${u.practice.length} tareas</td></tr>`).join("");
   return `<div class="prose">
-  <h2>Guía docente</h2>
-  <p>Curso de 16 unidades para alumnado adulto de EIPA que empieza desde cero en el uso del ordenador con Windows y del móvil (Android e iPhone). El lenguaje es sencillo y se dirige al alumnado de usted, como en el resto de materiales del centro. Todos los textos llevan subtítulos en inglés para el alumnado extranjero; se ocultan con el botón «English subtitles».</p>
-  <h2>Cómo es cada unidad</h2>
+  <h2>Guía docente · Aula Digital EIPA</h2>
+  <p>El Aula Digital reúne tres cursos en orden: <b>1. Informática básica</b> (16 unidades), <b>2. La IA y Yo</b> (3 niveles de 12 sesiones) y <b>3. LibreOffice</b> (12 unidades de Writer y 12 de Calc). Todos funcionan igual: explicación con botón «Escuchar», ejercicios con nota sobre 10 (cuenta el primer intento), tareas reales para marcar y ficha imprimible con solucionario en página aparte. Todos los textos llevan subtítulos en inglés.</p>
+  <p><b>Códigos de clase y panel.</b> Con un solo código, cada alumno guarda su progreso de los tres cursos. En el <a href="panel.html" target="_blank" rel="noopener">panel docente</a> ve las notas de cada curso en su pestaña y, en La IA y Yo, asigna el nivel de cada persona.</p>
+  <p><b>Registro.</b> Informática y LibreOffice tratan de usted; La IA y Yo mantiene el tuteo de su versión original.</p>
+  <ul class="toc"><li><a href="#g-inf">1. Informática básica</a></li><li><a href="#g-ia">2. La IA y Yo</a></li><li><a href="#g-lo">3. LibreOffice</a></li></ul>
+
+  <h2 id="g-inf">1 · Informática básica</h2>
+  <p>Curso de 16 unidades para alumnado adulto de EIPA que empieza desde cero en el uso del ordenador con Windows y del móvil (Android e iPhone).</p>
+  <h3>Cómo es cada unidad</h3>
   <ul>
-   <li><b>1 · Aprendemos:</b> explicación en bloques cortos, con ilustraciones y botón «Escuchar» (lectura en voz alta en español). En el móvil, cada paso se muestra para Android o para iPhone según lo que elija el alumno o la alumna.</li>
+   <li><b>1 · Aprendemos:</b> explicación en bloques cortos, con ilustraciones y botón «Escuchar». En el móvil, cada paso se muestra para Android o para iPhone según lo que elija el alumno o la alumna.</li>
    <li><b>2 · Palabras clave:</b> seis términos con su significado.</li>
-   <li><b>3 · Practicamos aquí:</b> simulador o clasificación y preguntas con corrección inmediata y explicación.</li>
-   <li><b>4 · Ahora en el aparato:</b> lista de tareas reales para hacer en el ordenador o el móvil y marcar.</li>
+   <li><b>3 · Practicamos aquí:</b> simulador o clasificación y preguntas con corrección inmediata y nota.</li>
+   <li><b>4 · Ahora en el aparato:</b> lista de tareas reales para hacer y marcar.</li>
   </ul>
-  <h2>Sesión tipo (55 minutos)</h2>
+  <h3>Sesión tipo (55 minutos)</h3>
   <ul><li>10–15 min: explicación de «Aprendemos» con el proyector.</li><li>10–15 min: «Practicamos aquí» en parejas.</li><li>20–25 min: tareas en el aparato real, con apoyo.</li><li>5 min: cierre; cada persona marca «He terminado esta unidad» o completa la ficha.</li></ul>
-  <p>Las unidades 2, 3, 10 y 12 suelen necesitar dos sesiones con alumnado que nunca ha usado el aparato.</p>
-  <h2>Secuencia</h2>
-  <p>El bloque «Lo primero» (unidades 1–3) va al principio. Los bloques del ordenador (4–9) y del móvil (10–13) pueden alternarse según el grupo; muchas personas adultas avanzan más rápido empezando por el móvil, que ya usan. El bloque «Seguridad y trámites» (14–16) puede trabajarse en cualquier momento.</p>
-  <h2>Contenido</h2>
-  <div class="tbl-wrap"><table class="tbl"><tr><th>Nº</th><th>Unidad</th><th>Aparato</th><th>Ejercicios</th></tr>${rows}</table></div>
-  <h2>Relación con la evaluación inicial de EIPA 1</h2>
-  <p>El curso trabaja los indicadores digitales de la evaluación inicial: comunicarse con dispositivos (mensajería, videollamada, correo: unidades 9 y 12), buscar información y hacer trámites en línea (unidades 8 y 16) y aplicar normas básicas de seguridad digital (unidades 14 y 15). El uso básico del ordenador (encender, abrir un documento, escribir y guardar) corresponde a las unidades 2–7.</p>
-  <h2>Atención a la diversidad</h2>
-  <ul><li>Botón «Letra grande» y lectura en voz alta en cada explicación.</li><li>Subtítulos en inglés para el alumnado que aún no domina el español.</li><li>Trabajo en parejas: una persona lee el paso y la otra lo hace.</li><li>Para el alumnado con lectura inicial, combinar con las <i>Fichas digitales de lectura fácil</i> de EIPA 1 (carpeta 05_Materiales).</li><li>Cada unidad tiene una ficha imprimible con autoevaluación «solo/a – con ayuda» y solucionario en página aparte.</li></ul>
-  <h2>Privacidad</h2>
-  <p>El progreso solo se guarda en el navegador del aparato que se usa. En las prácticas se usan datos inventados; no se deben escribir contraseñas reales en el medidor de contraseñas ni en ninguna web de práctica.</p>
-  <h2>Imprimir</h2>
-  <p>El botón «Imprimir ficha» de cada unidad y el «Cuaderno de fichas» funcionan al abrir el archivo del curso en el navegador del ordenador. Si el visor donde lo abre bloquea la impresión, use el PDF del cuaderno que está en la misma carpeta del curso.</p>
+  <p>Las unidades 2, 3, 10 y 12 suelen necesitar dos sesiones con alumnado que nunca ha usado el aparato. El bloque «Lo primero» (1–3) va al principio; los bloques del ordenador (4–9) y del móvil (10–13) pueden alternarse; «Seguridad y trámites» (14–16) puede trabajarse en cualquier momento.</p>
+  <p><b>Evaluación inicial de EIPA 1.</b> El curso trabaja los indicadores digitales: comunicarse con dispositivos (unidades 9 y 12), buscar información y hacer trámites (8 y 16), seguridad digital (14 y 15) y uso básico del ordenador (2–7).</p>
+  ${guideTable("inf")}
+
+  <h2 id="g-ia">2 · La IA y Yo</h2>
+  <p>Curso para personas mayores y adultos con discapacidad cognitiva o que empiezan con la inteligencia artificial. Cada nivel es un curso distinto de 12 sesiones: teoría, pasos de «cómo se hace» (niveles 2 y 3), 3 preguntas, 2 supuestos prácticos y una tarea con la IA, con prompt para copiar cuando hace falta.</p>
+  <ul>
+   <li><b>Nivel 1 · Primeros pasos:</b> quien está aprendiendo a leer o no entiende español. Todo se hace hablando con la IA.</li>
+   <li><b>Nivel 2 · La IA en mi día a día:</b> papeles, correos, traducción, información fiable, empleo, imágenes, Canva, vídeo y seguridad.</li>
+   <li><b>Nivel 3 · Crear con IA:</b> prompts profesionales, investigación, habilidades, artefactos, conectores, agentes, imagen, 3D, vídeo, ética y ley.</li>
+  </ul>
+  <p>Asigna el nivel de cada alumno en el panel docente: el curso le abre ese nivel. Puede consultar los otros y su progreso se guarda por separado. Para dar cada sesión en el aula (material, «dilo así», actividad, adaptaciones), usa la <a href="https://claude.ai/artifact/4FVDVJn878icRcx7pz1aK8" target="_blank" rel="noopener">guía completa de La IA y Yo</a>. La sesión de seguridad («Que no te engañen») es la más importante de cada nivel.</p>
+  <p class="warn-note">Las tareas usan herramientas de IA externas (Gemini, ChatGPT, Canva, Clipchamp…). Pruébalas antes en el mismo aparato y recuerda al alumnado que nunca escriba su DNI, dirección, teléfono ni datos de salud.</p>
+  ${guideTable("ia")}
+
+  <h2 id="g-lo">3 · LibreOffice</h2>
+  <p>LibreOffice es gratuito, está instalado en los ordenadores de los centros educativos de Canarias y se descarga en <b>libreoffice.org</b>. Este curso enseña <b>Writer</b> (procesador de textos, como Word) y <b>Calc</b> (hoja de cálculo, como Excel), con los nombres de los menús de la versión en español. Conviene haber terminado antes las unidades 2–7 de Informática básica (ratón, teclado, ventanas, archivos y escribir un documento).</p>
+  <ul>
+   <li><b>Writer (12 unidades):</b> la ventana, escribir y seleccionar, guardar y PDF, formato de letra y de párrafo, listas, ortografía, imágenes, tablas, la página, imprimir y combinar correspondencia, y un proyecto final: currículum y carta formal.</li>
+   <li><b>Calc (12 unidades):</b> celdas, datos, formato, fórmulas, SUMA, copiar fórmulas, PROMEDIO/MAX/MIN, ordenar y filtrar, gráficos, referencias absolutas y porcentajes, SI y BUSCARV, y un proyecto final: el presupuesto del mes.</li>
+   <li><b>Simuladores:</b> la unidad 4 de Writer tiene un simulador de formato y las de fórmulas de Calc tienen una hoja de práctica que corrige la fórmula, no solo el resultado.</li>
+  </ul>
+  <p><b>Sesión tipo:</b> demostración con el proyector (10 min) · simulador y preguntas (15 min) · práctica guiada en LibreOffice con un archivo propio (25 min) · guardar en la carpeta del alumno y cierre (5 min). Los proyectos finales (unidad 12 de cada bloque) necesitan dos o tres sesiones.</p>
+  <p><b>Atajos de teclado.</b> En el curso se usan sobre todo los menús, porque algunos atajos cambian según el idioma de LibreOffice. Los atajos que se citan (Ctrl+Z, Ctrl+C, Ctrl+V, Ctrl+Intro, F2, F7, Ctrl+1, Mayús+F4) funcionan igual en español.</p>
+  ${guideTable("lo")}
+
+  <h2>Atención a la diversidad y privacidad</h2>
+  <ul><li>Botón «Letra grande», lectura en voz alta y subtítulos en inglés en los tres cursos.</li><li>Trabajo en parejas: una persona lee el paso y la otra lo hace.</li><li>Cada unidad tiene una ficha imprimible con autoevaluación «solo/a – con ayuda».</li><li>El servidor solo guarda códigos al azar y notas; la lista que une cada código con cada persona la guarda el docente.</li><li>En las prácticas se usan datos inventados.</li></ul>
   </div>`;
 }
-function renderCuaderno(){
-  return `<div class="unit-head no-print"><h1>Cuaderno de fichas</h1><p class="en">Worksheet book</p><p style="margin-top:8px">Las 16 fichas del curso y, al final, el solucionario en página aparte. ${S.en ? "Incluye los subtítulos en inglés." : "Sin subtítulos en inglés."}</p><div class="toolbar"><button class="chip" data-printall>🖨 Imprimir el cuaderno</button></div></div>
-  <div class="cuaderno" style="margin-top:18px">${U.map(fichaHTML).join("")}<section class="ficha f-sol"><h2>Solucionario para el docente</h2><p style="margin-bottom:10px">Retire estas páginas antes de fotocopiar.</p>${U.map(solHTML).join("")}</section></div>`;
+function renderCuaderno(c){
+  const L = unitsOf(c), C = COURSES[c];
+  return `<div class="unit-head no-print"><h1>Fichas: ${C.t[0]}</h1><p class="en">Worksheets: ${C.t[1]}</p><p style="margin-top:8px">Las ${L.length} fichas del curso y, al final, el solucionario en página aparte. ${S.en ? "Incluye los subtítulos en inglés." : "Sin subtítulos en inglés."}</p>
+    <div class="toolbar">${CKEYS.map(k=>`<a class="chip ${k===c?"on":""}" href="#cuaderno/${k}" style="text-decoration:none;color:inherit">${COURSES[k].ic} ${COURSES[k].t[0]}</a>`).join("")}<button class="chip" data-printall>🖨 Imprimir estas fichas</button></div></div>
+  <div class="cuaderno" style="margin-top:18px">${L.map(fichaHTML).join("")}<section class="ficha f-sol"><h2>Solucionario para el docente</h2><p style="margin-bottom:10px">Retire estas páginas antes de fotocopiar.</p>${L.map(solHTML).join("")}</section></div>`;
 }
 
 /* ---------- Mis notas ---------- */
 function renderNotas(){
-  const hechas = U.filter(u=>S.scores[u.id]);
-  const media = hechas.length ? hechas.reduce((a,u)=>a+S.scores[u.id].best,0)/hechas.length : null;
-  const rows = U.map((u,i)=>{ const sc = S.scores[u.id];
-    return `<tr><td class="hide-sm">${i+1}</td><td><a href="#${u.id}">${u.t[0]}</a><span class="en" lang="en">${u.t[1]}</span></td><td class="hide-sm">${sc ? `${sc.ok} / ${sc.total}` : "—"}</td><td class="n">${sc ? fmtNota(sc.nota) : "—"}</td><td class="n">${sc ? fmtNota(sc.best) : "—"}</td></tr>`; }).join("");
-  return `<div class="unit-head"><p class="eyebrow">Mi progreso</p><h1>Mis notas</h1><p class="en h1en" lang="en">My marks</p>
-    <p class="lead">${bi([`Cuestionarios hechos: ${hechas.length} de ${U.length}.${media!==null ? ` Nota media (con sus mejores notas): ${fmtNota(media)}.` : ""}`,`Quizzes done: ${hechas.length} of ${U.length}.${media!==null ? ` Average (best marks): ${fmtNota(media)}.` : ""}`])}</p>
-    <p class="small-note">${CODE ? bi([`Sus notas se guardan en su cuenta (código ${CODE}). Su docente también las ve.`,`Your marks are saved in your account (code ${CODE}). Your teacher can see them too.`]) : bi(["Sin código, las notas se guardan solo en este aparato. Entre con su código de clase para guardarlas en su cuenta.","Without a code, marks are saved only on this device. Sign in with your class code to save them in your account."])}</p></div>
-    <table class="notas-tbl"><thead><tr><th class="hide-sm">#</th><th>Unidad · Unit</th><th class="hide-sm">Aciertos · Right</th><th style="text-align:right">Nota · Mark</th><th style="text-align:right">Mejor · Best</th></tr></thead><tbody>${rows}</tbody></table>`;
+  const all = U.filter(u=>S.scores[u.id]);
+  let h = `<div class="unit-head"><p class="eyebrow">Mi progreso</p><h1>Mis notas</h1><p class="en h1en" lang="en">My marks</p>
+    <p class="small-note" style="margin-top:8px">${CODE ? bi([`Sus notas se guardan en su cuenta (código ${CODE}). Su docente también las ve.`,`Your marks are saved in your account (code ${CODE}). Your teacher can see them too.`]) : bi(["Sin código, las notas se guardan solo en este aparato. Entre con su código de clase para guardarlas en su cuenta.","Without a code, marks are saved only on this device. Sign in with your class code to save them in your account."])}</p></div>`;
+  CKEYS.forEach(c=>{ const C = COURSES[c], L = unitsOf(c), hechas = L.filter(u=>S.scores[u.id]);
+    const media = hechas.length ? hechas.reduce((a,u)=>a+S.scores[u.id].best,0)/hechas.length : null;
+    // En La IA y Yo solo se listan los niveles con actividad (o el asignado)
+    const show = c!=="ia" ? L : L.filter(u=>hechas.some(x=>x.b===u.b) || u.b==="N"+(NIVEL_IA||1));
+    h += `<section class="bloque"><h2>${C.ic} ${C.t[0]} <span class="en-inline">${C.t[1]}</span></h2>
+      <p>${bi([`Cuestionarios hechos: ${hechas.length} de ${L.length}.${media!==null ? ` Nota media (con sus mejores notas): ${fmtNota(media)}.` : ""}`,`Quizzes done: ${hechas.length} of ${L.length}.${media!==null ? ` Average (best marks): ${fmtNota(media)}.` : ""}`])}</p>
+      <table class="notas-tbl"><thead><tr><th class="hide-sm">Bloque</th><th>Unidad · Unit</th><th class="hide-sm">Aciertos · Right</th><th style="text-align:right">Nota · Mark</th><th style="text-align:right">Mejor · Best</th></tr></thead><tbody>${show.map(u=>{ const sc = S.scores[u.id];
+        return `<tr><td class="hide-sm">${B[u.b][0].split(":")[0].split(" · ")[0]} · ${unitNum(u)}</td><td><a href="#${u.id}">${u.t[0]}</a><span class="en" lang="en">${u.t[1]}</span></td><td class="hide-sm">${sc ? `${sc.ok} / ${sc.total}` : "—"}</td><td class="n">${sc ? fmtNota(sc.nota) : "—"}</td><td class="n">${sc ? fmtNota(sc.best) : "—"}</td></tr>`; }).join("")}</tbody></table></section>`; });
+  return h;
 }
 
 /* ---------- Router ---------- */
 function route(){
-  const id = (location.hash || "#inicio").slice(1);
+  let id = (location.hash || "#inicio").slice(1);
+  if (id==="cuaderno") id = "cuaderno/inf";
   const u = U.find(x=>x.id===id);
   const main = $("#main");
   ATT = null; for (const k in RETRY) delete RETRY[k];
-  if (u){ main.innerHTML = renderUnit(u); main.querySelectorAll("[data-sim]").forEach(el=>SIMS[el.dataset.sim].init(el)); document.title = `${u.t[0]} · Informática básica EIPA`; }
-  else if (id==="entrar"){ main.innerHTML = renderEntrar(); document.title = "Entrar · Informática básica EIPA"; const ci = $("#code-in"); if (ci) setTimeout(()=>ci.focus(), 50); }
-  else if (id==="notas"){ main.innerHTML = renderNotas(); document.title = "Mis notas · Informática básica EIPA"; }
-  else if (id==="guia"){ main.innerHTML = renderGuia(); document.title = "Guía docente · Informática básica EIPA"; }
-  else if (id==="cuaderno"){ main.innerHTML = renderCuaderno(); document.title = "Cuaderno de fichas · Informática básica EIPA"; }
-  else { main.innerHTML = renderHome(); document.title = "Curso de Informática Básica EIPA"; }
-  renderNav(u ? u.id : id);
+  if (u) CUR_C = u.c;
+  else if (/^(curso|cuaderno)\/(inf|ia|lo)$/.test(id)) CUR_C = id.split("/")[1];
+  const T = " · Aula Digital EIPA";
+  if (u){ main.innerHTML = renderUnit(u); main.querySelectorAll("[data-sim]").forEach(el=>SIMS[el.dataset.sim].init(el)); document.title = u.t[0] + T; }
+  else if (id.startsWith("curso/") && COURSES[CUR_C]){ main.innerHTML = renderCourse(CUR_C); document.title = COURSES[CUR_C].t[0] + T; }
+  else if (id.startsWith("cuaderno/") && COURSES[CUR_C]){ main.innerHTML = renderCuaderno(CUR_C); document.title = "Fichas: " + COURSES[CUR_C].t[0] + T; }
+  else if (id==="entrar"){ main.innerHTML = renderEntrar(); document.title = "Entrar" + T; const ci = $("#code-in"); if (ci) setTimeout(()=>ci.focus(), 50); }
+  else if (id==="notas"){ main.innerHTML = renderNotas(); document.title = "Mis notas" + T; }
+  else if (id==="guia"){ main.innerHTML = renderGuia(); document.title = "Guía docente" + T; }
+  else { id = "inicio"; main.innerHTML = renderHome(); document.title = "Aula Digital EIPA"; }
+  renderNav(id);
   $("#aside").classList.remove("open"); $("#nav-toggle").setAttribute("aria-expanded","false");
   window.scrollTo(0,0);
 }
@@ -1196,6 +1574,11 @@ document.addEventListener("click", e=>{
     return; }
   const dv = e.target.closest("[data-dev]");
   if (dv){ S.device = dv.dataset.dev; save(); applyPrefs(); document.querySelectorAll("[data-dev]").forEach(b=>b.setAttribute("aria-pressed", b.dataset.dev===S.device)); return; }
+  const cp = e.target.closest("[data-copy-prompt]");
+  if (cp){ const u = U.find(x=>x.id===cp.dataset.copyPrompt); const t = u.prompt[0];
+    const ok = ()=>{ cp.innerHTML = "✔ Copiado <span class=\"en-inline\">Copied</span>"; setTimeout(()=>{ cp.innerHTML = "📋 Copiar <span class=\"en-inline\">Copy</span>"; }, 2000); };
+    try { navigator.clipboard.writeText(t).then(ok, ()=>{}); } catch(err) {}
+    return; }
   if (e.target.closest("[data-logout]")){ cloudLogout(); location.hash = "#inicio"; route(); return; }
   const rt = e.target.closest("[data-retry]");
   if (rt){ const id = rt.dataset.retry, u = U.find(x=>x.id===id);
