@@ -1501,12 +1501,12 @@ function renderGuia(){
   </div>`;
 }
 // Cuadernos editables (.odt) para rellenar en el ordenador. El solucionario NO se publica.
-const ODT = {inf:"Cuaderno_Fichas_Informatica_Basica.odt"};
+const ODT = {inf:"Cuaderno_Fichas_Informatica_Basica.odt", ia:"Cuaderno_Fichas_La_IA_y_Yo.odt", lo:"Cuaderno_Fichas_LibreOffice.odt"};
 function renderCuaderno(c){
   const L = unitsOf(c), C = COURSES[c];
   return `<div class="unit-head no-print"><h1>Fichas: ${C.t[0]}</h1><p class="en">Worksheets: ${C.t[1]}</p><p style="margin-top:8px">Las ${L.length} fichas del curso y, al final, el solucionario en página aparte. ${S.en ? "Incluye los subtítulos en inglés." : "Sin subtítulos en inglés."}</p>
     <div class="toolbar">${CKEYS.map(k=>`<a class="chip ${k===c?"on":""}" href="#cuaderno/${k}" style="text-decoration:none;color:inherit">${COURSES[k].ic} ${COURSES[k].t[0]}</a>`).join("")}<button class="chip" data-printall>🖨 Imprimir estas fichas</button></div>
-    ${ODT[c] ? `<div class="acc-banner" style="margin-top:14px;margin-bottom:0"><p>${bi(["¿Sin imprimir? Descargue el cuaderno para rellenarlo en el ordenador con LibreOffice Writer: escriba las respuestas en las casillas amarillas y guárdelo con su nombre.","No printing? Download the workbook to fill in on the computer with LibreOffice Writer: type your answers in the yellow boxes and save it with your name."])}</p><a class="btn" href="${ODT[c]}" download>⬇ Cuaderno para el ordenador (.odt)</a></div>` : ""}</div>
+    ${ODT[c] ? `<div class="acc-banner" style="margin-top:14px;margin-bottom:0"><p>${bi([c==="ia" ? "¿Sin imprimir? Descarga el cuaderno para rellenarlo en el ordenador con LibreOffice Writer: escribe las respuestas en las casillas amarillas y guárdalo con tu nombre." : "¿Sin imprimir? Descargue el cuaderno para rellenarlo en el ordenador con LibreOffice Writer: escriba las respuestas en las casillas amarillas y guárdelo con su nombre.","No printing? Download the workbook to fill in on the computer with LibreOffice Writer: type your answers in the yellow boxes and save it with your name."])}</p><a class="btn" href="${ODT[c]}" download>⬇ Cuaderno para el ordenador (.odt)</a></div>` : ""}</div>
   <div class="cuaderno" style="margin-top:18px">${L.map(fichaHTML).join("")}<section class="ficha f-sol"><h2>Solucionario para el docente</h2><p style="margin-bottom:10px">Retire estas páginas antes de fotocopiar.</p>${L.map(solHTML).join("")}</section></div>`;
 }
 
